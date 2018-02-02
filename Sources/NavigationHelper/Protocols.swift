@@ -10,20 +10,25 @@ public protocol Presentable {
 	var hashable: AnyHashable { get }
 }
 
+extension Presentable {
+	public func isEqual(to other: Presentable) -> Bool {
+		return hashable == other.hashable
+	}
+}
+
 public protocol ModalPresenter {
 	var lastPresented: Presentable? { get }
 
-	func present(value: Presentable, animated: Bool) -> Future<()>
-	func dismiss(animated: Bool) -> Future<()>
+	func show(animated: Bool) -> Reader<Presentable,Future<()>>
+	func hide(animated: Bool) -> Future<()>
 }
 
 public protocol StructuredPresenter {
 	var allPresented: [Presentable] { get }
 
-	func reset(value: [Presentable], animated: Bool) -> Future<()>
-	func push(value: [Presentable], animated: Bool) -> Future<()>
-	func pop(animated: Bool) -> Future<()>
-	func go(to: Presentable, animated: Bool) -> Future<()>
+	func resetTo(animated: Bool) -> Reader<[Presentable],Future<()>>
+	func moveTo(animated: Bool) -> Reader<Presentable,Future<()>>
+	func dropLast(animated: Bool) -> Future<()>
 }
 
 public typealias Presenter = ModalPresenter & StructuredPresenter

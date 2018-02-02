@@ -6,10 +6,9 @@ public struct Transition {
 	public var animation: Bool
 
 	public enum Category {
-		case reset([Presentable])
+		case resetTo([Presentable])
 		case modalPresent(Presentable)
-		case structuredPresent([Presentable])
-		case goTo(Presentable)
+		case moveTo(Presentable)
 		case dismiss
 	}
 }
@@ -37,18 +36,18 @@ extension Transition.Category: Equatable {
 	public static func == (lhs: Transition.Category, rhs: Transition.Category) -> Bool {
 		switch (lhs, rhs) {
 
-		case (.modalPresent(let leftValue), .modalPresent(let rightValue)):
-			return leftValue.hashable == rightValue.hashable
-
-		case (.structuredPresent(let leftValue), .structuredPresent(let rightValue)):
+		case (.resetTo(let leftValue), .resetTo(let rightValue)):
 			guard leftValue.count == rightValue.count else { return false }
 			return zip(leftValue,rightValue).lazy
-				.map { $0.hashable == $1.hashable }
+				.map { $0.isEqual(to: $1) }
 				.map(And.init(_:))
 				.concatenated.unwrap
 
-		case (.goTo(let leftValue), .goTo(let rightValue)):
-			return leftValue.hashable == rightValue.hashable
+		case (.modalPresent(let leftValue), .modalPresent(let rightValue)):
+			return leftValue.isEqual(to: rightValue)
+
+		case (.moveTo(let leftValue), .moveTo(let rightValue)):
+			return leftValue.isEqual(to: rightValue)
 
 		case (.dismiss,.dismiss):
 			return true
@@ -66,23 +65,20 @@ extension Transition: Executable {
 		return .unfold { presenter in
 			switch self.category {
 
-			case .reset(let presentables):
-				return presenter.reset(value: presentables, animated: self.animation)
+			case .resetTo(let presentables):
+				return presenter.resetTo(animated: self.animation).run(presentables)
 
 			case .modalPresent(let presentable):
-				return presenter.present(value: presentable, animated: self.animation)
+				return presenter.show(animated: self.animation).run(presentable)
 
-			case .structuredPresent(let presentables):
-				return presenter.push(value: presentables, animated: self.animation)
-
-			case .goTo(let presentable):
-				return presenter.go(to: presentable, animated: self.animation)
+			case .moveTo(let presentable):
+				return presenter.moveTo(animated: self.animation).run(presentable)
 
 			case .dismiss where presenter.lastPresented.isNil.not:
-				return presenter.dismiss(animated: self.animation)
+				return presenter.hide(animated: self.animation)
 
 			case .dismiss where presenter.allPresented.isEmpty.not:
-				return presenter.pop(animated: self.animation)
+				return presenter.dropLast(animated: self.animation)
 
 			default:
 				return .pure(())

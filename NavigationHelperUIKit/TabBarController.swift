@@ -1,0 +1,48 @@
+import UIKit
+import NavigationHelper
+import FunctionalKit
+import Abstract
+
+extension UITabBarController: StructuredPresenter {
+	public var allPresented: [Presentable] {
+		return viewControllers.get(or: [])
+	}
+
+	public func resetTo(animated: Bool) -> Reader<[Presentable], Future<()>> {
+		return Reader<[Presentable], Future<()>>.unfold { presentables in
+			Future<()>.unfold { done in
+				let viewControllers = presentables.flatMap { $0.asViewController }
+				self.setViewControllers(viewControllers, animated: animated)
+				guard animated else { done(()); return }
+				self.transitionCoordinator?.animate(alongsideTransition: nil) { _ in done(()) }
+			}.start()
+		}
+	}
+
+	public func moveTo(animated: Bool) -> Reader<Presentable, Future<()>> {
+		return Reader<Presentable, Future<()>>.unfold { presentable in
+			guard let viewController = presentable.asViewController else { return .pure(()) }
+
+			return Future<()>.unfold { done in
+				if let index = self.viewControllers?.index(of: viewController) {
+					self.selectedIndex = index
+					done(())
+				} else {
+					self.setViewControllers(self.viewControllers.get(or: []) + [viewController], animated: animated)
+					self.selectedViewController = viewController
+					guard animated else { done(()); return }
+					self.transitionCoordinator?.animate(alongsideTransition: nil) { _ in done(()) }
+				}
+			}
+		}
+	}
+
+	public func dropLast(animated: Bool) -> Future<()> {
+		return Future<()>.unfold { done in
+			guard let viewControllers = self.viewControllers, viewControllers.isEmpty.not else { done(()); return }
+			self.setViewControllers(viewControllers.dropLast() |> Array.init(_:), animated: animated)
+			guard animated else { done(()); return }
+			self.transitionCoordinator?.animate(alongsideTransition: nil) { _ in done(()) }
+		}
+	}
+}
