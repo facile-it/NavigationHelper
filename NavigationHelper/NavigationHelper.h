@@ -2,10 +2,11 @@
 //  NavigationHelper.h
 //  NavigationHelper
 //
-//  Created by Elviro Rocca on 02/02/18.
+//  Created by Elviro Rocca on 06/02/18.
+//  Copyright © 2018 facile.it. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <Cocoa/Cocoa.h>
 
 //! Project version number for NavigationHelper.
 FOUNDATION_EXPORT double NavigationHelperVersionNumber;
