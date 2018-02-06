@@ -23,7 +23,7 @@ public typealias TransitionHandler = SerialHandler<Transition>
 // MARK: - Public
 
 extension SerialHandler {
-	public func handle(message: Message) -> Future<Message> {
+	public func handle(_ message: Message) -> Future<Message> {
 		defer {
 			inbox.append(message)
 			handleNext()
