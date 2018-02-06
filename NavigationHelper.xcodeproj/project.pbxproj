@@ -36,6 +36,7 @@
 		383F2BB52029FAD100B8CA58 /* Abstract.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 383F2B662029F93200B8CA58 /* Abstract.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		383F2BB62029FAD100B8CA58 /* FunctionalKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 383F2B672029F93200B8CA58 /* FunctionalKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		383F2BB72029FAD100B8CA58 /* RxSwift.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 383F2B652029F93200B8CA58 /* RxSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		383F2BBA2029FE4E00B8CA58 /* NavigationHelper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 383F2B702029F94F00B8CA58 /* NavigationHelper.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +46,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 383F2B472029F84D00B8CA58;
 			remoteInfo = NavigationHelper;
+		};
+		383F2BB82029FDDB00B8CA58 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 383F2B3F2029F84D00B8CA58 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 383F2B6F2029F94F00B8CA58;
+			remoteInfo = "NavigationHelper-iOS";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -117,6 +125,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				383F2BBA2029FE4E00B8CA58 /* NavigationHelper.framework in Frameworks */,
 				383F2B982029FA4900B8CA58 /* FunctionalKit.framework in Frameworks */,
 				383F2B972029FA4900B8CA58 /* Abstract.framework in Frameworks */,
 			);
@@ -350,6 +359,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				383F2BB92029FDDB00B8CA58 /* PBXTargetDependency */,
 			);
 			name = NavigationHelperUIKit;
 			productName = NavigationHelperUIKit;
@@ -502,6 +512,11 @@
 			isa = PBXTargetDependency;
 			target = 383F2B472029F84D00B8CA58 /* NavigationHelper */;
 			targetProxy = 383F2BA32029FA7100B8CA58 /* PBXContainerItemProxy */;
+		};
+		383F2BB92029FDDB00B8CA58 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 383F2B6F2029F94F00B8CA58 /* NavigationHelper-iOS */;
+			targetProxy = 383F2BB82029FDDB00B8CA58 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
