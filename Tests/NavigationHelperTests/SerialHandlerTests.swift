@@ -32,7 +32,7 @@ final class ExpectationExecutable<T>: Executable, Equatable {
 	}
 }
 
-class NavigationHelperTests: XCTestCase {
+class SerialHandlerTests: XCTestCase {
 	typealias TestExecutable = ExpectationExecutable<Int>
 	typealias TestHandler = SerialHandler<TestExecutable>
 
@@ -47,8 +47,6 @@ class NavigationHelperTests: XCTestCase {
 		handler.handle(expectation).run { received in
 			futureCompletion = received == expectation
 		}
-
-		print("\n")
 
 		expecting("both expectations fulfilled") { fulfill in
 			after(0.1) {
@@ -77,8 +75,6 @@ class NavigationHelperTests: XCTestCase {
 			futureCompletion2 = received == expectation2
 		}
 
-		print("\n")
-
 		expecting("both expectations fulfilled") { fulfill in
 			after(0.1) {
 				expectation1.fulfilled ==! true
@@ -92,5 +88,6 @@ class NavigationHelperTests: XCTestCase {
 
     static var allTests = [
         ("testSerialHandlerHandleOnce", testSerialHandlerHandleOnce),
+		("testSerialHandlerHandleTwice", testSerialHandlerHandleTwice),
     ]
 }

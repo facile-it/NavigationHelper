@@ -24,11 +24,6 @@ public typealias TransitionHandler = SerialHandler<Transition>
 
 extension SerialHandler {
 	public func handle(_ message: Message) -> Future<Message> {
-		defer {
-			inbox.append(message)
-			handleNext()
-		}
-
 		return Future<Message>.unfold { done in
 			self.messageSubject
 				.filter { $0 == message }
@@ -36,8 +31,10 @@ extension SerialHandler {
 					done(message)
 				})
 				.disposed(by: self.disposeBag)
-			}
-			.start()
+
+			self.inbox.append(message)
+			self.handleNext()
+		}
 	}
 }
 
