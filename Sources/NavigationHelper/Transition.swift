@@ -59,9 +59,9 @@ extension Transition.Category: Equatable {
 }
 
 extension Transition: Executable {
-	public typealias Context = Presenter
+	public typealias Context = AnyPresenter
 
-	public var execution: Reader<Presenter, Future<()>> {
+	public var execution: Reader<AnyPresenter, Future<()>> {
 		return .unfold { presenter in
 			switch self.category {
 

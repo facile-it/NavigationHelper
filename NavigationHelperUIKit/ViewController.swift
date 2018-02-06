@@ -14,20 +14,30 @@ extension Presentable {
 	}
 }
 
+extension SerialHandler where Message.Context: Presenter {
+	public var rootViewController: UIViewController? {
+		return context as? UIViewController
+	}
+}
+
 extension UIViewController: ModalPresenter {
 	public func show(animated: Bool) -> Reader<Presentable, Future<()>> {
 		return Reader<Presentable, Future<()>>.unfold { presentable in
 			guard let viewController = presentable.asViewController else { return .pure(()) }
 
 			return Future<()>.unfold { done in
-				self.present(viewController, animated: animated, completion: done)
+				DispatchQueue.main.async {
+					self.present(viewController, animated: animated, completion: done)
+				}
 			}.start()
 		}
 	}
 
 	public func hide(animated: Bool) -> Future<()> {
 		return Future<()>.unfold { done in
-			self.dismiss(animated: animated, completion: done)
+			DispatchQueue.main.async {
+				self.dismiss(animated: animated, completion: done)
+			}
 		}.start()
 	}
 

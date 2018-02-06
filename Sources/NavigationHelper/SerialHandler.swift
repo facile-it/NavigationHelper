@@ -6,7 +6,7 @@ public final class SerialHandler<Message> where Message: Equatable & Executable 
 	private var inbox = [Message].init()
 	private var state = State.idle
 	private let disposeBag = DisposeBag()
-	private let context: Message.Context
+	public let context: Message.Context
 
 	public init(context: Message.Context) {
 		self.context = context

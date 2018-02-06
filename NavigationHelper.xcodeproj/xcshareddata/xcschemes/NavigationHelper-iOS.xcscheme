@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "383F2B6F2029F94F00B8CA58"
-               BuildableName = "NavigationHelper_iOS.framework"
+               BuildableName = "NavigationHelper.framework"
                BlueprintName = "NavigationHelper-iOS"
                ReferencedContainer = "container:NavigationHelper.xcodeproj">
             </BuildableReference>
@@ -48,7 +48,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "383F2B6F2029F94F00B8CA58"
-            BuildableName = "NavigationHelper_iOS.framework"
+            BuildableName = "NavigationHelper.framework"
             BlueprintName = "NavigationHelper-iOS"
             ReferencedContainer = "container:NavigationHelper.xcodeproj">
          </BuildableReference>
@@ -66,7 +66,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "383F2B6F2029F94F00B8CA58"
-            BuildableName = "NavigationHelper_iOS.framework"
+            BuildableName = "NavigationHelper.framework"
             BlueprintName = "NavigationHelper-iOS"
             ReferencedContainer = "container:NavigationHelper.xcodeproj">
          </BuildableReference>
