@@ -23,6 +23,12 @@ public protocol ModalPresenter {
 	func hide(animated: Bool) -> Future<()>
 }
 
+extension ModalPresenter {
+	public var isPresenting: Bool {
+		return lastPresented.isNil.not
+	}
+}
+
 public protocol StructuredPresenter {
 	var allPresented: [Presentable] { get }
 
