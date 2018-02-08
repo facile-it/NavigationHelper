@@ -1,0 +1,11 @@
+language: objective-c
+osx_image: xcode9.2
+xcode_project: NavigationHelper.xcodeproj
+xcode_scheme: NavigationHelper
+xcode_sdk: macosx10.13
+
+script:
+  - xcodebuild clean build test -project "NavigationHelper.xcodeproj" -scheme "NavigationHelper" -destination 'generic/platform=macOS'
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)

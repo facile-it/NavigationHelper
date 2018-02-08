@@ -98,6 +98,8 @@
 		383F2BA92029FAB000B8CA58 /* LinuxMain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinuxMain.swift; sourceTree = "<group>"; };
 		383F2BAB2029FAB000B8CA58 /* SerialHandlerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SerialHandlerTests.swift; sourceTree = "<group>"; };
 		383F2BAC2029FAB000B8CA58 /* Assertion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assertion.swift; sourceTree = "<group>"; };
+		38E255C3202C9B040009663B /* .travis.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .travis.yml; sourceTree = "<group>"; };
+		38E255C4202C9B040009663B /* codecov.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = codecov.yml; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,6 +150,7 @@
 		383F2B3E2029F84D00B8CA58 = {
 			isa = PBXGroup;
 			children = (
+				38E255C2202C9AE30009663B /* Docs */,
 				383F2B622029F90C00B8CA58 /* Dependencies */,
 				383F2B532029F89900B8CA58 /* Sources */,
 				383F2BA82029FAB000B8CA58 /* Tests */,
@@ -279,6 +282,15 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		38E255C2202C9AE30009663B /* Docs */ = {
+			isa = PBXGroup;
+			children = (
+				38E255C3202C9B040009663B /* .travis.yml */,
+				38E255C4202C9B040009663B /* codecov.yml */,
+			);
+			name = Docs;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
