@@ -25,7 +25,7 @@ extension UIViewController: ModalPresenter {
 		return Reader<Presentable, Future<()>>.unfold { presentable in
 			guard let viewController = presentable.asViewController else { return .pure(()) }
 
-			if let lastPresented = self.lastPresented, let shownPresenter = lastPresented as? ModalPresenter {
+			if let lastModalPresented = self.lastModalPresented, let shownPresenter = lastModalPresented as? ModalPresenter {
 				return shownPresenter.show(animated: animated).run(presentable)
 			}
 
@@ -38,7 +38,7 @@ extension UIViewController: ModalPresenter {
 	}
 
 	public func hide(animated: Bool) -> Future<()> {
-		if let lastPresented = self.lastPresented, let shownPresenter = lastPresented as? ModalPresenter, shownPresenter.isPresenting {
+		if let lastModalPresented = self.lastModalPresented, let shownPresenter = lastModalPresented as? ModalPresenter, shownPresenter.isPresenting {
 			return shownPresenter.hide(animated: animated)
 		}
 
@@ -49,7 +49,7 @@ extension UIViewController: ModalPresenter {
 		}.start()
 	}
 
-	public var lastPresented: Presentable? {
+	public var lastModalPresented: Presentable? {
 		return presentedViewController
 	}
 }

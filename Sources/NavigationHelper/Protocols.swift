@@ -17,7 +17,7 @@ extension Presentable {
 }
 
 public protocol ModalPresenter {
-	var lastPresented: Presentable? { get }
+	var lastModalPresented: Presentable? { get }
 
 	func show(animated: Bool) -> Reader<Presentable,Future<()>>
 	func hide(animated: Bool) -> Future<()>
@@ -25,12 +25,12 @@ public protocol ModalPresenter {
 
 extension ModalPresenter {
 	public var isPresenting: Bool {
-		return lastPresented.isNil.not
+		return lastModalPresented.isNil.not
 	}
 }
 
 public protocol StructuredPresenter {
-	var allPresented: [Presentable] { get }
+	var allStructuredPresented: [Presentable] { get }
 
 	func resetTo(animated: Bool) -> Reader<[Presentable],Future<()>>
 	func moveTo(animated: Bool) -> Reader<Presentable,Future<()>>
@@ -52,8 +52,8 @@ public final class AnyPresenter: Presenter {
 		self.init(modalPresenter: presenter, structuredPresenter: presenter)
 	}
 
-	public var lastPresented: Presentable? {
-		return modalPresenter.lastPresented
+	public var lastModalPresented: Presentable? {
+		return modalPresenter.lastModalPresented
 	}
 
 	public func show(animated: Bool) -> Reader<Presentable, Future<()>> {
@@ -64,8 +64,8 @@ public final class AnyPresenter: Presenter {
 		return modalPresenter.hide(animated: animated)
 	}
 
-	public var allPresented: [Presentable] {
-		return structuredPresenter.allPresented
+	public var allStructuredPresented: [Presentable] {
+		return structuredPresenter.allStructuredPresented
 	}
 
 	public func resetTo(animated: Bool) -> Reader<[Presentable], Future<()>> {

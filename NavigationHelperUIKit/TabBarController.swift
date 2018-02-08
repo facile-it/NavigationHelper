@@ -4,7 +4,7 @@ import FunctionalKit
 import Abstract
 
 extension UITabBarController: StructuredPresenter {
-	public var allPresented: [Presentable] {
+	public var allStructuredPresented: [Presentable] {
 		return viewControllers.get(or: [])
 	}
 

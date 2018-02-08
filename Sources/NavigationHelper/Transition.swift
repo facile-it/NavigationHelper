@@ -74,10 +74,10 @@ extension Transition: Executable {
 			case .moveTo(let presentable):
 				return presenter.moveTo(animated: self.animation).run(presentable)
 
-			case .dismiss where presenter.lastPresented.isNil.not:
+			case .dismiss where presenter.lastModalPresented.isNil.not:
 				return presenter.hide(animated: self.animation)
 
-			case .dismiss where presenter.allPresented.isEmpty.not:
+			case .dismiss where presenter.allStructuredPresented.isEmpty.not:
 				return presenter.dropLast(animated: self.animation)
 
 			default:

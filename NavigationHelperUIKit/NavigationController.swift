@@ -3,7 +3,7 @@ import NavigationHelper
 import FunctionalKit
 
 extension UINavigationController: StructuredPresenter {
-	public var allPresented: [Presentable] {
+	public var allStructuredPresented: [Presentable] {
 		return viewControllers
 	}
 
