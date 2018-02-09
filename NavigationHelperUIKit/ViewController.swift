@@ -14,24 +14,6 @@ extension Presentable {
 	}
 }
 
-extension ModalPresenter {
-	public var asViewController: UIViewController? {
-		return self as? UIViewController
-	}
-}
-
-extension AnyPresenter {
-	public var asViewController: UIViewController? {
-		return modalPresenter.asViewController
-	}
-}
-
-extension SerialHandler where Message.Context: ModalPresenter {
-	public var rootViewController: UIViewController? {
-		return context.asViewController
-	}
-}
-
 extension UIViewController: ModalPresenter {
 	public func show(animated: Bool) -> Reader<Presentable, Future<()>> {
 		return Reader<Presentable, Future<()>>.unfold { presentable in
