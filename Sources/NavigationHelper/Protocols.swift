@@ -40,8 +40,8 @@ public protocol StructuredPresenter {
 public typealias Presenter = ModalPresenter & StructuredPresenter
 
 public final class AnyPresenter: Presenter {
-	private let modalPresenter: ModalPresenter
-	private let structuredPresenter: StructuredPresenter
+	public let modalPresenter: ModalPresenter
+	public let structuredPresenter: StructuredPresenter
 
 	public init(modalPresenter: ModalPresenter, structuredPresenter: StructuredPresenter) {
 		self.modalPresenter = modalPresenter

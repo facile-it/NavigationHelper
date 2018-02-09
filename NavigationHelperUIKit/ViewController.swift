@@ -14,9 +14,21 @@ extension Presentable {
 	}
 }
 
-extension SerialHandler where Message.Context: Presenter {
+extension ModalPresenter {
+	public var asViewController: UIViewController? {
+		return self as? UIViewController
+	}
+}
+
+extension AnyPresenter {
+	public var asViewController: UIViewController? {
+		return modalPresenter.asViewController
+	}
+}
+
+extension SerialHandler where Message.Context: ModalPresenter {
 	public var rootViewController: UIViewController? {
-		return context as? UIViewController
+		return context.asViewController
 	}
 }
 
