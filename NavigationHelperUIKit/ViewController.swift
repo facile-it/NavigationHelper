@@ -32,17 +32,21 @@ extension UIViewController: ModalPresenter {
 	}
 
 	public func hide(animated: Bool) -> Future<()> {
-		if let lastModalPresented = self.lastModalPresented, let shownPresenter = lastModalPresented as? ModalPresenter, shownPresenter.isPresenting {
+		guard let lastModalPresented = self.lastModalPresented else { return .pure(()) }
+
+		if let shownPresenter = lastModalPresented as? ModalPresenter, shownPresenter.isPresenting {
 			return shownPresenter.hide(animated: animated).flatMap {
 				self.hide(animated: animated)
 			}
 		}
 
-		return Future<()>.unfold { done in
-			DispatchQueue.main.async {
-				self.dismiss(animated: animated, completion: done)
+		return Future<()>
+			.unfold { done in
+				DispatchQueue.main.async {
+					self.dismiss(animated: animated, completion: done)
+				}
 			}
-		}.start()
+			.start()
 	}
 
 	public var lastModalPresented: Presentable? {

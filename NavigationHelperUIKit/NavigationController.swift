@@ -41,15 +41,18 @@ extension UINavigationController: StructuredPresenter {
 	}
 
 	public func dropLast(animated: Bool) -> Future<()> {
-		return Future<()>.unfold { done in
-			DispatchQueue.main.async {
-				guard
-					self.viewControllers.isEmpty.not,
-					self.popViewController(animated: animated).isNil.not,
-					animated else { done(()); return }
-				self.transitionCoordinator?.animate(alongsideTransition: nil) { _ in done(()) }
+		guard allStructuredPresented.isEmpty.not else { return .pure(()) }
+
+		return Future<()>
+			.unfold { done in
+				DispatchQueue.main.async {
+					guard
+						self.popViewController(animated: animated).isNil.not,
+						animated else { done(()); return }
+					self.transitionCoordinator?.animate(alongsideTransition: nil) { _ in done(()) }
+				}
 			}
-		}.start()
+			.start()
 	}
 }
 

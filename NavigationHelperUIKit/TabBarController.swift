@@ -42,14 +42,18 @@ extension UITabBarController: StructuredPresenter {
 	}
 
 	public func dropLast(animated: Bool) -> Future<()> {
-		return Future<()>.unfold { done in
-			DispatchQueue.main.async {
-				guard let viewControllers = self.viewControllers, viewControllers.isEmpty.not else { done(()); return }
-				self.setViewControllers(viewControllers.dropLast() |> Array.init(_:), animated: animated)
-				guard animated else { done(()); return }
-				self.transitionCoordinator?.animate(alongsideTransition: nil) { _ in done(()) }
+		guard allStructuredPresented.isEmpty.not else { return .pure(()) }
+
+		return Future<()>
+			.unfold { done in
+				DispatchQueue.main.async {
+					guard let viewControllers = self.viewControllers, viewControllers.isEmpty.not else { done(()); return }
+					self.setViewControllers(viewControllers.dropLast() |> Array.init(_:), animated: animated)
+					guard animated else { done(()); return }
+					self.transitionCoordinator?.animate(alongsideTransition: nil) { _ in done(()) }
+				}
 			}
-		}.start()
+			.start()
 	}
 }
 

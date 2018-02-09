@@ -27,6 +27,13 @@ extension ModalPresenter {
 	public var isPresenting: Bool {
 		return lastModalPresented.isNil.not
 	}
+
+	public func hideAll(animated: Bool) -> Future<()> {
+		guard isPresenting else { return .pure(()) }
+		return hide(animated: animated).flatMap {
+			self.hideAll(animated: true)
+		}
+	}
 }
 
 public protocol StructuredPresenter {
