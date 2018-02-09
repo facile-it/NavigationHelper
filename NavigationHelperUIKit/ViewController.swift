@@ -23,11 +23,13 @@ extension UIViewController: ModalPresenter {
 				return shownPresenter.show(animated: animated).run(presentable)
 			}
 
-			return Future<()>.unfold { done in
-				DispatchQueue.main.async {
-					self.present(viewController, animated: animated, completion: done)
+			return Future<()>
+				.unfold { done in
+					DispatchQueue.main.async {
+						self.present(viewController, animated: animated, completion: done)
+					}
 				}
-			}.start()
+				.start()
 		}
 	}
 

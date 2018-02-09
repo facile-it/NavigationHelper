@@ -9,15 +9,17 @@ extension UINavigationController: StructuredPresenter {
 
 	public func resetTo(animated: Bool) -> Reader<[Presentable], Future<()>> {
 		return Reader<[Presentable], Future<()>>.unfold { presentables in
-			Future<()>.unfold { done in
-				DispatchQueue.main.async {
-					let viewControllers = presentables.flatMap { $0.asViewController }
-					self.setViewControllers(viewControllers, animated: animated)
+			Future<()>
+				.unfold { done in
+					DispatchQueue.main.async {
+						let viewControllers = presentables.flatMap { $0.asViewController }
+						self.setViewControllers(viewControllers, animated: animated)
 
-					guard animated else { done(()); return }
-					self.transitionCoordinator?.animate(alongsideTransition: nil) { _ in done(()) }
+						guard animated else { done(()); return }
+						self.transitionCoordinator?.animate(alongsideTransition: nil) { _ in done(()) }
+					}
 				}
-			}.start()
+				.start()
 		}
 	}
 
@@ -25,18 +27,20 @@ extension UINavigationController: StructuredPresenter {
 		return Reader<Presentable, Future<()>>.unfold { presentable in
 			guard let viewController = presentable.asViewController else { return .pure(()) }
 
-			return Future<()>.unfold { done in
-				DispatchQueue.main.async {
-					if self.viewControllers.contains(viewController) {
-						self.popToViewController(viewController, animated: animated)
-					} else {
-						self.pushViewController(viewController, animated: animated)
+			return Future<()>
+				.unfold { done in
+					DispatchQueue.main.async {
+						if self.viewControllers.contains(viewController) {
+							self.popToViewController(viewController, animated: animated)
+						} else {
+							self.pushViewController(viewController, animated: animated)
+						}
+						
+						guard animated else { done(()); return }
+						self.transitionCoordinator?.animate(alongsideTransition: nil) { _ in done(()) }
 					}
-
-					guard animated else { done(()); return }
-					self.transitionCoordinator?.animate(alongsideTransition: nil) { _ in done(()) }
 				}
-			}.start()
+				.start()
 		}
 	}
 

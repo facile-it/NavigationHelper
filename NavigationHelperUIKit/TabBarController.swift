@@ -10,14 +10,16 @@ extension UITabBarController: StructuredPresenter {
 
 	public func resetTo(animated: Bool) -> Reader<[Presentable], Future<()>> {
 		return Reader<[Presentable], Future<()>>.unfold { presentables in
-			Future<()>.unfold { done in
-				DispatchQueue.main.async {
-					let viewControllers = presentables.flatMap { $0.asViewController }
-					self.setViewControllers(viewControllers, animated: animated)
-					guard animated else { done(()); return }
-					self.transitionCoordinator?.animate(alongsideTransition: nil) { _ in done(()) }
+			Future<()>
+				.unfold { done in
+					DispatchQueue.main.async {
+						let viewControllers = presentables.flatMap { $0.asViewController }
+						self.setViewControllers(viewControllers, animated: animated)
+						guard animated else { done(()); return }
+						self.transitionCoordinator?.animate(alongsideTransition: nil) { _ in done(()) }
+					}
 				}
-			}.start()
+				.start()
 		}
 	}
 
@@ -25,22 +27,24 @@ extension UITabBarController: StructuredPresenter {
 		return Reader<Presentable, Future<()>>.unfold { presentable in
 			guard let viewController = presentable.asViewController else { return .pure(()) }
 
-			return Future<()>.unfold { done in
-				DispatchQueue.main.async {
-					if let index = self.viewControllers?.index(of: viewController) {
-						self.selectedIndex = index
-						done(())
-					} else {
-						self.setViewControllers(self.viewControllers.get(or: []) + [viewController], animated: animated)
-						self.selectedViewController = viewController
-						guard animated else { done(()); return }
-						self.transitionCoordinator?.animate(alongsideTransition: nil) { _ in done(()) }
+			return Future<()>
+				.unfold { done in
+					DispatchQueue.main.async {
+						if let index = self.viewControllers?.index(of: viewController) {
+							self.selectedIndex = index
+							done(())
+						} else {
+							self.setViewControllers(self.viewControllers.get(or: []) + [viewController], animated: animated)
+							self.selectedViewController = viewController
+							guard animated else { done(()); return }
+							self.transitionCoordinator?.animate(alongsideTransition: nil) { _ in done(()) }
+						}
 					}
 				}
-			}.start()
+				.start()
 		}
 	}
-
+	
 	public func dropLast(animated: Bool) -> Future<()> {
 		guard allStructuredPresented.isEmpty.not else { return .pure(()) }
 

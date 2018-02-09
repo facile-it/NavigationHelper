@@ -9,7 +9,7 @@ public struct Transition {
 		case resetTo([Presentable])
 		case modalPresent(Presentable)
 		case moveTo(Presentable)
-		case dismiss
+		case dismiss(all: Bool)
 	}
 }
 
@@ -49,8 +49,8 @@ extension Transition.Category: Equatable {
 		case (.moveTo(let leftValue), .moveTo(let rightValue)):
 			return leftValue.isEqual(to: rightValue)
 
-		case (.dismiss,.dismiss):
-			return true
+		case (.dismiss(let leftValue),.dismiss(let rightValue)):
+			return leftValue == rightValue
 
 		default:
 			return false
@@ -74,11 +74,15 @@ extension Transition: Executable {
 			case .moveTo(let presentable):
 				return presenter.moveTo(animated: self.animation).run(presentable)
 
-			case .dismiss where presenter.lastModalPresented.isNil.not:
-				return presenter.hide(animated: self.animation)
+			case .dismiss(let all) where presenter.lastModalPresented.isNil.not:
+				return all.fold(
+					onTrue: presenter.hideAll(animated: self.animation),
+					onFalse: presenter.hide(animated: self.animation))
 
-			case .dismiss where presenter.allStructuredPresented.isEmpty.not:
-				return presenter.dropLast(animated: self.animation)
+			case .dismiss(let all) where presenter.allStructuredPresented.isEmpty.not:
+				return all.fold(
+					onTrue: presenter.resetTo(animated: self.animation).run([]),
+					onFalse: presenter.dropLast(animated: self.animation))
 
 			default:
 				return .pure(())
