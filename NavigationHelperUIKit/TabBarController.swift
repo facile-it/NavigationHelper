@@ -16,7 +16,8 @@ extension UITabBarController: StructuredPresenter {
 						let viewControllers = presentables.flatMap { $0.asViewController }
 						self.setViewControllers(viewControllers, animated: animated)
 						guard animated else { done(()); return }
-						self.transitionCoordinator?.animate(alongsideTransition: nil) { _ in done(()) }
+						guard let transitionCoordinator = self.transitionCoordinator else { done(()); return }
+						transitionCoordinator.animate(alongsideTransition: nil) { _ in done(()) }
 					}
 				}
 				.start()
@@ -37,7 +38,8 @@ extension UITabBarController: StructuredPresenter {
 							self.setViewControllers(self.viewControllers.get(or: []) + [viewController], animated: animated)
 							self.selectedViewController = viewController
 							guard animated else { done(()); return }
-							self.transitionCoordinator?.animate(alongsideTransition: nil) { _ in done(()) }
+							guard let transitionCoordinator = self.transitionCoordinator else { done(()); return }
+							transitionCoordinator.animate(alongsideTransition: nil) { _ in done(()) }
 						}
 					}
 				}
@@ -54,7 +56,8 @@ extension UITabBarController: StructuredPresenter {
 					guard let viewControllers = self.viewControllers, viewControllers.isEmpty.not else { done(()); return }
 					self.setViewControllers(viewControllers.dropLast() |> Array.init(_:), animated: animated)
 					guard animated else { done(()); return }
-					self.transitionCoordinator?.animate(alongsideTransition: nil) { _ in done(()) }
+					guard let transitionCoordinator = self.transitionCoordinator else { done(()); return }
+					transitionCoordinator.animate(alongsideTransition: nil) { _ in done(()) }
 				}
 			}
 			.start()

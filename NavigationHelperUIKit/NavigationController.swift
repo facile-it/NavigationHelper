@@ -16,7 +16,8 @@ extension UINavigationController: StructuredPresenter {
 						self.setViewControllers(viewControllers, animated: animated)
 
 						guard animated else { done(()); return }
-						self.transitionCoordinator?.animate(alongsideTransition: nil) { _ in done(()) }
+						guard let transitionCoordinator = self.transitionCoordinator else { done(()); return }
+						transitionCoordinator.animate(alongsideTransition: nil) { _ in done(()) }
 					}
 				}
 				.start()
@@ -37,7 +38,8 @@ extension UINavigationController: StructuredPresenter {
 						}
 						
 						guard animated else { done(()); return }
-						self.transitionCoordinator?.animate(alongsideTransition: nil) { _ in done(()) }
+						guard let transitionCoordinator = self.transitionCoordinator else { done(()); return }
+						transitionCoordinator.animate(alongsideTransition: nil) { _ in done(()) }
 					}
 				}
 				.start()
@@ -53,7 +55,8 @@ extension UINavigationController: StructuredPresenter {
 					guard
 						self.popViewController(animated: animated).isNil.not,
 						animated else { done(()); return }
-					self.transitionCoordinator?.animate(alongsideTransition: nil) { _ in done(()) }
+					guard let transitionCoordinator = self.transitionCoordinator else { done(()); return }
+					transitionCoordinator.animate(alongsideTransition: nil) { _ in done(()) }
 				}
 			}
 			.start()
