@@ -74,7 +74,7 @@ extension Transition: Executable {
 			case .moveTo(let presentable):
 				return presenter.moveTo(animated: self.animation).run(presentable)
 
-			case .dismiss(let all) where presenter.lastModalPresented.isNil.not:
+			case .dismiss(let all) where presenter.currentModalPresented.isNil.not:
 				return all.fold(
 					onTrue: presenter.hideAll(animated: self.animation),
 					onFalse: presenter.hide(animated: self.animation))
