@@ -4,6 +4,10 @@ import FunctionalKit
 import Abstract
 
 extension UITabBarController: StructuredPresenter {
+	public var shouldAnimate: Bool {
+		return true
+	}
+
 	public var allStructuredPresented: [Presentable] {
 		return viewControllers.get(or: [])
 	}
@@ -13,7 +17,7 @@ extension UITabBarController: StructuredPresenter {
 			Future<()>
 				.unfold { done in
 					DispatchQueue.main.async {
-						let viewControllers = presentables.flatMap { $0.asViewController }
+						let viewControllers = presentables.compactMap { $0.asViewController }
 						self.setViewControllers(viewControllers, animated: animated)
 						guard animated else { done(()); return }
 						guard let transitionCoordinator = self.transitionCoordinator else { done(()); return }

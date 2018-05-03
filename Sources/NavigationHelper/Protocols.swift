@@ -37,6 +37,7 @@ extension ModalPresenter {
 }
 
 public protocol StructuredPresenter {
+	var shouldAnimate: Bool { get }
 	var allStructuredPresented: [Presentable] { get }
 
 	func resetTo(animated: Bool) -> Reader<[Presentable],Future<()>>
@@ -57,6 +58,10 @@ public final class AnyPresenter: Presenter {
 
 	public convenience init(_ presenter: Presenter) {
 		self.init(modalPresenter: presenter, structuredPresenter: presenter)
+	}
+
+	public var shouldAnimate: Bool {
+		return structuredPresenter.shouldAnimate
 	}
 
 	public var currentModalPresented: Presentable? {

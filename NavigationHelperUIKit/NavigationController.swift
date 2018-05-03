@@ -3,6 +3,10 @@ import NavigationHelper
 import FunctionalKit
 
 extension UINavigationController: StructuredPresenter {
+	public var shouldAnimate: Bool {
+		return true
+	}
+
 	public var allStructuredPresented: [Presentable] {
 		return viewControllers
 	}
@@ -12,7 +16,7 @@ extension UINavigationController: StructuredPresenter {
 			Future<()>
 				.unfold { done in
 					DispatchQueue.main.async {
-						let viewControllers = presentables.flatMap { $0.asViewController }
+						let viewControllers = presentables.compactMap { $0.asViewController }
 						self.setViewControllers(viewControllers, animated: animated)
 
 						guard animated else { done(()); return }

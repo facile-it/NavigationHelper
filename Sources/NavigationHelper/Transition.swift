@@ -3,7 +3,7 @@ import FunctionalKit
 
 public struct Transition {
 	public var category: Category
-	public var animation: Bool
+	public var animation: Bool?
 
 	public enum Category {
 		case resetTo([Presentable])
@@ -16,6 +16,10 @@ public struct Transition {
 // MARK: - Public
 
 extension Transition {
+	public static func delegatingAnimation(_ category: Category) -> Transition {
+		return Transition.init(category: category, animation: nil)
+	}
+
 	public static func animated(_ category: Category) -> Transition {
 		return Transition.init(category: category, animation: true)
 	}
@@ -41,7 +45,7 @@ extension Transition.Category: Equatable {
 			return zip(leftValue,rightValue).lazy
 				.map { $0.isEqual(to: $1) }
 				.map(And.init(_:))
-				.concatenated.unwrap
+				.concatenated().unwrap
 
 		case (.modalPresent(let leftValue), .modalPresent(let rightValue)):
 			return leftValue.isEqual(to: rightValue)
@@ -63,26 +67,28 @@ extension Transition: Executable {
 
 	public var execution: Reader<AnyPresenter, Future<()>> {
 		return .unfold { presenter in
+			let animated = self.animation ?? presenter.shouldAnimate
+
 			switch self.category {
 
 			case .resetTo(let presentables):
-				return presenter.resetTo(animated: self.animation).run(presentables)
+				return presenter.resetTo(animated: animated).run(presentables)
 
 			case .modalPresent(let presentable):
-				return presenter.show(animated: self.animation).run(presentable)
+				return presenter.show(animated: animated).run(presentable)
 
 			case .moveTo(let presentable):
-				return presenter.moveTo(animated: self.animation).run(presentable)
+				return presenter.moveTo(animated: animated).run(presentable)
 
 			case .dismiss(let all) where presenter.currentModalPresented.isNil.not:
 				return all.fold(
-					onTrue: presenter.hideAll(animated: self.animation),
-					onFalse: presenter.hide(animated: self.animation))
+					onTrue: presenter.hideAll(animated: animated),
+					onFalse: presenter.hide(animated: animated))
 
 			case .dismiss(let all) where presenter.allStructuredPresented.isEmpty.not:
 				return all.fold(
-					onTrue: presenter.resetTo(animated: self.animation).run([]),
-					onFalse: presenter.dropLast(animated: self.animation))
+					onTrue: presenter.resetTo(animated: animated).run([]),
+					onFalse: presenter.dropLast(animated: animated))
 
 			default:
 				return .pure(())
