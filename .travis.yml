@@ -5,7 +5,7 @@ xcode_scheme: NavigationHelper
 xcode_sdk: macosx10.13
 
 script:
-  - xcodebuild clean build test -project "NavigationHelper.xcodeproj" -scheme "NavigationHelper" -destination 'generic/platform=macOS'
+  - xcodebuild clean build test -project "NavigationHelper.xcodeproj" -scheme "NavigationHelper" -destination 'generic/platform=macOS' | xcpretty
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
