@@ -66,7 +66,7 @@ extension Transition: Executable {
 	public typealias Context = AnyPresenter
 
 	public var execution: Reader<AnyPresenter, Future<()>> {
-		return .unfold { presenter in
+		return .init { presenter in
 			let animated = self.animation ?? presenter.shouldAnimate
 
 			switch self.category {

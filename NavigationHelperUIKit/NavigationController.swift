@@ -12,9 +12,9 @@ extension UINavigationController: StructuredPresenter {
 	}
 
 	public func resetTo(animated: Bool) -> Reader<[Presentable], Future<()>> {
-		return Reader<[Presentable], Future<()>>.unfold { presentables in
+		return Reader<[Presentable], Future<()>>.init { presentables in
 			Future<()>
-				.unfold { done in
+				.init { done in
 					DispatchQueue.main.async {
 						let viewControllers = presentables.compactMap { $0.asViewController }
 						self.setViewControllers(viewControllers, animated: animated)
@@ -29,11 +29,11 @@ extension UINavigationController: StructuredPresenter {
 	}
 
 	public func moveTo(animated: Bool) -> Reader<Presentable, Future<()>> {
-		return Reader<Presentable, Future<()>>.unfold { presentable in
+		return Reader<Presentable, Future<()>>.init { presentable in
 			guard let viewController = presentable.asViewController else { return .pure(()) }
 
 			return Future<()>
-				.unfold { done in
+				.init { done in
 					DispatchQueue.main.async {
 						if self.viewControllers.contains(viewController) {
 							self.popToViewController(viewController, animated: animated)
@@ -54,7 +54,7 @@ extension UINavigationController: StructuredPresenter {
 		guard allStructuredPresented.isEmpty.not else { return .pure(()) }
 
 		return Future<()>
-			.unfold { done in
+			.init { done in
 				DispatchQueue.main.async {
 					guard
 						self.popViewController(animated: animated).isNil.not,
