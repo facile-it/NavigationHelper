@@ -18,9 +18,9 @@ final class ExpectationExecutable<T>: Executable, Equatable {
 	}
 
 	var execution: Reader<T, Future<()>> {
-		return Reader<T, Future<()>>.unfold {
+		return Reader<T, Future<()>>.init {
 			self.fulfilled1 = self.expectation($0)
-			return Future<()>.unfold { done in
+			return Future<()>.init { done in
 				self.fulfilled2 = true
 				done(())
 			}.start()

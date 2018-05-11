@@ -16,7 +16,7 @@ extension Presentable {
 
 extension UIViewController: ModalPresenter {
 	public func show(animated: Bool) -> Reader<Presentable, Future<()>> {
-		return Reader<Presentable, Future<()>>.unfold { presentable in
+		return Reader<Presentable, Future<()>>.init { presentable in
 			guard let viewController = presentable.asViewController else { return .pure(()) }
 
 			if let currentModalPresented = self.currentModalPresented, let shownPresenter = currentModalPresented as? ModalPresenter {
@@ -24,7 +24,7 @@ extension UIViewController: ModalPresenter {
 			}
 
 			return Future<()>
-				.unfold { done in
+				.init { done in
 					DispatchQueue.main.async {
 						self.present(viewController, animated: animated, completion: done)
 					}
@@ -43,7 +43,7 @@ extension UIViewController: ModalPresenter {
 		}
 
 		return Future<()>
-			.unfold { done in
+			.init { done in
 				DispatchQueue.main.async {
 					self.dismiss(animated: animated, completion: done)
 				}

@@ -24,7 +24,7 @@ public typealias TransitionHandler = SerialHandler<Transition>
 
 extension SerialHandler {
 	public func handle(_ message: Message) -> Future<Message> {
-		return Future<Message>.unfold { done in
+		return Future<Message>.init { done in
 			self.messageSubject
 				.filter { $0 == message }
 				.subscribe(onNext: { message in

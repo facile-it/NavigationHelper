@@ -13,9 +13,9 @@ extension UITabBarController: StructuredPresenter {
 	}
 
 	public func resetTo(animated: Bool) -> Reader<[Presentable], Future<()>> {
-		return Reader<[Presentable], Future<()>>.unfold { presentables in
+		return Reader<[Presentable], Future<()>>.init { presentables in
 			Future<()>
-				.unfold { done in
+				.init { done in
 					DispatchQueue.main.async {
 						let viewControllers = presentables.compactMap { $0.asViewController }
 						self.setViewControllers(viewControllers, animated: animated)
@@ -29,11 +29,11 @@ extension UITabBarController: StructuredPresenter {
 	}
 
 	public func moveTo(animated: Bool) -> Reader<Presentable, Future<()>> {
-		return Reader<Presentable, Future<()>>.unfold { presentable in
+		return Reader<Presentable, Future<()>>.init { presentable in
 			guard let viewController = presentable.asViewController else { return .pure(()) }
 
 			return Future<()>
-				.unfold { done in
+				.init { done in
 					DispatchQueue.main.async {
 						if let index = self.viewControllers?.index(of: viewController) {
 							self.selectedIndex = index
@@ -55,7 +55,7 @@ extension UITabBarController: StructuredPresenter {
 		guard allStructuredPresented.isEmpty.not else { return .pure(()) }
 
 		return Future<()>
-			.unfold { done in
+			.init { done in
 				DispatchQueue.main.async {
 					guard let viewControllers = self.viewControllers, viewControllers.isEmpty.not else { done(()); return }
 					self.setViewControllers(viewControllers.dropLast() |> Array.init(_:), animated: animated)

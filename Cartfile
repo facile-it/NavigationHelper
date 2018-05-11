@@ -1,2 +1,2 @@
-github "facile-it/FunctionalKit"
+github "facile-it/FunctionalKit" "new_strategy"
 github "ReactiveX/RxSwift"
