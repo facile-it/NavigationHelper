@@ -1,3 +1,3 @@
 github "ReactiveX/RxSwift" "4.1.2"
-github "facile-it/FunctionalKit" "7b5308e052382830baf1956aeedf8c8544bca7f4"
+github "facile-it/FunctionalKit" "0.12.0"
 github "typelift/Abstract" "0.0.3"
