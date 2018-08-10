@@ -37,9 +37,7 @@ extension UIViewController: ModalPresenter {
 		guard let currentModalPresented = self.currentModalPresented else { return .pure(()) }
 
 		if let shownPresenter = currentModalPresented as? ModalPresenter, shownPresenter.isPresenting {
-			return shownPresenter.hide(animated: animated).flatMap {
-				self.hide(animated: animated)
-			}
+			return shownPresenter.hide(animated: animated)
 		}
 
 		return Future<()>
