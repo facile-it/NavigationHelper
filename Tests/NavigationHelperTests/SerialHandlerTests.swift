@@ -4,15 +4,16 @@ import FunctionalKit
 import Foundation
 import RxSwift
 
-final class ExpectationExecutable<T>: Executable, Equatable, Disposer {
+final class ExpectationExecutable<T>: Executable, Hashable {
 	typealias Context = T
     
-    let bag = DisposeBag()
-
 	private var fulfilled1 = false
 	private var fulfilled2 = false
 	private let expectation: (T) -> Bool
-	init(expectation: @escaping (T) -> Bool) {
+    
+    let hashValue: Int
+	init(hashValue: Int, expectation: @escaping (T) -> Bool) {
+        self.hashValue = hashValue
 		self.expectation = expectation
 	}
 
@@ -44,7 +45,7 @@ class SerialHandlerTests: XCTestCase {
 		let expected = 42
 
 		let handler = TestHandler.init(context: expected)
-		let expectation = TestExecutable.init(expectation: { $0 == expected })
+		let expectation = TestExecutable.init(hashValue: 1, expectation: { $0 == expected })
 
 		var futureCompletion = false
 		handler.handle(expectation).run { received in
@@ -65,8 +66,8 @@ class SerialHandlerTests: XCTestCase {
 		let expected = 42
 
 		let handler = TestHandler.init(context: expected)
-		let expectation1 = TestExecutable.init(expectation: { $0 == expected })
-		let expectation2 = TestExecutable.init(expectation: { $0 == expected })
+        let expectation1 = TestExecutable.init(hashValue: 1, expectation: { $0 == expected })
+		let expectation2 = TestExecutable.init(hashValue: 2, expectation: { $0 == expected })
 
 		var futureCompletion1 = false
 		handler.handle(expectation1).run { received in

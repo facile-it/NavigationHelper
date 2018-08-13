@@ -2,22 +2,40 @@ import Abstract
 import FunctionalKit
 import RxSwift
 
-public final class Transition: Disposer {
+public struct Transition: Hashable {
 	public let category: Category
 	public let animation: Bool?
     
-    public let bag = DisposeBag()
-
 	public enum Category {
 		case resetTo([Presentable])
 		case modalPresent(Presentable)
 		case moveTo(Presentable)
 		case dismiss(all: Bool)
 	}
-    
-    public init(category: Category, animation:Bool?) {
-        self.category = category
-        self.animation = animation
+}
+
+extension Optional: Hashable where Wrapped: Hashable {
+    public var hashValue: Int {
+        return toArray().reduce(5381) {
+            ($0 << 5) &+ $0 &+ $1.hashValue
+        }
+    }
+}
+
+extension Transition.Category: Hashable {
+    public var hashValue: Int {
+        switch self {
+        case let .resetTo(presentables):
+            return presentables.map { $0.hashable }.reduce(5381) {
+                ($0 << 5) &+ $0 &+ $1.hashValue
+            }
+        case let .modalPresent(presentable):
+            return presentable.hashable.hashValue
+        case let .moveTo(presentable):
+            return presentable.hashable.hashValue
+        case let .dismiss(all: value):
+            return value.hashValue
+        }
     }
 }
 
