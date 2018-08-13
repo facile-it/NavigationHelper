@@ -1,9 +1,12 @@
 import Abstract
 import FunctionalKit
+import RxSwift
 
-public struct Transition {
-	public var category: Category
-	public var animation: Bool?
+public final class Transition: Disposer {
+	public let category: Category
+	public let animation: Bool?
+    
+    public let bag = DisposeBag()
 
 	public enum Category {
 		case resetTo([Presentable])
@@ -11,6 +14,11 @@ public struct Transition {
 		case moveTo(Presentable)
 		case dismiss(all: Bool)
 	}
+    
+    public init(category: Category, animation:Bool?) {
+        self.category = category
+        self.animation = animation
+    }
 }
 
 // MARK: - Public
@@ -66,10 +74,10 @@ extension Transition: Executable {
 	public typealias Context = AnyPresenter
 
 	public var execution: Reader<AnyPresenter, Future<()>> {
-		return .init { presenter in
-			let animated = self.animation ?? presenter.shouldAnimate
+		return Reader<AnyPresenter, Future<()>>.init { [animation, category] presenter in
+			let animated = animation ?? presenter.shouldAnimate
 
-			switch self.category {
+			switch category {
 
 			case .resetTo(let presentables):
 				return presenter.resetTo(animated: animated).run(presentables)

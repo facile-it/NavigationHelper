@@ -1,11 +1,10 @@
 import FunctionalKit
 import RxSwift
 
-public final class SerialHandler<Message> where Message: Equatable & Executable {
+public final class SerialHandler<Message> where Message: Equatable & Executable & Disposer {
 	private let messageSubject = PublishSubject<Message>.init()
-	private var inbox = [Message].init()
+	private var inbox = [Message]()
 	private var state = State.idle
-	private let disposeBag = DisposeBag()
 	public let context: Message.Context
 
 	public init(context: Message.Context) {
@@ -24,16 +23,20 @@ public typealias TransitionHandler = SerialHandler<Transition>
 
 extension SerialHandler {
 	public func handle(_ message: Message) -> Future<Message> {
-		return Future<Message>.init { done in
-			self.messageSubject
-				.filter { $0 == message }
-				.subscribe(onNext: { message in
-					done(message)
+		return Future<Message> { [weak self] done in
+            guard let this = self else { return }
+			
+            this.messageSubject
+				.filter { [weak message] incoming in
+                    incoming == message
+                }
+				.subscribe(onNext: { incoming in
+					done(incoming)
 				})
-				.disposed(by: self.disposeBag)
+				.disposed(by: message.bag)
 
-			self.inbox.append(message)
-			self.handleNext()
+			this.inbox.append(message)
+			this.handleNext()
 		}
 	}
 }
@@ -49,6 +52,7 @@ extension SerialHandler {
 
 		message.execution.run(context).run { [weak self] in
 			guard let this = self else { return }
+            
 			this.messageSubject.on(.next(message))
 			this.state = .idle
 			this.handleNext()

@@ -2,9 +2,12 @@ import XCTest
 import FunctionalKit
 @testable import NavigationHelper
 import Foundation
+import RxSwift
 
-final class ExpectationExecutable<T>: Executable, Equatable {
+final class ExpectationExecutable<T>: Executable, Equatable, Disposer {
 	typealias Context = T
+    
+    let bag = DisposeBag()
 
 	private var fulfilled1 = false
 	private var fulfilled2 = false

@@ -1,9 +1,14 @@
 import FunctionalKit
+import RxSwift
 
 public protocol Executable {
 	associatedtype Context
 
 	var execution: Reader<Context,Future<()>> { get }
+}
+
+public protocol Disposer: class {
+    var bag: DisposeBag { get }
 }
 
 public protocol Presentable {
