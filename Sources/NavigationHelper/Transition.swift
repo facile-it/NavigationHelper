@@ -39,6 +39,62 @@ extension Transition.Category: Hashable {
     }
 }
 
+extension Transition {
+	public enum lens {
+		public static let category = Lens<Transition, Transition.Category>(
+			get: { $0.category },
+			set: { part in
+				{ whole in
+					Transition(
+						category: part,
+						animation: whole.animation)
+				}
+		})
+
+		public static let animation = Lens<Transition, Bool?>(
+			get: { $0.animation },
+			set: { part in
+				{ whole in
+					Transition(
+						category: whole.category,
+						animation: part)
+				}
+		})
+	}
+}
+
+extension Transition.Category {
+	public enum prism {
+		public static let resetTo = Prism<Transition.Category, [Presentable]>(
+			tryGet: {
+				guard case let .resetTo(value) = $0 else { return nil }
+				return value
+		},
+			inject: Transition.Category.resetTo)
+
+		public static let modalPresent = Prism<Transition.Category, Presentable>(
+			tryGet: {
+				guard case let .modalPresent(value) = $0 else { return nil }
+				return value
+		},
+			inject: Transition.Category.modalPresent)
+
+		public static let moveTo = Prism<Transition.Category, Presentable>(
+			tryGet: {
+				guard case let .moveTo(value) = $0 else { return nil }
+				return value
+		},
+			inject: Transition.Category.moveTo)
+
+		public static let dismiss = Prism<Transition.Category, Bool>(
+			tryGet: {
+				guard case let .dismiss(value) = $0 else { return nil }
+				return value
+		},
+			inject: Transition.Category.dismiss)
+	}
+}
+
 // MARK: - Public
 
 extension Transition {

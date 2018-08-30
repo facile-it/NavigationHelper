@@ -160,7 +160,6 @@
 				383F2B8A2029FA2B00B8CA58 /* NavigationHelperUIKit */,
 				383F2B9E2029FA7100B8CA58 /* NavigationHelperTests */,
 				383F2B492029F84D00B8CA58 /* Products */,
-				383F2BB02029FAC400B8CA58 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -276,13 +275,6 @@
 				383F2BAC2029FAB000B8CA58 /* Assertion.swift */,
 			);
 			path = NavigationHelperTests;
-			sourceTree = "<group>";
-		};
-		383F2BB02029FAC400B8CA58 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		38E255C2202C9AE30009663B /* Docs */ = {
