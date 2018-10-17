@@ -123,5 +123,6 @@ class SerialHandlerTests: XCTestCase {
     static var allTests = [
         ("testSerialHandlerHandleOnce", testSerialHandlerHandleOnce),
 		("testSerialHandlerHandleTwice", testSerialHandlerHandleTwice),
+        ("testSerialHandlerHandleTwiceDelay", testSerialHandlerHandleTwiceDelay),
     ]
 }
