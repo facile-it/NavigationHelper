@@ -92,15 +92,15 @@ extension Transition.Category {
 
 extension Transition {
 	public static func delegatingAnimation(_ category: Category) -> Transition {
-		return Transition.init(category: category, animation: nil)
+		return Transition(category: category, animation: nil)
 	}
 
 	public static func animated(_ category: Category) -> Transition {
-		return Transition.init(category: category, animation: true)
+		return Transition(category: category, animation: true)
 	}
 
 	public static func nonAnimated(_ category: Category) -> Transition {
-		return Transition.init(category: category, animation: false)
+		return Transition(category: category, animation: false)
 	}
 }
 

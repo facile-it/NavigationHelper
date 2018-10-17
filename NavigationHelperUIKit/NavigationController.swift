@@ -109,6 +109,6 @@ extension UINavigationController: StructuredPresenter {
 
 extension UINavigationController: TransitionHandlerOwner {
 	public var transitionHandler: TransitionHandler {
-		return TransitionHandler.init(context: AnyPresenter.init(self))
+		return TransitionHandler(context: AnyPresenter(self))
 	}
 }

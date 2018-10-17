@@ -2,12 +2,14 @@ import FunctionalKit
 import RxSwift
 
 public final class SerialHandler<Message> where Message: Hashable & Executable {
-	private let messageSubject = PublishSubject<Message>.init()
+	private let messageSubject = PublishSubject<Message>()
 	private var inbox = [Message]()
 	private var state = State.idle
 	public let context: Message.Context
 
-	public init(context: Message.Context) {
+    public var interMessageDelay: Double = 0
+
+    public init(context: Message.Context) {
 		self.context = context
 	}
 
@@ -59,8 +61,19 @@ extension SerialHandler {
 			guard let this = self else { return }
             
 			this.messageSubject.on(.next(message))
-            this.state = .idle
-			this.handleNext()
+
+            let nextExecution = {
+                this.state = .idle
+                this.handleNext()
+            }
+
+            if this.interMessageDelay > 0 {
+                DispatchQueue.global(qos: .userInteractive).asyncAfter(
+                    deadline: .now() + this.interMessageDelay,
+                    execute: nextExecution)
+            } else {
+                nextExecution()
+            }
 		}
 	}
 }

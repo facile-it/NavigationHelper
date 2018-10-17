@@ -44,8 +44,8 @@ class SerialHandlerTests: XCTestCase {
 
 		let expected = 42
 
-		let handler = TestHandler.init(context: expected)
-		let expectation = TestExecutable.init(hashValue: 1, expectation: { $0 == expected })
+		let handler = TestHandler(context: expected)
+		let expectation = TestExecutable(hashValue: 1, expectation: { $0 == expected })
 
 		var futureCompletion = false
 		handler.handle(expectation).run { received in
@@ -65,9 +65,9 @@ class SerialHandlerTests: XCTestCase {
 
 		let expected = 42
 
-		let handler = TestHandler.init(context: expected)
-        let expectation1 = TestExecutable.init(hashValue: 1, expectation: { $0 == expected })
-		let expectation2 = TestExecutable.init(hashValue: 2, expectation: { $0 == expected })
+		let handler = TestHandler(context: expected)
+        let expectation1 = TestExecutable(hashValue: 1, expectation: { $0 == expected })
+		let expectation2 = TestExecutable(hashValue: 2, expectation: { $0 == expected })
 
 		var futureCompletion1 = false
 		handler.handle(expectation1).run { received in
@@ -89,6 +89,36 @@ class SerialHandlerTests: XCTestCase {
 			}
 		}
 	}
+
+    func testSerialHandlerHandleTwiceDelay() {
+
+        let expected = 42
+
+        let handler = TestHandler(context: expected)
+        handler.interMessageDelay = 0.1
+        let expectation1 = TestExecutable(hashValue: 1, expectation: { $0 == expected })
+        let expectation2 = TestExecutable(hashValue: 2, expectation: { $0 == expected })
+
+        var futureCompletion1 = false
+        handler.handle(expectation1).run { received in
+            futureCompletion1 = received == expectation1
+        }
+
+        var futureCompletion2 = false
+        handler.handle(expectation2).run { received in
+            futureCompletion2 = received == expectation2
+        }
+
+        expecting("both expectations fulfilled") { fulfill in
+            after(0.2) {
+                expectation1.fulfilled ==! true
+                futureCompletion1 ==! true
+                expectation2.fulfilled ==! true
+                futureCompletion2 ==! true
+                fulfill()
+            }
+        }
+    }
 
     static var allTests = [
         ("testSerialHandlerHandleOnce", testSerialHandlerHandleOnce),

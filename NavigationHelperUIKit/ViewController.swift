@@ -4,7 +4,7 @@ import FunctionalKit
 
 extension UIViewController: Presentable {
 	public var hashable: AnyHashable {
-		return AnyHashable.init(self)
+		return AnyHashable(self)
 	}
 }
 
