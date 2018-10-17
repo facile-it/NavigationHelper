@@ -13,18 +13,18 @@ extension UITabBarController: StructuredPresenter {
 	}
 
 	public func resetTo(animated: Bool) -> Reader<[Presentable], Future<()>> {
-		return Reader<[Presentable], Future<()>>.init { presentables in
-			Future<()>
-				.init { done in
-					DispatchQueue.main.async {
-						let viewControllers = presentables.compactMap { $0.asViewController }
-						self.setViewControllers(viewControllers, animated: animated)
-						guard animated else { done(()); return }
-						guard let transitionCoordinator = self.transitionCoordinator else { done(()); return }
-						transitionCoordinator.animate(alongsideTransition: nil) { _ in done(()) }
-					}
-				}
-				.start()
+        return Reader<[Presentable], Future<()>>.init { presentables in
+            Future<()>
+                .init { done in
+                    DispatchQueue.main.async {
+                        let viewControllers = presentables.compactMap { $0.asViewController }
+                        self.setViewControllers(viewControllers, animated: animated)
+                        guard animated else { done(()); return }
+                        guard let transitionCoordinator = self.transitionCoordinator else { done(()); return }
+                        transitionCoordinator.animate(alongsideTransition: nil) { _ in done(()) }
+                    }
+                }
+                .start()
 		}
 	}
 

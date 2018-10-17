@@ -14,13 +14,6 @@ public struct Transition: Hashable {
 	}
 }
 
-extension Optional: Hashable where Wrapped: Hashable {
-    public var hashValue: Int {
-        return toArray().reduce(5381) {
-            ($0 << 5) &+ $0 &+ $1.hashValue
-        }
-    }
-}
 
 extension Transition.Category: Hashable {
     public var hashValue: Int {
