@@ -23,6 +23,8 @@ public typealias TransitionHandler = SerialHandler<Transition>
 
 // MARK: - Public
 
+extension SerialHandler: TransitionHandlerType where Message == Transition {}
+
 extension SerialHandler {
 	public func handle(_ message: Message) -> Future<Message> {
         let targetHashValue = message.hashValue

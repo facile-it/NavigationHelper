@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		382B6A862177647F006D6C89 /* AnyPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382B6A852177647F006D6C89 /* AnyPresenter.swift */; };
+		382B6A88217764E0006D6C89 /* SplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382B6A87217764E0006D6C89 /* SplitViewController.swift */; };
+		382B6A89217765D4006D6C89 /* AnyPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382B6A852177647F006D6C89 /* AnyPresenter.swift */; };
 		383F2B4D2029F84D00B8CA58 /* NavigationHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 383F2B4B2029F84D00B8CA58 /* NavigationHelper.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		383F2B582029F89900B8CA58 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 383F2B552029F89900B8CA58 /* Protocols.swift */; };
 		383F2B592029F89900B8CA58 /* Transition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 383F2B562029F89900B8CA58 /* Transition.swift */; };
@@ -72,6 +75,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		382B6A852177647F006D6C89 /* AnyPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyPresenter.swift; sourceTree = "<group>"; };
+		382B6A87217764E0006D6C89 /* SplitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitViewController.swift; sourceTree = "<group>"; };
 		383F2B482029F84D00B8CA58 /* NavigationHelper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NavigationHelper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		383F2B4B2029F84D00B8CA58 /* NavigationHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NavigationHelper.h; sourceTree = "<group>"; };
 		383F2B4C2029F84D00B8CA58 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -197,6 +202,7 @@
 				383F2B552029F89900B8CA58 /* Protocols.swift */,
 				383F2B562029F89900B8CA58 /* Transition.swift */,
 				383F2B572029F89900B8CA58 /* SerialHandler.swift */,
+				382B6A852177647F006D6C89 /* AnyPresenter.swift */,
 			);
 			path = NavigationHelper;
 			sourceTree = "<group>";
@@ -242,11 +248,12 @@
 		383F2B8A2029FA2B00B8CA58 /* NavigationHelperUIKit */ = {
 			isa = PBXGroup;
 			children = (
-				383F2B932029FA3E00B8CA58 /* NavigationController.swift */,
-				383F2B912029FA3E00B8CA58 /* TabBarController.swift */,
-				383F2B922029FA3E00B8CA58 /* ViewController.swift */,
 				383F2B8B2029FA2B00B8CA58 /* NavigationHelperUIKit.h */,
 				383F2B8C2029FA2B00B8CA58 /* Info.plist */,
+				383F2B932029FA3E00B8CA58 /* NavigationController.swift */,
+				382B6A87217764E0006D6C89 /* SplitViewController.swift */,
+				383F2B912029FA3E00B8CA58 /* TabBarController.swift */,
+				383F2B922029FA3E00B8CA58 /* ViewController.swift */,
 			);
 			path = NavigationHelperUIKit;
 			sourceTree = "<group>";
@@ -480,6 +487,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				383F2B592029F89900B8CA58 /* Transition.swift in Sources */,
+				382B6A862177647F006D6C89 /* AnyPresenter.swift in Sources */,
 				383F2B582029F89900B8CA58 /* Protocols.swift in Sources */,
 				383F2B5A2029F89900B8CA58 /* SerialHandler.swift in Sources */,
 			);
@@ -490,6 +498,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				383F2B822029F9BC00B8CA58 /* Transition.swift in Sources */,
+				382B6A89217765D4006D6C89 /* AnyPresenter.swift in Sources */,
 				383F2B812029F9BC00B8CA58 /* Protocols.swift in Sources */,
 				383F2B832029F9BC00B8CA58 /* SerialHandler.swift in Sources */,
 			);
@@ -502,6 +511,7 @@
 				383F2B952029FA3F00B8CA58 /* ViewController.swift in Sources */,
 				383F2B962029FA3F00B8CA58 /* NavigationController.swift in Sources */,
 				383F2B942029FA3F00B8CA58 /* TabBarController.swift in Sources */,
+				382B6A88217764E0006D6C89 /* SplitViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
