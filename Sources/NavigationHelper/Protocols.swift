@@ -11,7 +11,7 @@ public protocol Disposer: class {
     var bag: DisposeBag { get }
 }
 
-public protocol Presentable {
+public protocol Presentable: class {
 	var hashable: AnyHashable { get }
 }
 
