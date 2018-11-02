@@ -3,6 +3,8 @@ import RxSwift
 
 public final class SerialHandler<Message> where Message: Hashable & Executable {
 	private let messageSubject = PublishSubject<Message>()
+    private var safetyRestartSubscribtion: Disposable? = nil
+    
 	private var inbox = [Message]()
 	private var state = State.idle
 	public let context: Message.Context
@@ -51,25 +53,40 @@ extension SerialHandler {
 // MARK: - Private
 
 extension SerialHandler {
+    private func restart() {
+        state = .idle
+        handleNext()
+    }
+    
 	private func handleNext() {
 		guard case .idle = state, inbox.isEmpty.not else { return }
 
 		state = .working
-		let message = inbox.removeFirst()
 
+        safetyRestartSubscribtion?.dispose()
+        safetyRestartSubscribtion = Observable.just(())
+            .delay(1, scheduler: SerialDispatchQueueScheduler(qos: .userInitiated))
+            .subscribe(onNext: { [weak self] in
+                guard let self = self else { return }
+                self.restart()
+                self.safetyRestartSubscribtion = nil
+            })
+        
+		let message = inbox.removeFirst()
+        
 		message.execution.run(context).run { [weak self] in
-			guard let this = self else { return }
+			guard let self = self else { return }
             
-			this.messageSubject.on(.next(message))
+			self.messageSubject.on(.next(message))
 
             let nextExecution = {
-                this.state = .idle
-                this.handleNext()
+                self.state = .idle
+                self.handleNext()
             }
 
-            if this.interMessageDelay > 0 {
+            if self.interMessageDelay > 0 {
                 DispatchQueue.global(qos: .userInteractive).asyncAfter(
-                    deadline: .now() + this.interMessageDelay,
+                    deadline: .now() + self.interMessageDelay,
                     execute: nextExecution)
             } else {
                 nextExecution()
