@@ -9,7 +9,8 @@ public final class SerialHandler<Message> where Message: Hashable & Executable {
 	private var state = State.idle
 	public let context: Message.Context
 
-    public var interMessageDelay: Double = 0
+    public var interMessageDelay: TimeInterval = 0
+    public var safetyRestartDelay: TimeInterval = 3
 
     public init(context: Message.Context) {
 		self.context = context
@@ -54,6 +55,8 @@ extension SerialHandler {
 
 extension SerialHandler {
     private func restart() {
+        safetyRestartSubscribtion?.dispose()
+        safetyRestartSubscribtion = nil
         state = .idle
         handleNext()
     }
@@ -65,11 +68,10 @@ extension SerialHandler {
 
         safetyRestartSubscribtion?.dispose()
         safetyRestartSubscribtion = Observable.just(())
-            .delay(1, scheduler: SerialDispatchQueueScheduler(qos: .userInitiated))
+            .delay(safetyRestartDelay, scheduler: SerialDispatchQueueScheduler(qos: .userInitiated))
             .subscribe(onNext: { [weak self] in
                 guard let self = self else { return }
                 self.restart()
-                self.safetyRestartSubscribtion = nil
             })
         
 		let message = inbox.removeFirst()
