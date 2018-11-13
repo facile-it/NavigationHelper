@@ -15,6 +15,10 @@ extension Presentable {
 }
 
 extension UIViewController: ModalPresenter {
+    public var presentable: Presentable {
+        return self
+    }
+    
     public func show(animated: Bool) -> Reader<Presentable, Future<()>> {
         return Reader<Presentable, Future<()>>.init { presentable in
             guard let viewController = presentable.asViewController else { return .pure(()) }

@@ -17,6 +17,10 @@ public final class AnyPresenter: Presenter {
     public var shouldAnimate: Bool {
         return structuredPresenter.shouldAnimate
     }
+    
+    public var presentable: Presentable {
+        return structuredPresenter.presentable
+    }
 
     public var currentModalPresented: Presentable? {
         return modalPresenter.currentModalPresented

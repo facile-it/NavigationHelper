@@ -11,9 +11,9 @@ public struct Transition: Hashable {
 		case modalPresent(Presentable)
 		case moveTo(Presentable)
 		case dismiss(all: Bool)
+        case custom(hashValue: Int, present: (Presenter) -> Future<()>)
 	}
 }
-
 
 extension Transition.Category: Hashable {
     public var hashValue: Int {
@@ -28,6 +28,8 @@ extension Transition.Category: Hashable {
             return presentable.hashable.hashValue
         case let .dismiss(all: value):
             return value.hashValue
+        case .custom(let hashValue, _):
+            return hashValue
         }
     }
 }
@@ -124,6 +126,9 @@ extension Transition.Category: Equatable {
 
 		case (.modalPresent(let leftValue), .modalPresent(let rightValue)):
 			return leftValue.isEqual(to: rightValue)
+            
+        case (.custom(let leftValue, _), .custom(let rightValue, _)):
+            return leftValue == rightValue
 
 		case (.moveTo(let leftValue), .moveTo(let rightValue)):
 			return leftValue.isEqual(to: rightValue)
@@ -151,7 +156,10 @@ extension Transition: Executable {
 
 			case .modalPresent(let presentable):
 				return presenter.show(animated: animated).run(presentable)
-
+                
+            case .custom(_, let present):
+                return present(presenter)
+                
 			case .moveTo(let presentable):
 				return presenter.moveTo(animated: animated).run(presentable)
 

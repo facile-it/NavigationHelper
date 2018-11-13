@@ -21,7 +21,11 @@ extension Presentable {
 	}
 }
 
-public protocol ModalPresenter {
+public protocol PresentableOwner {
+    var presentable: Presentable { get }
+}
+
+public protocol ModalPresenter: PresentableOwner {
 	var currentModalPresented: Presentable? { get }
 
 	func show(animated: Bool) -> Reader<Presentable,Future<()>>
@@ -41,7 +45,7 @@ extension ModalPresenter {
 	}
 }
 
-public protocol StructuredPresenter {
+public protocol StructuredPresenter: PresentableOwner {
 	var shouldAnimate: Bool { get }
 	var allStructuredPresented: [Presentable] { get }
 
