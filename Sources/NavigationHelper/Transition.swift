@@ -87,6 +87,13 @@ extension Transition.Category {
 				return value
 		},
 			inject: Transition.Category.dismiss)
+        
+        public static let custom = Prism<Transition.Category, (Int, (Presenter) -> Future<()>)>(
+            tryGet: {
+                guard case .custom(let hashValue, let presentationFunction) = $0 else { return nil }
+                return (hashValue, presentationFunction)
+        },
+            inject: { Transition.Category.custom(hashValue: $0, present: $1) })
 	}
 }
 
