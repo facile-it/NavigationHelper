@@ -1,17 +1,23 @@
 import Foundation
 import FunctionalKit
 
-public final class AnyPresenter: Presenter {
+public final class AnyPresenter: Presenter, CustomStringConvertible {
     private let modalPresenter: ModalPresenter
     private let structuredPresenter: StructuredPresenter
+    private let identifier: String
 
-    public init(modalPresenter: ModalPresenter, structuredPresenter: StructuredPresenter) {
-        self.modalPresenter = modalPresenter
-        self.structuredPresenter = structuredPresenter
+    public init(modal: ModalPresenter, structured: StructuredPresenter, identifier: String) {
+        self.modalPresenter = modal
+        self.structuredPresenter = structured
+        self.identifier = identifier
     }
 
     public convenience init(_ presenter: Presenter) {
-        self.init(modalPresenter: presenter, structuredPresenter: presenter)
+        self.init(modal: presenter, structured: presenter, identifier: "\(presenter)")
+    }
+    
+    public var description: String {
+        return "AnyPresenter(\(identifier))"
     }
 
     public var shouldAnimate: Bool {
