@@ -17,7 +17,7 @@ public final class AnyPresenter: Presenter, CustomStringConvertible {
     }
     
     public var description: String {
-        return "AnyPresenter(\(identifier))"
+        return "wrap(\(identifier))"
     }
 
     public var shouldAnimate: Bool {

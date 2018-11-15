@@ -27,7 +27,7 @@ public final class SerialHandler<Message>: CustomStringConvertible where Message
 
     public init(context: Message.Context, identifier: String? = nil) {
 		self.context = context
-        self.identifier = identifier ?? "Contextual(\(context))"
+        self.identifier = identifier ?? "on(\(context))"
         
         Log.serialHandler("\(self): START")
         Log.serialHandler("\(self): inbox: empty")
