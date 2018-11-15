@@ -19,9 +19,11 @@ extension Transition.Category: Hashable {
     public var hashValue: Int {
         switch self {
         case let .resetTo(presentables):
-            return presentables.map { $0.hashable }.reduce(5381) {
-                ($0 << 5) &+ $0 &+ $1.hashValue
-            }
+            return presentables
+                .reduce(into: Hasher()) { currentHasher, presentable in
+                    currentHasher.combine(presentable.hashable)
+                }
+                .finalize()
         case let .modalPresent(presentable):
             return presentable.hashable.hashValue
         case let .moveTo(presentable):

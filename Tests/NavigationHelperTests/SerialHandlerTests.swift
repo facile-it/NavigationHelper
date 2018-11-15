@@ -4,7 +4,7 @@ import FunctionalKit
 import Foundation
 import RxSwift
 
-final class ExpectationExecutable<T>: Executable, Hashable {
+final class ExpectationExecutable<T>: Executable, Hashable, CustomStringConvertible {
 	typealias Context = T
     
 	private var fulfilled1 = false
@@ -34,11 +34,21 @@ final class ExpectationExecutable<T>: Executable, Hashable {
 	static func == (lhs: ExpectationExecutable, rhs: ExpectationExecutable) -> Bool {
 		return lhs === rhs
 	}
+    
+    var description: String {
+        return "\(hashValue)"
+    }
 }
 
 class SerialHandlerTests: XCTestCase {
 	typealias TestExecutable = ExpectationExecutable<Int>
 	typealias TestHandler = SerialHandler<TestExecutable>
+    
+    override func setUp() {
+        super.setUp()
+        
+        NavigationLogSettings.currentLogLevel = .active
+    }
 
 	func testSerialHandlerHandleOnce() {
 

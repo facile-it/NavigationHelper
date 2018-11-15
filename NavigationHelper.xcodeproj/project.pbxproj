@@ -40,6 +40,13 @@
 		383F2BB62029FAD100B8CA58 /* FunctionalKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 383F2B672029F93200B8CA58 /* FunctionalKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		383F2BB72029FAD100B8CA58 /* RxSwift.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 383F2B652029F93200B8CA58 /* RxSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		383F2BBA2029FE4E00B8CA58 /* NavigationHelper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 383F2B702029F94F00B8CA58 /* NavigationHelper.framework */; };
+		3F0D5287219D826600F3B0EA /* Log.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F0D5286219D826600F3B0EA /* Log.framework */; };
+		3F0D5289219D827600F3B0EA /* Log.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F0D5288219D827600F3B0EA /* Log.framework */; };
+		3F0D528A219D827600F3B0EA /* Log.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F0D5288219D827600F3B0EA /* Log.framework */; };
+		3F0D528C219D82C900F3B0EA /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F0D528B219D82C900F3B0EA /* Log.swift */; };
+		3F0D528D219D82D100F3B0EA /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F0D528B219D82C900F3B0EA /* Log.swift */; };
+		3F0D5291219D89F400F3B0EA /* Log.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F0D5286219D826600F3B0EA /* Log.framework */; };
+		3F0D5292219D89F600F3B0EA /* Log.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3F0D5286219D826600F3B0EA /* Log.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +73,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				3F0D5292219D89F600F3B0EA /* Log.framework in CopyFiles */,
 				383F2BB52029FAD100B8CA58 /* Abstract.framework in CopyFiles */,
 				383F2BB62029FAD100B8CA58 /* FunctionalKit.framework in CopyFiles */,
 				383F2BB72029FAD100B8CA58 /* RxSwift.framework in CopyFiles */,
@@ -106,6 +114,9 @@
 		38E255C3202C9B040009663B /* .travis.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .travis.yml; sourceTree = "<group>"; };
 		38E255C4202C9B040009663B /* codecov.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = codecov.yml; sourceTree = "<group>"; };
 		38E255C5202C9BDA0009663B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		3F0D5286219D826600F3B0EA /* Log.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Log.framework; path = Carthage/Build/Mac/Log.framework; sourceTree = "<group>"; };
+		3F0D5288219D827600F3B0EA /* Log.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Log.framework; path = Carthage/Build/iOS/Log.framework; sourceTree = "<group>"; };
+		3F0D528B219D82C900F3B0EA /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +127,7 @@
 				383F2B6A2029F93200B8CA58 /* FunctionalKit.framework in Frameworks */,
 				383F2B692029F93200B8CA58 /* Abstract.framework in Frameworks */,
 				383F2B682029F93200B8CA58 /* RxSwift.framework in Frameworks */,
+				3F0D5287219D826600F3B0EA /* Log.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -126,6 +138,7 @@
 				383F2B7F2029F9A600B8CA58 /* FunctionalKit.framework in Frameworks */,
 				383F2B7E2029F9A600B8CA58 /* Abstract.framework in Frameworks */,
 				383F2B802029F9A600B8CA58 /* RxSwift.framework in Frameworks */,
+				3F0D5289219D827600F3B0EA /* Log.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -136,6 +149,7 @@
 				383F2BBA2029FE4E00B8CA58 /* NavigationHelper.framework in Frameworks */,
 				383F2B982029FA4900B8CA58 /* FunctionalKit.framework in Frameworks */,
 				383F2B972029FA4900B8CA58 /* Abstract.framework in Frameworks */,
+				3F0D528A219D827600F3B0EA /* Log.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -144,6 +158,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				383F2BA22029FA7100B8CA58 /* NavigationHelper.framework in Frameworks */,
+				3F0D5291219D89F400F3B0EA /* Log.framework in Frameworks */,
 				383F2BB12029FAC400B8CA58 /* Abstract.framework in Frameworks */,
 				383F2BB22029FAC400B8CA58 /* FunctionalKit.framework in Frameworks */,
 				383F2BB32029FAC400B8CA58 /* RxSwift.framework in Frameworks */,
@@ -165,6 +180,7 @@
 				383F2B8A2029FA2B00B8CA58 /* NavigationHelperUIKit */,
 				383F2B9E2029FA7100B8CA58 /* NavigationHelperTests */,
 				383F2B492029F84D00B8CA58 /* Products */,
+				3F0D528E219D895500F3B0EA /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -199,10 +215,11 @@
 		383F2B542029F89900B8CA58 /* NavigationHelper */ = {
 			isa = PBXGroup;
 			children = (
-				383F2B552029F89900B8CA58 /* Protocols.swift */,
-				383F2B562029F89900B8CA58 /* Transition.swift */,
-				383F2B572029F89900B8CA58 /* SerialHandler.swift */,
 				382B6A852177647F006D6C89 /* AnyPresenter.swift */,
+				3F0D528B219D82C900F3B0EA /* Log.swift */,
+				383F2B552029F89900B8CA58 /* Protocols.swift */,
+				383F2B572029F89900B8CA58 /* SerialHandler.swift */,
+				383F2B562029F89900B8CA58 /* Transition.swift */,
 			);
 			path = NavigationHelper;
 			sourceTree = "<group>";
@@ -219,6 +236,7 @@
 		383F2B642029F92400B8CA58 /* macOS */ = {
 			isa = PBXGroup;
 			children = (
+				3F0D5286219D826600F3B0EA /* Log.framework */,
 				383F2B662029F93200B8CA58 /* Abstract.framework */,
 				383F2B672029F93200B8CA58 /* FunctionalKit.framework */,
 				383F2B652029F93200B8CA58 /* RxSwift.framework */,
@@ -238,6 +256,7 @@
 		383F2B7A2029F99400B8CA58 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				3F0D5288219D827600F3B0EA /* Log.framework */,
 				383F2B7B2029F9A600B8CA58 /* Abstract.framework */,
 				383F2B7C2029F9A600B8CA58 /* FunctionalKit.framework */,
 				383F2B7D2029F9A600B8CA58 /* RxSwift.framework */,
@@ -292,6 +311,13 @@
 				38E255C4202C9B040009663B /* codecov.yml */,
 			);
 			name = Docs;
+			sourceTree = "<group>";
+		};
+		3F0D528E219D895500F3B0EA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -488,6 +514,7 @@
 			files = (
 				383F2B592029F89900B8CA58 /* Transition.swift in Sources */,
 				382B6A862177647F006D6C89 /* AnyPresenter.swift in Sources */,
+				3F0D528C219D82C900F3B0EA /* Log.swift in Sources */,
 				383F2B582029F89900B8CA58 /* Protocols.swift in Sources */,
 				383F2B5A2029F89900B8CA58 /* SerialHandler.swift in Sources */,
 			);
@@ -499,6 +526,7 @@
 			files = (
 				383F2B822029F9BC00B8CA58 /* Transition.swift in Sources */,
 				382B6A89217765D4006D6C89 /* AnyPresenter.swift in Sources */,
+				3F0D528D219D82D100F3B0EA /* Log.swift in Sources */,
 				383F2B812029F9BC00B8CA58 /* Protocols.swift in Sources */,
 				383F2B832029F9BC00B8CA58 /* SerialHandler.swift in Sources */,
 			);

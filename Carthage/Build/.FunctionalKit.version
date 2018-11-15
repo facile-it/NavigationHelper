@@ -3,13 +3,13 @@
   "Mac" : [
     {
       "name" : "FunctionalKit",
-      "hash" : "25c09ba1dd84b72a99121587b857e52a9d164ddd618317f972b0f6a49089419b"
+      "hash" : "8ac3e5a9258acfae416adcaa6d95c95c55b2a2c0455d33fab539c05c7842da59"
     }
   ],
   "iOS" : [
     {
       "name" : "FunctionalKit",
-      "hash" : "8136f7552480c6644b61df8b0eae4f57a436660177f1cc05595dc5e55dc5c100"
+      "hash" : "8ff3b91786ef036fbcd229ed2f6e8e7bbac1e869e41e3b54c7f52565de87c697"
     }
   ]
 }
