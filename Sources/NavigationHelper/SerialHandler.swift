@@ -1,34 +1,42 @@
 import FunctionalKit
 import RxSwift
 
-public final class SerialHandler<Message> where Message: Hashable & Executable {
+public final class SerialHandler<Message>: CustomStringConvertible where Message: Hashable & Executable {
 	private let messageSubject = PublishSubject<Message>()
     private var safetyRestartSubscribtion: Disposable? = nil
     
     private var inbox = [Message]() {
         didSet {
             if let last = inbox.last {
-                Log.serialHandler("inbox: add \(last)")
+                Log.serialHandler("\(self): inbox: add \(last)")
             } else {
-                Log.serialHandler("inbox: empty")
+                Log.serialHandler("\(self): inbox: empty")
             }
         }
     }
     private var state = State.idle {
         didSet {
-            Log.serialHandler("state: \(state)")
+            Log.serialHandler("\(self): state: \(state)")
         }
     }
 	public let context: Message.Context
+    public let identifier: String
 
     public var interMessageDelay: TimeInterval = 0
     public var safetyRestartDelay: TimeInterval = 3
 
-    public init(context: Message.Context) {
+    public init(context: Message.Context, identifier: String? = nil) {
 		self.context = context
-        Log.serialHandler("inbox: empty")
-        Log.serialHandler("state: \(state)")
+        self.identifier = identifier ?? "Contextual(\(context))"
+        
+        Log.serialHandler("\(self): START")
+        Log.serialHandler("\(self): inbox: empty")
+        Log.serialHandler("\(self): state: \(state)")
 	}
+    
+    public var description: String {
+        return identifier
+    }
 
 	enum State {
 		case idle
@@ -46,12 +54,12 @@ extension SerialHandler: TransitionHandlerType where Message == Transition {}
 
 extension SerialHandler {
 	public func handle(_ message: Message) -> Future<Message> {
-        Log.serialHandler("received: \(message)")
+        Log.serialHandler("\(self): received: \(message)")
         
         let targetHashValue = message.hashValue
 
         return Future<Message> { done in
-            Log.serialHandler("started: \(message)")
+            Log.serialHandler("\(self): started: \(message)")
 
             self.disposables[targetHashValue] = self.messageSubject
                 .filter { incoming in
@@ -59,7 +67,11 @@ extension SerialHandler {
                 }
                 .subscribe(onNext: { [weak self] incoming in
                     
-                    Log.serialHandler("completed: \(message)")
+                    if let self = self {
+                        Log.serialHandler("\(self): completed: \(message)")
+                    } else {
+                        Log.serialHandler("DEALLOCATED: completed: \(message)")
+                    }
                     
                     done(incoming)
                     
@@ -77,17 +89,19 @@ extension SerialHandler {
 
 extension SerialHandler {
     private func restart() {
-        Log.serialHandler("SAFETY RESTART")
-
         safetyRestartSubscribtion?.dispose()
         safetyRestartSubscribtion = nil
-        state = .idle
-        handleNext()
+        
+        if state != .idle {
+            Log.serialHandler("\(self): SAFETY RESTART")
+            state = .idle
+            handleNext()
+        }
     }
     
 	private func handleNext() {
 		guard case .idle = state, inbox.isEmpty.not else {
-            Log.serialHandler("ignore handleNext (state: \(state), inbox: \(inbox))")
+            Log.serialHandler("\(self): ignore handleNext (state: \(state), inbox: \(inbox))")
             return
         }
 
@@ -103,12 +117,12 @@ extension SerialHandler {
         
 		let message = inbox.removeFirst()
         
-        Log.serialHandler("handling: \(message)")
+        Log.serialHandler("\(self): handling: \(message)")
         
 		message.execution.run(context).run { [weak self] in
 			guard let self = self else { return }
             
-            Log.serialHandler("executed: \(message)")
+            Log.serialHandler("\(self): executed: \(message)")
 
 			self.messageSubject.on(.next(message))
 
