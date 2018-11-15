@@ -11,7 +11,7 @@ public struct Transition: Hashable {
 		case modalPresent(Presentable)
 		case moveTo(Presentable)
 		case dismiss(all: Bool)
-        case custom(hashValue: Int, present: (Presenter) -> Future<()>)
+        case custom(hashValue: Int, present: (Presenter) -> Future<Void>)
 	}
 }
 
@@ -90,7 +90,7 @@ extension Transition.Category {
 		},
 			inject: Transition.Category.dismiss)
         
-        public static let custom = Prism<Transition.Category, (Int, (Presenter) -> Future<()>)>(
+        public static let custom = Prism<Transition.Category, (Int, (Presenter) -> Future<Void>)>(
             tryGet: {
                 guard case .custom(let hashValue, let presentationFunction) = $0 else { return nil }
                 return (hashValue, presentationFunction)
@@ -154,8 +154,8 @@ extension Transition.Category: Equatable {
 extension Transition: Executable {
 	public typealias Context = AnyPresenter
 
-	public var execution: Reader<AnyPresenter, Future<()>> {
-		return Reader<AnyPresenter, Future<()>>.init { [animation, category] presenter in
+	public var execution: Reader<AnyPresenter, Future<Void>> {
+		return Reader<AnyPresenter, Future<Void>>.init { [animation, category] presenter in
 			let animated = animation ?? presenter.shouldAnimate
 
 			switch category {

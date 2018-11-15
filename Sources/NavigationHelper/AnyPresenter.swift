@@ -26,11 +26,11 @@ public final class AnyPresenter: Presenter {
         return modalPresenter.currentModalPresented
     }
 
-    public func show(animated: Bool) -> Reader<Presentable, Future<()>> {
+    public func show(animated: Bool) -> Reader<Presentable, Future<Void>> {
         return modalPresenter.show(animated: animated)
     }
 
-    public func hide(animated: Bool) -> Future<()> {
+    public func hide(animated: Bool) -> Future<Void> {
         return modalPresenter.hide(animated: animated)
     }
 
@@ -38,15 +38,15 @@ public final class AnyPresenter: Presenter {
         return structuredPresenter.allStructuredPresented
     }
 
-    public func resetTo(animated: Bool) -> Reader<[Presentable], Future<()>> {
+    public func resetTo(animated: Bool) -> Reader<[Presentable], Future<Void>> {
         return structuredPresenter.resetTo(animated: animated)
     }
 
-    public func moveTo(animated: Bool) -> Reader<Presentable, Future<()>> {
+    public func moveTo(animated: Bool) -> Reader<Presentable, Future<Void>> {
         return structuredPresenter.moveTo(animated: animated)
     }
 
-    public func dropLast(animated: Bool) -> Future<()> {
+    public func dropLast(animated: Bool) -> Future<Void> {
         return structuredPresenter.dropLast(animated: animated)
     }
 }

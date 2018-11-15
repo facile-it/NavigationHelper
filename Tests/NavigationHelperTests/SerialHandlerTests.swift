@@ -21,10 +21,10 @@ final class ExpectationExecutable<T>: Executable, Hashable, CustomStringConverti
 		return fulfilled1 && fulfilled2
 	}
 
-	var execution: Reader<T, Future<()>> {
-		return Reader<T, Future<()>>.init {
+	var execution: Reader<T, Future<Void>> {
+		return Reader<T, Future<Void>>.init {
 			self.fulfilled1 = self.expectation($0)
-			return Future<()>.init { done in
+			return Future<Void>.init { done in
 				self.fulfilled2 = true
 				done(())
 			}.start()
