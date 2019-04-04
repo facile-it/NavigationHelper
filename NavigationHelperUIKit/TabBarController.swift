@@ -62,7 +62,7 @@ extension UITabBarController: StructuredPresenter {
                 DispatchQueue.main.async {
                     Log.presenter("\(self): will moveTo \(viewController)")
                     
-                    if let index = self.viewControllers?.index(of: viewController) {
+                    if let index = self.viewControllers?.firstIndex(of: viewController) {
                         Log.presenter("\(self): index(\(index)) for \(viewController) is present, selecting")
                         
                         self.selectedIndex = index

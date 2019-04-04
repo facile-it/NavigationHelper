@@ -1,4 +1,4 @@
-git "https://gitlab.facile.it/mobile-apps/Log.git" "0.1.0"
-github "ReactiveX/RxSwift" "4.4.0"
-github "facile-it/FunctionalKit" "0.17.0"
+git "https://gitlab.facile.it/mobile-apps/Log.git" "0.2.0"
+github "ReactiveX/RxSwift" "4.5.0"
+github "facile-it/FunctionalKit" "0.18.0"
 github "typelift/Abstract" "0.1.0"

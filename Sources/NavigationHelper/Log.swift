@@ -11,9 +11,12 @@ extension NavigationLogLevel: Comparable {
 }
 
 public enum NavigationLogSettings: LogSettings {
+    public typealias LogContext = NavigationLogContext
     public typealias LogLevel = NavigationLogLevel
 
     public static var currentLogLevel: NavigationLogLevel? = nil
+    
+    public static var currentLogContexts: Set<NavigationLogContext>?
     
     public static var timestampFormat: String? = StandardLogSettings.defaultTimestampFormat
     
@@ -32,9 +35,9 @@ public enum NavigationLogContext: String, CustomStringConvertible {
     }
 }
 
-public typealias Log = AdequateLog<NavigationLogSettings, NavigationLogLevel, NavigationLogContext>
+public typealias Log = AdequateLog<NavigationLogSettings>
 
-extension AdequateLog where Settings == NavigationLogSettings, Context == NavigationLogContext {
+extension AdequateLog where Settings == NavigationLogSettings {
     public static func serialHandler(_ text: String) {
         Log.with(level: .active, context: .serialHandler, text: text)
     }

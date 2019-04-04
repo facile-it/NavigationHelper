@@ -1,15 +1,9 @@
 {
-  "commitish" : "0.1.0",
+  "commitish" : "0.2.0",
   "Mac" : [
     {
       "name" : "Log",
-      "hash" : "a84de26294829027c290b1ecd256432a5a8a687ecbe841ebf51424dd1ee335a2"
-    }
-  ],
-  "iOS" : [
-    {
-      "name" : "Log",
-      "hash" : "95889c2bd1aa21fc04d396f2f3534e05a1cf28eb204ac7a2252d6c85c5cb8f26"
+      "hash" : "ca5d3ca6b1b4d3ce3cc4a1153f463cd66ae08228c8983f52009f1081a3792b8f"
     }
   ]
 }

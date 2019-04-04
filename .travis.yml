@@ -1,8 +1,8 @@
 language: objective-c
-osx_image: xcode9.2
+osx_image: xcode10.2
 xcode_project: NavigationHelper.xcodeproj
 xcode_scheme: NavigationHelper
-xcode_sdk: macosx10.13
+xcode_sdk: macosx10.14
 
 script:
   - xcodebuild clean build test -project "NavigationHelper.xcodeproj" -scheme "NavigationHelper" -destination 'generic/platform=macOS' | xcpretty
