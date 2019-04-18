@@ -36,7 +36,7 @@ extension UIViewController: ModalPresenter {
                 DispatchQueue.main.async {
                     Log.presenter("\(self): will show \(viewController)")
 
-                    self.present(viewController, animated: animated, completion: done)
+                    self.present(viewController, animated: animated, completion: { done(()) })
                 }
                 }.start()
         }
@@ -59,7 +59,7 @@ extension UIViewController: ModalPresenter {
             DispatchQueue.main.async {
                 Log.presenter("\(self): will hide")
                 
-                self.dismiss(animated: animated, completion: done)
+                self.dismiss(animated: animated, completion: { done(()) })
             }
             }.start()
     }
