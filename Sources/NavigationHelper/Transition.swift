@@ -16,24 +16,23 @@ public struct Transition: Hashable {
 }
 
 extension Transition.Category: Hashable {
-    public var hashValue: Int {
+    public func hash(into hasher: inout Hasher) {
         switch self {
         case let .resetTo(presentables):
-            return presentables
-                .reduce(into: Hasher()) { currentHasher, presentable in
-                    currentHasher.combine(presentable.hashable)
-                }
-                .finalize()
+            presentables
+                .map { $0.hashable }
+                .forEach { hasher.combine($0) }
         case let .modalPresent(presentable):
-            return presentable.hashable.hashValue
+            hasher.combine(presentable.hashable.hashValue)
         case let .moveTo(presentable):
-            return presentable.hashable.hashValue
+            hasher.combine(presentable.hashable.hashValue)
         case let .dismiss(all: value):
-            return value.hashValue
+            hasher.combine(value.hashValue)
         case .custom(let hashValue, _):
-            return hashValue
+            hasher.combine(hashValue)
         }
     }
+
 }
 
 extension Transition {

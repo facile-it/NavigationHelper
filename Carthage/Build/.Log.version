@@ -1,10 +1,10 @@
 {
-  "commitish" : "0.2.0",
-  "Mac" : [
+  "commitish" : "0.3.0",
+  "iOS" : [
     {
       "name" : "Log",
-      "hash" : "3349f171f3728b8fcf795c474c8c5f5bf33917f0cbe5ab6b6ec58a1eb80fb347",
-      "swiftToolchainVersion" : "5.0.1 (swiftlang-1001.0.82.4 clang-1001.0.46.5)"
+      "hash" : "6451386cc1147ba8769cc8f29f5fa28a6c8217ef7d1d08bc0cd665cf7ad05708",
+      "swiftToolchainVersion" : "5.1 (swiftlang-1100.0.270.13 clang-1100.0.33.7)"
     }
   ]
 }

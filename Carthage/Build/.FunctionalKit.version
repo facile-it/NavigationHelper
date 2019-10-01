@@ -1,10 +1,10 @@
 {
-  "commitish" : "0.21.0",
-  "Mac" : [
+  "commitish" : "0.22.0",
+  "iOS" : [
     {
       "name" : "FunctionalKit",
-      "hash" : "bd759eff639559988be2e251f4f5309678eb173faedf304ae77b3bf4944f8b53",
-      "swiftToolchainVersion" : "5.0.1 (swiftlang-1001.0.82.4 clang-1001.0.46.5)"
+      "hash" : "9df1bdad197dc7dc0041c5b944952248b691e557294fc77e4c06e7b590e0412f",
+      "swiftToolchainVersion" : "5.1 (swiftlang-1100.0.270.13 clang-1100.0.33.7)"
     }
   ]
 }

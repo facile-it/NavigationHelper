@@ -23,7 +23,7 @@ public final class SerialHandler<Message>: CustomStringConvertible where Message
     public let identifier: String
 
     public var interMessageDelay: TimeInterval = 0
-    public var safetyRestartDelay: TimeInterval = 3
+    public var safetyRestartDelay: DispatchTimeInterval = .seconds(3)
 
     public init(context: Message.Context, identifier: String? = nil) {
 		self.context = context
