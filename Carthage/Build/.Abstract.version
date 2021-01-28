@@ -1,10 +1,35 @@
 {
+  "Mac" : [
+    {
+      "hash" : "c51287204a41d8a7f6c9d5c430017a8f1712deaf4ff0c83122796ebe800e107d",
+      "name" : "Abstract",
+      "linking" : "dynamic",
+      "swiftToolchainVersion" : "5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)"
+    }
+  ],
+  "watchOS" : [
+    {
+      "hash" : "7aaf6a3216533609a4f3d43bbf059d76ad8a0eb6f945c9b9d944976665073e30",
+      "name" : "Abstract",
+      "linking" : "dynamic",
+      "swiftToolchainVersion" : "5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)"
+    }
+  ],
+  "tvOS" : [
+    {
+      "hash" : "5605ba5aeb9bda34f3ae13e30e281d8184af77d44ddee99b96940bbaf2d232d6",
+      "name" : "Abstract",
+      "linking" : "dynamic",
+      "swiftToolchainVersion" : "5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)"
+    }
+  ],
   "commitish" : "0.1.0",
   "iOS" : [
     {
+      "hash" : "6380907f2923424540ac79a9da5a2bcd64022a1ffcb47305d848f589d8bcc0df",
       "name" : "Abstract",
-      "hash" : "1a29c3ca3640d1c6e435326f0de4b6b0e4b30d7d6df8064e6d0d2c7deb04d51f",
-      "swiftToolchainVersion" : "5.1 (swiftlang-1100.0.270.13 clang-1100.0.33.7)"
+      "linking" : "dynamic",
+      "swiftToolchainVersion" : "5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)"
     }
   ]
 }

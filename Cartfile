@@ -1,4 +1,4 @@
 github "facile-it/FunctionalKit"
 github "ReactiveX/RxSwift"
 
-git "https://gitlab.facile.it/mobile-apps/Log.git"
+git "git@gitlab.facile.it:mobile-apps/Log.git"

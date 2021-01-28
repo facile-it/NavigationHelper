@@ -117,6 +117,7 @@
 		3F0D5286219D826600F3B0EA /* Log.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Log.framework; path = Carthage/Build/Mac/Log.framework; sourceTree = "<group>"; };
 		3F0D5288219D827600F3B0EA /* Log.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Log.framework; path = Carthage/Build/iOS/Log.framework; sourceTree = "<group>"; };
 		3F0D528B219D82C900F3B0EA /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
+		65854C9325C2C4630036D8C6 /* Cartfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -306,6 +307,7 @@
 		38E255C2202C9AE30009663B /* Docs */ = {
 			isa = PBXGroup;
 			children = (
+				65854C9325C2C4630036D8C6 /* Cartfile */,
 				38E255C5202C9BDA0009663B /* README.md */,
 				38E255C3202C9B040009663B /* .travis.yml */,
 				38E255C4202C9B040009663B /* codecov.yml */,
