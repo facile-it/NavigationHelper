@@ -1,7 +1,7 @@
 {
   "Mac" : [
     {
-      "hash" : "70e0a880167a80aa5a9a1670dc449375a583b57ff507d97753b94e03b4707a21",
+      "hash" : "c82f8ea6cfd4b919ee8f248785ddc92e25e0c0761cb711b7f9ea1a2fe36acfc8",
       "name" : "Log",
       "linking" : "dynamic",
       "swiftToolchainVersion" : "5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)"
@@ -16,7 +16,7 @@
   "commitish" : "0.4.0",
   "iOS" : [
     {
-      "hash" : "291f21f0bf9ecff6d166c2e25926e141a5e643bf0b5d291bedfd04c0dfe6a135",
+      "hash" : "bceebbfc9163fe15b11a9524dff43b6b0415259eb51b9a03c925d72cd8902350",
       "name" : "Log",
       "linking" : "dynamic",
       "swiftToolchainVersion" : "5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)"
