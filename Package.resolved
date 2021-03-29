@@ -6,17 +6,26 @@
         "repositoryURL": "https://github.com/typelift/Abstract.git",
         "state": {
           "branch": null,
-          "revision": "68fcd8e6b827d1c8948c43760cebb02a4fbee866",
-          "version": "0.0.2"
+          "revision": "77f2902ff68f218daa8040251c148c328be82845",
+          "version": "0.1.0"
+        }
+      },
+      {
+        "package": "Chalk",
+        "repositoryURL": "https://github.com/mxcl/Chalk.git",
+        "state": {
+          "branch": null,
+          "revision": "9aa9f348b86db3cf6702a3e43c081ecec80cf3c7",
+          "version": "0.4.0"
         }
       },
       {
         "package": "FileCheck",
-        "repositoryURL": "https://github.com/trill-lang/FileCheck.git",
+        "repositoryURL": "https://github.com/llvm-swift/FileCheck.git",
         "state": {
           "branch": null,
-          "revision": "1c966580c83cf2e41be802992d46fe2edfc5c95f",
-          "version": "0.0.5"
+          "revision": "0dc8a5bff1a7f01e1d7bcc20c79e2127b2ea3eeb",
+          "version": "0.2.5"
         }
       },
       {
@@ -24,8 +33,17 @@
         "repositoryURL": "https://github.com/facile-it/FunctionalKit.git",
         "state": {
           "branch": null,
-          "revision": "c5190900e3114d358e076a8c2675a31ace9f819a",
-          "version": "0.4.0"
+          "revision": "e465a4727fd664bfb2191c719567dee8eb57effe",
+          "version": "0.23.0"
+        }
+      },
+      {
+        "package": "Log",
+        "repositoryURL": "https://gitlab.facile.it/mobile-apps/Log",
+        "state": {
+          "branch": null,
+          "revision": "7acd50e41fb9189f19a8e1250eb6192b8eae3b31",
+          "version": "0.5.0"
         }
       },
       {
@@ -42,8 +60,17 @@
         "repositoryURL": "https://github.com/ReactiveX/RxSwift.git",
         "state": {
           "branch": null,
-          "revision": "e479d0029db0575e03e3c092e1c9724b9410eab7",
-          "version": "4.1.1"
+          "revision": "254617dd7fae0c45319ba5fbea435bf4d0e15b5d",
+          "version": "5.1.2"
+        }
+      },
+      {
+        "package": "swift-argument-parser",
+        "repositoryURL": "https://github.com/apple/swift-argument-parser",
+        "state": {
+          "branch": null,
+          "revision": "831ed5e860a70e745bc1337830af4786b2576881",
+          "version": "0.4.1"
         }
       },
       {
@@ -51,8 +78,8 @@
         "repositoryURL": "https://github.com/typelift/SwiftCheck.git",
         "state": {
           "branch": null,
-          "revision": "df82fb889864945c64458f38846702af729b3ee4",
-          "version": "0.9.1"
+          "revision": "077c096c3ddfc38db223ac8e525ad16ffb987138",
+          "version": "0.12.0"
         }
       }
     ]
