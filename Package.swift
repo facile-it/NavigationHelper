@@ -10,6 +10,9 @@ let package = Package(
         .library(
             name: "NavigationHelper",
             targets: ["NavigationHelper"]),
+        .library(
+            name: "NavigationHelperUIKit",
+            targets: ["NavigationHelperUIKit"])
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -30,6 +33,14 @@ let package = Package(
                 "Log",
 				"RxSwift"
 			]),
+        .target(
+            name: "NavigationHelperUIKit",
+            dependencies: [
+                "FunctionalKit",
+                "Abstract",
+                "Log",
+                "RxSwift"
+            ]),
         .testTarget(
             name: "NavigationHelperTests",
             dependencies: ["NavigationHelper"]),
