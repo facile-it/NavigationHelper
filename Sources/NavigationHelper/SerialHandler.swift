@@ -1,5 +1,6 @@
 import FunctionalKit
 import RxSwift
+import Foundation
 
 public final class SerialHandler<Message>: CustomStringConvertible where Message: Hashable & Executable {
 	private let messageSubject = PublishSubject<Message>()
