@@ -39,7 +39,8 @@ let package = Package(
                 "FunctionalKit",
                 "Abstract",
                 "Log",
-                "RxSwift"
+                "RxSwift",
+                "NavigationHelper"
             ]),
         .testTarget(
             name: "NavigationHelperTests",
