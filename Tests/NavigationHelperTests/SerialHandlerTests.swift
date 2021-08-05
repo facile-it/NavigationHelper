@@ -38,6 +38,10 @@ final class ExpectationExecutable<T>: Executable, Hashable, CustomStringConverti
     var description: String {
         return "\(hashValue)"
     }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(hashValue)
+    }
 }
 
 class SerialHandlerTests: XCTestCase {
