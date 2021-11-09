@@ -1,125 +1,125 @@
 {
   "Mac" : [
     {
-      "hash" : "f92357cdc2db9144369f2ab1aa8db9e5d594d564de373c9c71dcace9f992fd3b",
+      "hash" : "592f66cf17c71a8ce2a7939f16aa85bef8dfc9e6e266d40490c2a92c7aa92ad6",
       "name" : "RxBlocking",
       "linking" : "dynamic",
-      "swiftToolchainVersion" : "5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)"
+      "swiftToolchainVersion" : "5.5.1 (swiftlang-1300.0.31.4 clang-1300.0.29.6)"
     },
     {
-      "hash" : "1346b1f400635be0e840dc91c106f8f1524fbeee603ee8ccfadb9a8a95b784c0",
+      "hash" : "3eaebcb37a47f6eb86ca2b40cd15c5f3c415f6ce850ae20b392d4e9f88af00c9",
       "name" : "RxCocoa",
       "linking" : "dynamic",
-      "swiftToolchainVersion" : "5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)"
+      "swiftToolchainVersion" : "5.5.1 (swiftlang-1300.0.31.4 clang-1300.0.29.6)"
     },
     {
-      "hash" : "e3b894c84b2a7fe5b2f3c10ae9d0b4111803ae784b562fb23f2bf9674b0468d3",
+      "hash" : "dcd6499f1ff07b4c23a0e34b966dbbc12d66b6be8c6bce31656f80f74cec40e5",
       "name" : "RxRelay",
       "linking" : "dynamic",
-      "swiftToolchainVersion" : "5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)"
+      "swiftToolchainVersion" : "5.5.1 (swiftlang-1300.0.31.4 clang-1300.0.29.6)"
     },
     {
-      "hash" : "e4ef7f25409a528e523fda3677c3e0ee214a2b75682c6896a6491229ab3fad18",
+      "hash" : "6445e46cb39ff52bd935db6412b9ef35c9d5efddda5ae9e57ac03f7fa4821d88",
       "name" : "RxSwift",
       "linking" : "dynamic",
-      "swiftToolchainVersion" : "5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)"
+      "swiftToolchainVersion" : "5.5.1 (swiftlang-1300.0.31.4 clang-1300.0.29.6)"
     },
     {
-      "hash" : "296e541dbcb4a2da574a2faf11a50b1dafda2fd305c253aba566ce845cbc9d85",
+      "hash" : "af5f432bacf6686b0342934e29e5b3d668da3db527a31ec2a7e1fa760f38d75a",
       "name" : "RxTest",
       "linking" : "dynamic",
-      "swiftToolchainVersion" : "5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)"
+      "swiftToolchainVersion" : "5.5.1 (swiftlang-1300.0.31.4 clang-1300.0.29.6)"
     }
   ],
   "watchOS" : [
     {
-      "hash" : "7485c44b814328473f2afd7116792b85390dd36d0280f1946c8215b2a7c6e969",
+      "hash" : "971a9e7467c2e9772a6b6f9eb0f62772cce13cad5fb1d7358a824b7f04db0137",
       "name" : "RxBlocking",
       "linking" : "dynamic",
-      "swiftToolchainVersion" : "5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)"
+      "swiftToolchainVersion" : "5.5.1 (swiftlang-1300.0.31.4 clang-1300.0.29.6)"
     },
     {
-      "hash" : "e6bbccc4fe27eacf48e9f98c06cf6b7cfea0bfc6f4028191ad7fe7723b85bfc5",
+      "hash" : "7a93c706fa2f1b443352a1c3bd5f41069302a7afe63a1a08cd66506c13927d15",
       "name" : "RxCocoa",
       "linking" : "dynamic",
-      "swiftToolchainVersion" : "5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)"
+      "swiftToolchainVersion" : "5.5.1 (swiftlang-1300.0.31.4 clang-1300.0.29.6)"
     },
     {
-      "hash" : "2f6c9bb23399ad9040dce3b98f310efc559025243e6c1d2abe4b46e6482cba45",
+      "hash" : "1fa72e1ceb89f446d16fd4679a3c03e8b4e9cad7b9d14250e6ab9cb82873b502",
       "name" : "RxRelay",
       "linking" : "dynamic",
-      "swiftToolchainVersion" : "5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)"
+      "swiftToolchainVersion" : "5.5.1 (swiftlang-1300.0.31.4 clang-1300.0.29.6)"
     },
     {
-      "hash" : "6fe26516f55e32af0369fe000e7706ae6e521dc5fff26b39b1709e421ad30c20",
+      "hash" : "cad0e1dc4879bea6cfbc98510e499a0501edace9e80ff21e6c241a9b8fe04afc",
       "name" : "RxSwift",
       "linking" : "dynamic",
-      "swiftToolchainVersion" : "5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)"
+      "swiftToolchainVersion" : "5.5.1 (swiftlang-1300.0.31.4 clang-1300.0.29.6)"
     }
   ],
   "tvOS" : [
     {
-      "hash" : "d2f3ff8b7953bc4a2811782bfab4eb5d33913afe135095707b9b051a636d0e39",
+      "hash" : "0f3e80342d119f6daff2b0ad00eb2b0a8a3f82fbec8998de8e7cae96adb6c5b4",
       "name" : "RxBlocking",
       "linking" : "dynamic",
-      "swiftToolchainVersion" : "5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)"
+      "swiftToolchainVersion" : "5.5.1 (swiftlang-1300.0.31.4 clang-1300.0.29.6)"
     },
     {
-      "hash" : "af1bf5732c942309b27ec1299eb8c8d2bd2f985c81ed6aa0c4424b3a6ed90120",
+      "hash" : "0cc319ffcb680becd39e5323e054d2974617623e7652e60773f8d6521acd35e9",
       "name" : "RxCocoa",
       "linking" : "dynamic",
-      "swiftToolchainVersion" : "5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)"
+      "swiftToolchainVersion" : "5.5.1 (swiftlang-1300.0.31.4 clang-1300.0.29.6)"
     },
     {
-      "hash" : "bbd998df428f128336d3b551e6d8b3d93d490d4b14f4a6fa6084a2a6d5aa7451",
+      "hash" : "a1a4036a0739088cf3f629a08a5adf66c295db3d8f50256b7a231dd540782b44",
       "name" : "RxRelay",
       "linking" : "dynamic",
-      "swiftToolchainVersion" : "5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)"
+      "swiftToolchainVersion" : "5.5.1 (swiftlang-1300.0.31.4 clang-1300.0.29.6)"
     },
     {
-      "hash" : "7c99296c56da90b270fc9316a3357d8076262f5a0d0ca0bccef7df4f2b8bd63e",
+      "hash" : "a7cbe0ddc2184db941deed90704e20185392cc7c1381feac264c1ca7f0cd01e1",
       "name" : "RxSwift",
       "linking" : "dynamic",
-      "swiftToolchainVersion" : "5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)"
+      "swiftToolchainVersion" : "5.5.1 (swiftlang-1300.0.31.4 clang-1300.0.29.6)"
     },
     {
-      "hash" : "483f993ca8818b92ec22f2af463e3f53a40ea9b49097ca1ad956e9d8b95fb749",
+      "hash" : "dbda23f25ac254d305f015e91ac2788f001f35cc5f973a5fd9e546e701c714df",
       "name" : "RxTest",
       "linking" : "dynamic",
-      "swiftToolchainVersion" : "5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)"
+      "swiftToolchainVersion" : "5.5.1 (swiftlang-1300.0.31.4 clang-1300.0.29.6)"
     }
   ],
-  "commitish" : "6.0.0",
+  "commitish" : "6.2.0",
   "iOS" : [
     {
-      "hash" : "1888ad5bb9db0ba3086656361d144add321c132409171bc5506f36c6ba4324df",
+      "hash" : "79fd353b04219fe929a800f5bac6a162e48f497a3ba8ce69f9134680ec01b712",
       "name" : "RxBlocking",
       "linking" : "dynamic",
-      "swiftToolchainVersion" : "5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)"
+      "swiftToolchainVersion" : "5.5.1 (swiftlang-1300.0.31.4 clang-1300.0.29.6)"
     },
     {
-      "hash" : "1036e1b7c8b1a28261078ec23ce72835383dea955741de344f150c58f9aeb6c6",
+      "hash" : "8338fd4659457212a2d10bb48b822f8280768bac9bb2ddff652b77115b823479",
       "name" : "RxCocoa",
       "linking" : "dynamic",
-      "swiftToolchainVersion" : "5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)"
+      "swiftToolchainVersion" : "5.5.1 (swiftlang-1300.0.31.4 clang-1300.0.29.6)"
     },
     {
-      "hash" : "fdfcc37ead1f532e30c2e3388df81a9ae38207e75ce81d574d7840d6135fa685",
+      "hash" : "91fedfd84d361b084bca30381cab014dac1d388335d3140c40679f0e93b0823f",
       "name" : "RxRelay",
       "linking" : "dynamic",
-      "swiftToolchainVersion" : "5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)"
+      "swiftToolchainVersion" : "5.5.1 (swiftlang-1300.0.31.4 clang-1300.0.29.6)"
     },
     {
-      "hash" : "81b939898fa0fc534641835b601ef7d4c3e95704ad1295e3e09afcee6c68aa84",
+      "hash" : "5e98dbd7dd4acc11c75a3a9bfa87a2e822e2ca14491169a542fdade27d2e2919",
       "name" : "RxSwift",
       "linking" : "dynamic",
-      "swiftToolchainVersion" : "5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)"
+      "swiftToolchainVersion" : "5.5.1 (swiftlang-1300.0.31.4 clang-1300.0.29.6)"
     },
     {
-      "hash" : "67dce750cb4ed32d733671a0216e61035e29267ce3fba6397c49a43a0556c88d",
+      "hash" : "d42bad03af83e77fe9b2cc8d7d9fd8589b877c96bbc170283294ce69261923e3",
       "name" : "RxTest",
       "linking" : "dynamic",
-      "swiftToolchainVersion" : "5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)"
+      "swiftToolchainVersion" : "5.5.1 (swiftlang-1300.0.31.4 clang-1300.0.29.6)"
     }
   ]
 }

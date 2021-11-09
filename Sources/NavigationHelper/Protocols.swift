@@ -7,11 +7,11 @@ public protocol Executable {
 	var execution: Reader<Context,Future<Void>> { get }
 }
 
-public protocol Disposer: class {
+public protocol Disposer: AnyObject {
     var bag: DisposeBag { get }
 }
 
-public protocol Presentable: class {
+public protocol Presentable: AnyObject {
 	var hashable: AnyHashable { get }
 }
 

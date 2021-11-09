@@ -1,5 +1,5 @@
 // swift-interface-format-version: 1.0
-// swift-compiler-version: Apple Swift version 5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)
+// swift-compiler-version: Apple Swift version 5.5.1 (swiftlang-1300.0.31.4 clang-1300.0.29.6)
 // swift-module-flags: -target armv7-apple-ios9.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name RxCocoa
 import CoreGraphics
 import Dispatch
@@ -10,12 +10,13 @@ import RxSwift
 import Swift
 import UIKit
 import WebKit
-extension Reactive where Base : UIKit.UISlider {
+import _Concurrency
+extension RxSwift.Reactive where Base : UIKit.UISlider {
   public var value: RxCocoa.ControlProperty<Swift.Float> {
     get
   }
 }
-extension Reactive where Base : UIKit.UIScrollView {
+extension RxSwift.Reactive where Base : UIKit.UIScrollView {
   public typealias EndZoomEvent = (view: UIKit.UIView?, scale: CoreGraphics.CGFloat)
   public typealias WillEndDraggingEvent = (velocity: CoreGraphics.CGPoint, targetContentOffset: Swift.UnsafeMutablePointer<CoreGraphics.CGPoint>)
   public var delegate: RxCocoa.DelegateProxy<UIKit.UIScrollView, UIKit.UIScrollViewDelegate> {
@@ -59,7 +60,7 @@ extension Reactive where Base : UIKit.UIScrollView {
   }
   public func setDelegate(_ delegate: UIKit.UIScrollViewDelegate) -> RxSwift.Disposable
 }
-extension Reactive where Base : UIKit.UIPickerView {
+extension RxSwift.Reactive where Base : UIKit.UIPickerView {
   public var delegate: RxCocoa.DelegateProxy<UIKit.UIPickerView, UIKit.UIPickerViewDelegate> {
     get
   }
@@ -71,10 +72,10 @@ extension Reactive where Base : UIKit.UIPickerView {
     get
   }
   public func modelSelected<T>(_ modelType: T.Type) -> RxCocoa.ControlEvent<[T]>
-  public func itemTitles<Sequence, Source>(_ source: Source) -> (@escaping (Swift.Int, Sequence.Element) -> Swift.String?) -> RxSwift.Disposable where Sequence : Swift.Sequence, Sequence == Source.Element, Source : RxSwift.ObservableType
-  public func itemAttributedTitles<Sequence, Source>(_ source: Source) -> (@escaping (Swift.Int, Sequence.Element) -> Foundation.NSAttributedString?) -> RxSwift.Disposable where Sequence : Swift.Sequence, Sequence == Source.Element, Source : RxSwift.ObservableType
-  public func items<Sequence, Source>(_ source: Source) -> (@escaping (Swift.Int, Sequence.Element, UIKit.UIView?) -> UIKit.UIView) -> RxSwift.Disposable where Sequence : Swift.Sequence, Sequence == Source.Element, Source : RxSwift.ObservableType
-  public func items<Source, Adapter>(adapter: Adapter) -> (Source) -> RxSwift.Disposable where Source : RxSwift.ObservableType, Adapter : RxCocoa.RxPickerViewDataSourceType, Adapter : UIKit.UIPickerViewDataSource, Adapter : UIKit.UIPickerViewDelegate, Source.Element == Adapter.Element
+  public func itemTitles<Sequence, Source>(_ source: Source) -> (_ titleForRow: @escaping (Swift.Int, Sequence.Element) -> Swift.String?) -> RxSwift.Disposable where Sequence : Swift.Sequence, Sequence == Source.Element, Source : RxSwift.ObservableType
+  public func itemAttributedTitles<Sequence, Source>(_ source: Source) -> (_ attributedTitleForRow: @escaping (Swift.Int, Sequence.Element) -> Foundation.NSAttributedString?) -> RxSwift.Disposable where Sequence : Swift.Sequence, Sequence == Source.Element, Source : RxSwift.ObservableType
+  public func items<Sequence, Source>(_ source: Source) -> (_ viewForRow: @escaping (Swift.Int, Sequence.Element, UIKit.UIView?) -> UIKit.UIView) -> RxSwift.Disposable where Sequence : Swift.Sequence, Sequence == Source.Element, Source : RxSwift.ObservableType
+  public func items<Source, Adapter>(adapter: Adapter) -> (_ source: Source) -> RxSwift.Disposable where Source : RxSwift.ObservableType, Adapter : RxCocoa.RxPickerViewDataSourceType, Adapter : UIKit.UIPickerViewDataSource, Adapter : UIKit.UIPickerViewDelegate, Source.Element == Adapter.Element
   public func model<T>(at indexPath: Foundation.IndexPath) throws -> T
 }
 public protocol DelegateProxyType : AnyObject {
@@ -87,12 +88,12 @@ public protocol DelegateProxyType : AnyObject {
   func forwardToDelegate() -> Self.Delegate?
   func setForwardToDelegate(_ forwardToDelegate: Self.Delegate?, retainDelegate: Swift.Bool)
 }
-extension DelegateProxyType {
+extension RxCocoa.DelegateProxyType {
   public static var identifier: Swift.UnsafeRawPointer {
     get
   }
 }
-extension DelegateProxyType {
+extension RxCocoa.DelegateProxyType {
   public static func register<Parent>(make: @escaping (Parent) -> Self)
   public static func createProxy(for object: Swift.AnyObject) -> Self
   public static func proxy(for object: Self.ParentObject) -> Self
@@ -102,7 +103,7 @@ public protocol HasDelegate : AnyObject {
   associatedtype Delegate
   var delegate: Self.Delegate? { get set }
 }
-extension DelegateProxyType where Self.Delegate == Self.ParentObject.Delegate, Self.ParentObject : RxCocoa.HasDelegate {
+extension RxCocoa.DelegateProxyType where Self.Delegate == Self.ParentObject.Delegate, Self.ParentObject : RxCocoa.HasDelegate {
   public static func currentDelegate(for object: Self.ParentObject) -> Self.Delegate?
   public static func setCurrentDelegate(_ delegate: Self.Delegate?, to object: Self.ParentObject)
 }
@@ -110,7 +111,7 @@ public protocol HasDataSource : AnyObject {
   associatedtype DataSource
   var dataSource: Self.DataSource? { get set }
 }
-extension DelegateProxyType where Self.Delegate == Self.ParentObject.DataSource, Self.ParentObject : RxCocoa.HasDataSource {
+extension RxCocoa.DelegateProxyType where Self.Delegate == Self.ParentObject.DataSource, Self.ParentObject : RxCocoa.HasDataSource {
   public static func currentDelegate(for object: Self.ParentObject) -> Self.Delegate?
   public static func setCurrentDelegate(_ delegate: Self.Delegate?, to object: Self.ParentObject)
 }
@@ -120,11 +121,11 @@ public protocol HasPrefetchDataSource : AnyObject {
   var prefetchDataSource: Self.PrefetchDataSource? { get set }
 }
 @available(iOS 10.0, tvOS 10.0, *)
-extension DelegateProxyType where Self.Delegate == Self.ParentObject.PrefetchDataSource, Self.ParentObject : RxCocoa.HasPrefetchDataSource {
+extension RxCocoa.DelegateProxyType where Self.Delegate == Self.ParentObject.PrefetchDataSource, Self.ParentObject : RxCocoa.HasPrefetchDataSource {
   public static func currentDelegate(for object: Self.ParentObject) -> Self.Delegate?
   public static func setCurrentDelegate(_ delegate: Self.Delegate?, to object: Self.ParentObject)
 }
-extension Reactive where Base : UIKit.UITextView {
+extension RxSwift.Reactive where Base : UIKit.UITextView {
   public var text: RxCocoa.ControlProperty<Swift.String?> {
     get
   }
@@ -147,23 +148,22 @@ extension Reactive where Base : UIKit.UITextView {
     get
   }
 }
-extension BehaviorRelay {
+extension RxRelay.BehaviorRelay {
   final public func asDriver() -> RxCocoa.Driver<Element>
 }
-extension UICollectionView : RxCocoa.HasDataSource {
+extension UIKit.UICollectionView : RxCocoa.HasDataSource {
   public typealias DataSource = UIKit.UICollectionViewDataSource
 }
-open class RxCollectionViewDataSourceProxy : RxCocoa.DelegateProxy<UIKit.UICollectionView, UIKit.UICollectionViewDataSource>, RxCocoa.DelegateProxyType, UIKit.UICollectionViewDataSource {
-  weak public var collectionView: UIKit.UICollectionView? {
+@_Concurrency.MainActor(unsafe) open class RxCollectionViewDataSourceProxy : RxCocoa.DelegateProxy<UIKit.UICollectionView, UIKit.UICollectionViewDataSource>, RxCocoa.DelegateProxyType, UIKit.UICollectionViewDataSource {
+  @_Concurrency.MainActor(unsafe) weak public var collectionView: UIKit.UICollectionView? {
     get
   }
-  public init(collectionView: RxCocoa.RxCollectionViewDataSourceProxy.ParentObject)
-  public static func registerKnownImplementations()
-  @objc public func collectionView(_ collectionView: UIKit.UICollectionView, numberOfItemsInSection section: Swift.Int) -> Swift.Int
-  @objc public func collectionView(_ collectionView: UIKit.UICollectionView, cellForItemAt indexPath: Foundation.IndexPath) -> UIKit.UICollectionViewCell
+  @_Concurrency.MainActor(unsafe) public init(collectionView: RxCocoa.RxCollectionViewDataSourceProxy.ParentObject)
+  @_Concurrency.MainActor(unsafe) public static func registerKnownImplementations()
+  @_Concurrency.MainActor(unsafe) @objc public func collectionView(_ collectionView: UIKit.UICollectionView, numberOfItemsInSection section: Swift.Int) -> Swift.Int
+  @_Concurrency.MainActor(unsafe) @objc public func collectionView(_ collectionView: UIKit.UICollectionView, cellForItemAt indexPath: Foundation.IndexPath) -> UIKit.UICollectionViewCell
   override open func setForwardToDelegate(_ forwardToDelegate: UIKit.UICollectionViewDataSource?, retainDelegate: Swift.Bool)
   @objc deinit
-  override public init<Proxy>(parentObject: RxCocoa.DelegateProxy<UIKit.UICollectionView, UIKit.UICollectionViewDataSource>.ParentObject, delegateProxy: Proxy.Type) where Proxy : RxCocoa.DelegateProxy<UIKit.UICollectionView, UIKit.UICollectionViewDataSource>, Proxy : RxCocoa.DelegateProxyType, Proxy.Delegate == UIKit.UICollectionViewDataSource, Proxy.ParentObject == UIKit.UICollectionView
 }
 public enum SharingScheduler {
   public static var make: () -> RxSwift.SchedulerType {
@@ -172,7 +172,7 @@ public enum SharingScheduler {
   public static func mock(scheduler: RxSwift.SchedulerType, action: () throws -> Swift.Void) rethrows
   public static func mock(makeScheduler: @escaping () -> RxSwift.SchedulerType, action: () throws -> Swift.Void) rethrows
 }
-extension NSTextStorage : RxCocoa.HasDelegate {
+extension UIKit.NSTextStorage : RxCocoa.HasDelegate {
   public typealias Delegate = UIKit.NSTextStorageDelegate
 }
 open class RxTextStorageDelegateProxy : RxCocoa.DelegateProxy<UIKit.NSTextStorage, UIKit.NSTextStorageDelegate>, RxCocoa.DelegateProxyType, UIKit.NSTextStorageDelegate {
@@ -182,7 +182,6 @@ open class RxTextStorageDelegateProxy : RxCocoa.DelegateProxy<UIKit.NSTextStorag
   public init(textStorage: UIKit.NSTextStorage)
   public static func registerKnownImplementations()
   @objc deinit
-  override public init<Proxy>(parentObject: RxCocoa.DelegateProxy<UIKit.NSTextStorage, UIKit.NSTextStorageDelegate>.ParentObject, delegateProxy: Proxy.Type) where Proxy : RxCocoa.DelegateProxy<UIKit.NSTextStorage, UIKit.NSTextStorageDelegate>, Proxy : RxCocoa.DelegateProxyType, Proxy.Delegate == UIKit.NSTextStorageDelegate, Proxy.ParentObject == UIKit.NSTextStorage
 }
 public typealias Driver<Element> = RxCocoa.SharedSequence<RxCocoa.DriverSharingStrategy, Element>
 public struct DriverSharingStrategy : RxCocoa.SharingStrategyProtocol {
@@ -191,31 +190,30 @@ public struct DriverSharingStrategy : RxCocoa.SharingStrategyProtocol {
   }
   public static func share<Element>(_ source: RxSwift.Observable<Element>) -> RxSwift.Observable<Element>
 }
-extension SharedSequenceConvertibleType where Self.SharingStrategy == RxCocoa.DriverSharingStrategy {
+extension RxCocoa.SharedSequenceConvertibleType where Self.SharingStrategy == RxCocoa.DriverSharingStrategy {
   public func asDriver() -> RxCocoa.Driver<Self.Element>
 }
-open class RxTableViewDelegateProxy : RxCocoa.RxScrollViewDelegateProxy, UIKit.UITableViewDelegate {
-  weak public var tableView: UIKit.UITableView? {
+@_Concurrency.MainActor(unsafe) open class RxTableViewDelegateProxy : RxCocoa.RxScrollViewDelegateProxy, UIKit.UITableViewDelegate {
+  @_Concurrency.MainActor(unsafe) weak public var tableView: UIKit.UITableView? {
     get
   }
-  public init(tableView: UIKit.UITableView)
+  @_Concurrency.MainActor(unsafe) public init(tableView: UIKit.UITableView)
   @objc deinit
-  override public init(scrollView: RxCocoa.RxScrollViewDelegateProxy.ParentObject)
 }
-extension Reactive where Base : UIKit.UIRefreshControl {
+extension RxSwift.Reactive where Base : UIKit.UIRefreshControl {
   public var isRefreshing: RxSwift.Binder<Swift.Bool> {
     get
   }
 }
-extension Reactive where Base : UIKit.UIStepper {
+extension RxSwift.Reactive where Base : UIKit.UIStepper {
   public var value: RxCocoa.ControlProperty<Swift.Double> {
     get
   }
 }
-extension ObservableConvertibleType {
+extension RxSwift.ObservableConvertibleType {
   public func asSignal(onErrorJustReturn: Self.Element) -> RxCocoa.Signal<Self.Element>
   public func asSignal(onErrorSignalWith: RxCocoa.Signal<Self.Element>) -> RxCocoa.Signal<Self.Element>
-  public func asSignal(onErrorRecover: @escaping (Swift.Error) -> RxCocoa.Signal<Self.Element>) -> RxCocoa.Signal<Self.Element>
+  public func asSignal(onErrorRecover: @escaping (_ error: Swift.Error) -> RxCocoa.Signal<Self.Element>) -> RxCocoa.Signal<Self.Element>
 }
 public protocol ControlEventType : RxSwift.ObservableType {
   func asControlEvent() -> RxCocoa.ControlEvent<Self.Element>
@@ -227,32 +225,31 @@ public struct ControlEvent<PropertyType> : RxCocoa.ControlEventType {
   public func asObservable() -> RxSwift.Observable<RxCocoa.ControlEvent<PropertyType>.Element>
   public func asControlEvent() -> RxCocoa.ControlEvent<RxCocoa.ControlEvent<PropertyType>.Element>
 }
-extension ControlEvent {
+extension RxCocoa.ControlEvent {
   public func asSignal() -> RxCocoa.Signal<RxCocoa.ControlEvent<PropertyType>.Element>
 }
-extension UIPickerView : RxCocoa.HasDataSource {
+extension UIKit.UIPickerView : RxCocoa.HasDataSource {
   public typealias DataSource = UIKit.UIPickerViewDataSource
 }
-public class RxPickerViewDataSourceProxy : RxCocoa.DelegateProxy<UIKit.UIPickerView, UIKit.UIPickerViewDataSource>, RxCocoa.DelegateProxyType, UIKit.UIPickerViewDataSource {
-  weak public var pickerView: UIKit.UIPickerView? {
+@_Concurrency.MainActor(unsafe) public class RxPickerViewDataSourceProxy : RxCocoa.DelegateProxy<UIKit.UIPickerView, UIKit.UIPickerViewDataSource>, RxCocoa.DelegateProxyType, UIKit.UIPickerViewDataSource {
+  @_Concurrency.MainActor(unsafe) weak public var pickerView: UIKit.UIPickerView? {
     get
   }
-  public init(pickerView: RxCocoa.RxPickerViewDataSourceProxy.ParentObject)
-  public static func registerKnownImplementations()
-  @objc public func numberOfComponents(in pickerView: UIKit.UIPickerView) -> Swift.Int
-  @objc public func pickerView(_ pickerView: UIKit.UIPickerView, numberOfRowsInComponent component: Swift.Int) -> Swift.Int
+  @_Concurrency.MainActor(unsafe) public init(pickerView: RxCocoa.RxPickerViewDataSourceProxy.ParentObject)
+  @_Concurrency.MainActor(unsafe) public static func registerKnownImplementations()
+  @_Concurrency.MainActor(unsafe) @objc public func numberOfComponents(in pickerView: UIKit.UIPickerView) -> Swift.Int
+  @_Concurrency.MainActor(unsafe) @objc public func pickerView(_ pickerView: UIKit.UIPickerView, numberOfRowsInComponent component: Swift.Int) -> Swift.Int
   override public func setForwardToDelegate(_ forwardToDelegate: UIKit.UIPickerViewDataSource?, retainDelegate: Swift.Bool)
   @objc deinit
-  override public init<Proxy>(parentObject: RxCocoa.DelegateProxy<UIKit.UIPickerView, UIKit.UIPickerViewDataSource>.ParentObject, delegateProxy: Proxy.Type) where Proxy : RxCocoa.DelegateProxy<UIKit.UIPickerView, UIKit.UIPickerViewDataSource>, Proxy : RxCocoa.DelegateProxyType, Proxy.Delegate == UIKit.UIPickerViewDataSource, Proxy.ParentObject == UIKit.UIPickerView
 }
-extension Reactive where Base : UIKit.UIControl {
+extension RxSwift.Reactive where Base : UIKit.UIControl {
   public func controlEvent(_ controlEvents: UIKit.UIControl.Event) -> RxCocoa.ControlEvent<()>
   public func controlProperty<T>(editingEvents: UIKit.UIControl.Event, getter: @escaping (Base) -> T, setter: @escaping (Base, T) -> Swift.Void) -> RxCocoa.ControlProperty<T>
 }
 public protocol SectionedViewDataSourceType {
   func model(at indexPath: Foundation.IndexPath) throws -> Any
 }
-extension InfallibleType {
+extension RxSwift.InfallibleType {
   public func bind<Observer>(to observers: Observer...) -> RxSwift.Disposable where Observer : RxSwift.ObserverType, Self.Element == Observer.Element
   public func bind<Observer>(to observers: Observer...) -> RxSwift.Disposable where Observer : RxSwift.ObserverType, Observer.Element == Self.Element?
   public func bind<Result>(to binder: (Self) -> Result) -> Result
@@ -266,22 +263,21 @@ extension InfallibleType {
   public func bind(to relays: RxRelay.ReplayRelay<Self.Element?>...) -> RxSwift.Disposable
 }
 @available(iOS 10.0, tvOS 10.0, *)
-extension UICollectionView : RxCocoa.HasPrefetchDataSource {
+extension UIKit.UICollectionView : RxCocoa.HasPrefetchDataSource {
   public typealias PrefetchDataSource = UIKit.UICollectionViewDataSourcePrefetching
 }
 @available(iOS 10.0, tvOS 10.0, *)
-open class RxCollectionViewDataSourcePrefetchingProxy : RxCocoa.DelegateProxy<UIKit.UICollectionView, UIKit.UICollectionViewDataSourcePrefetching>, RxCocoa.DelegateProxyType, UIKit.UICollectionViewDataSourcePrefetching {
-  weak public var collectionView: UIKit.UICollectionView? {
+@_Concurrency.MainActor(unsafe) open class RxCollectionViewDataSourcePrefetchingProxy : RxCocoa.DelegateProxy<UIKit.UICollectionView, UIKit.UICollectionViewDataSourcePrefetching>, RxCocoa.DelegateProxyType, UIKit.UICollectionViewDataSourcePrefetching {
+  @_Concurrency.MainActor(unsafe) weak public var collectionView: UIKit.UICollectionView? {
     get
   }
-  public init(collectionView: RxCocoa.RxCollectionViewDataSourcePrefetchingProxy.ParentObject)
-  public static func registerKnownImplementations()
-  @objc public func collectionView(_ collectionView: UIKit.UICollectionView, prefetchItemsAt indexPaths: [Foundation.IndexPath])
+  @_Concurrency.MainActor(unsafe) public init(collectionView: RxCocoa.RxCollectionViewDataSourcePrefetchingProxy.ParentObject)
+  @_Concurrency.MainActor(unsafe) public static func registerKnownImplementations()
+  @_Concurrency.MainActor(unsafe) @objc public func collectionView(_ collectionView: UIKit.UICollectionView, prefetchItemsAt indexPaths: [Foundation.IndexPath])
   override open func setForwardToDelegate(_ forwardToDelegate: UIKit.UICollectionViewDataSourcePrefetching?, retainDelegate: Swift.Bool)
   @objc deinit
-  override public init<Proxy>(parentObject: RxCocoa.DelegateProxy<UIKit.UICollectionView, UIKit.UICollectionViewDataSourcePrefetching>.ParentObject, delegateProxy: Proxy.Type) where Proxy : RxCocoa.DelegateProxy<UIKit.UICollectionView, UIKit.UICollectionViewDataSourcePrefetching>, Proxy : RxCocoa.DelegateProxyType, Proxy.Delegate == UIKit.UICollectionViewDataSourcePrefetching, Proxy.ParentObject == UIKit.UICollectionView
 }
-extension Reactive where Base : UIKit.UISearchController {
+extension RxSwift.Reactive where Base : UIKit.UISearchController {
   public var delegate: RxCocoa.DelegateProxy<UIKit.UISearchController, UIKit.UISearchControllerDelegate> {
     get
   }
@@ -301,12 +297,12 @@ extension Reactive where Base : UIKit.UISearchController {
     get
   }
 }
-extension Reactive where Base : UIKit.UITableView {
-  public func items<Sequence, Source>(_ source: Source) -> (@escaping (UIKit.UITableView, Swift.Int, Sequence.Element) -> UIKit.UITableViewCell) -> RxSwift.Disposable where Sequence : Swift.Sequence, Sequence == Source.Element, Source : RxSwift.ObservableType
-  public func items<Sequence, Cell, Source>(cellIdentifier: Swift.String, cellType: Cell.Type = Cell.self) -> (Source) -> (@escaping (Swift.Int, Sequence.Element, Cell) -> Swift.Void) -> RxSwift.Disposable where Sequence : Swift.Sequence, Sequence == Source.Element, Cell : UIKit.UITableViewCell, Source : RxSwift.ObservableType
-  public func items<DataSource, Source>(dataSource: DataSource) -> (Source) -> RxSwift.Disposable where DataSource : RxCocoa.RxTableViewDataSourceType, DataSource : UIKit.UITableViewDataSource, Source : RxSwift.ObservableType, DataSource.Element == Source.Element
+extension RxSwift.Reactive where Base : UIKit.UITableView {
+  public func items<Sequence, Source>(_ source: Source) -> (_ cellFactory: @escaping (UIKit.UITableView, Swift.Int, Sequence.Element) -> UIKit.UITableViewCell) -> RxSwift.Disposable where Sequence : Swift.Sequence, Sequence == Source.Element, Source : RxSwift.ObservableType
+  public func items<Sequence, Cell, Source>(cellIdentifier: Swift.String, cellType: Cell.Type = Cell.self) -> (_ source: Source) -> (_ configureCell: @escaping (Swift.Int, Sequence.Element, Cell) -> Swift.Void) -> RxSwift.Disposable where Sequence : Swift.Sequence, Sequence == Source.Element, Cell : UIKit.UITableViewCell, Source : RxSwift.ObservableType
+  public func items<DataSource, Source>(dataSource: DataSource) -> (_ source: Source) -> RxSwift.Disposable where DataSource : RxCocoa.RxTableViewDataSourceType, DataSource : UIKit.UITableViewDataSource, Source : RxSwift.ObservableType, DataSource.Element == Source.Element
 }
-extension Reactive where Base : UIKit.UITableView {
+extension RxSwift.Reactive where Base : UIKit.UITableView {
   public var dataSource: RxCocoa.DelegateProxy<UIKit.UITableView, UIKit.UITableViewDataSource> {
     get
   }
@@ -347,7 +343,7 @@ extension Reactive where Base : UIKit.UITableView {
   public func model<T>(at indexPath: Foundation.IndexPath) throws -> T
 }
 @available(iOS 10.0, tvOS 10.0, *)
-extension Reactive where Base : UIKit.UITableView {
+extension RxSwift.Reactive where Base : UIKit.UITableView {
   public var prefetchDataSource: RxCocoa.DelegateProxy<UIKit.UITableView, UIKit.UITableViewDataSourcePrefetching> {
     get
   }
@@ -363,10 +359,10 @@ public enum RxCocoaInterceptionMechanism {
   case unknown
   case kvo
   public static func == (a: RxCocoa.RxCocoaInterceptionMechanism, b: RxCocoa.RxCocoaInterceptionMechanism) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
   public var hashValue: Swift.Int {
     get
   }
-  public func hash(into hasher: inout Swift.Hasher)
 }
 public enum RxCocoaObjCRuntimeError : Swift.Error, Swift.CustomDebugStringConvertible {
   case unknown(target: Swift.AnyObject)
@@ -379,7 +375,7 @@ public enum RxCocoaObjCRuntimeError : Swift.Error, Swift.CustomDebugStringConver
   case observingPerformanceSensitiveMessages(target: Swift.AnyObject)
   case observingMessagesWithUnsupportedReturnType(target: Swift.AnyObject)
 }
-extension RxCocoaObjCRuntimeError {
+extension RxCocoa.RxCocoaObjCRuntimeError {
   public var debugDescription: Swift.String {
     get
   }
@@ -390,52 +386,49 @@ public enum RxCocoaURLError : Swift.Error {
   case httpRequestFailed(response: Foundation.HTTPURLResponse, data: Foundation.Data?)
   case deserializationError(error: Swift.Error)
 }
-extension RxCocoaURLError : Swift.CustomDebugStringConvertible {
+extension RxCocoa.RxCocoaURLError : Swift.CustomDebugStringConvertible {
   public var debugDescription: Swift.String {
     get
   }
 }
-extension Reactive where Base : Foundation.URLSession {
+extension RxSwift.Reactive where Base : Foundation.URLSession {
   public func response(request: Foundation.URLRequest) -> RxSwift.Observable<(response: Foundation.HTTPURLResponse, data: Foundation.Data)>
   public func data(request: Foundation.URLRequest) -> RxSwift.Observable<Foundation.Data>
   public func json(request: Foundation.URLRequest, options: Foundation.JSONSerialization.ReadingOptions = []) -> RxSwift.Observable<Any>
   public func json(url: Foundation.URL) -> RxSwift.Observable<Any>
 }
-extension Reactive where Base == Foundation.URLSession {
+extension RxSwift.Reactive where Base == Foundation.URLSession {
   public static var shouldLogRequest: (Foundation.URLRequest) -> Swift.Bool
 }
-extension UISearchController : RxCocoa.HasDelegate {
+extension UIKit.UISearchController : RxCocoa.HasDelegate {
   public typealias Delegate = UIKit.UISearchControllerDelegate
 }
-open class RxSearchControllerDelegateProxy : RxCocoa.DelegateProxy<UIKit.UISearchController, UIKit.UISearchControllerDelegate>, RxCocoa.DelegateProxyType, UIKit.UISearchControllerDelegate {
-  weak public var searchController: UIKit.UISearchController? {
+@_Concurrency.MainActor(unsafe) open class RxSearchControllerDelegateProxy : RxCocoa.DelegateProxy<UIKit.UISearchController, UIKit.UISearchControllerDelegate>, RxCocoa.DelegateProxyType, UIKit.UISearchControllerDelegate {
+  @_Concurrency.MainActor(unsafe) weak public var searchController: UIKit.UISearchController? {
     get
   }
-  public init(searchController: UIKit.UISearchController)
-  public static func registerKnownImplementations()
+  @_Concurrency.MainActor(unsafe) public init(searchController: UIKit.UISearchController)
+  @_Concurrency.MainActor(unsafe) public static func registerKnownImplementations()
   @objc deinit
-  override public init<Proxy>(parentObject: RxCocoa.DelegateProxy<UIKit.UISearchController, UIKit.UISearchControllerDelegate>.ParentObject, delegateProxy: Proxy.Type) where Proxy : RxCocoa.DelegateProxy<UIKit.UISearchController, UIKit.UISearchControllerDelegate>, Proxy : RxCocoa.DelegateProxyType, Proxy.Delegate == UIKit.UISearchControllerDelegate, Proxy.ParentObject == UIKit.UISearchController
 }
-open class RxCollectionViewDelegateProxy : RxCocoa.RxScrollViewDelegateProxy, UIKit.UICollectionViewDelegate, UIKit.UICollectionViewDelegateFlowLayout {
-  weak public var collectionView: UIKit.UICollectionView? {
+@_Concurrency.MainActor(unsafe) open class RxCollectionViewDelegateProxy : RxCocoa.RxScrollViewDelegateProxy, UIKit.UICollectionViewDelegate, UIKit.UICollectionViewDelegateFlowLayout {
+  @_Concurrency.MainActor(unsafe) weak public var collectionView: UIKit.UICollectionView? {
     get
   }
-  public init(collectionView: UIKit.UICollectionView)
+  @_Concurrency.MainActor(unsafe) public init(collectionView: UIKit.UICollectionView)
   @objc deinit
-  override public init(scrollView: RxCocoa.RxScrollViewDelegateProxy.ParentObject)
 }
-extension UIScrollView : RxCocoa.HasDelegate {
+extension UIKit.UIScrollView : RxCocoa.HasDelegate {
   public typealias Delegate = UIKit.UIScrollViewDelegate
 }
-open class RxScrollViewDelegateProxy : RxCocoa.DelegateProxy<UIKit.UIScrollView, UIKit.UIScrollViewDelegate>, RxCocoa.DelegateProxyType, UIKit.UIScrollViewDelegate {
-  weak public var scrollView: UIKit.UIScrollView? {
+@_Concurrency.MainActor(unsafe) open class RxScrollViewDelegateProxy : RxCocoa.DelegateProxy<UIKit.UIScrollView, UIKit.UIScrollViewDelegate>, RxCocoa.DelegateProxyType, UIKit.UIScrollViewDelegate {
+  @_Concurrency.MainActor(unsafe) weak public var scrollView: UIKit.UIScrollView? {
     get
   }
-  public init(scrollView: RxCocoa.RxScrollViewDelegateProxy.ParentObject)
-  public static func registerKnownImplementations()
-  @objc public func scrollViewDidScroll(_ scrollView: UIKit.UIScrollView)
+  @_Concurrency.MainActor(unsafe) public init(scrollView: RxCocoa.RxScrollViewDelegateProxy.ParentObject)
+  @_Concurrency.MainActor(unsafe) public static func registerKnownImplementations()
+  @_Concurrency.MainActor(unsafe) @objc public func scrollViewDidScroll(_ scrollView: UIKit.UIScrollView)
   @objc deinit
-  override public init<Proxy>(parentObject: RxCocoa.DelegateProxy<UIKit.UIScrollView, UIKit.UIScrollViewDelegate>.ParentObject, delegateProxy: Proxy.Type) where Proxy : RxCocoa.DelegateProxy<UIKit.UIScrollView, UIKit.UIScrollViewDelegate>, Proxy : RxCocoa.DelegateProxyType, Proxy.Delegate == UIKit.UIScrollViewDelegate, Proxy.ParentObject == UIKit.UIScrollView
 }
 public protocol KVORepresentable {
   associatedtype KVOType
@@ -446,20 +439,20 @@ public struct TextInput<Base> where Base : UIKit.UITextInput {
   public let text: RxCocoa.ControlProperty<Swift.String?>
   public init(base: Base, text: RxCocoa.ControlProperty<Swift.String?>)
 }
-extension Reactive where Base : UIKit.UITextField {
+extension RxSwift.Reactive where Base : UIKit.UITextField {
   public var textInput: RxCocoa.TextInput<Base> {
     get
   }
 }
-extension Reactive where Base : UIKit.UITextView {
+extension RxSwift.Reactive where Base : UIKit.UITextView {
   public var textInput: RxCocoa.TextInput<Base> {
     get
   }
 }
-extension ControlEvent {
+extension RxCocoa.ControlEvent {
   public func asDriver() -> RxCocoa.Driver<RxCocoa.ControlEvent<PropertyType>.Element>
 }
-extension SharedSequenceConvertibleType where Self.SharingStrategy == RxCocoa.DriverSharingStrategy {
+extension RxCocoa.SharedSequenceConvertibleType where Self.SharingStrategy == RxCocoa.DriverSharingStrategy {
   public func drive<Observer>(_ observers: Observer...) -> RxSwift.Disposable where Observer : RxSwift.ObserverType, Self.Element == Observer.Element
   public func drive<Observer>(_ observers: Observer...) -> RxSwift.Disposable where Observer : RxSwift.ObserverType, Observer.Element == Self.Element?
   public func drive(_ relays: RxRelay.BehaviorRelay<Self.Element>...) -> RxSwift.Disposable
@@ -468,26 +461,26 @@ extension SharedSequenceConvertibleType where Self.SharingStrategy == RxCocoa.Dr
   public func drive(_ relays: RxRelay.ReplayRelay<Self.Element?>...) -> RxSwift.Disposable
   public func drive<Result>(_ transformation: (RxSwift.Observable<Self.Element>) -> Result) -> Result
   public func drive<R1, R2>(_ with: (RxSwift.Observable<Self.Element>) -> (R1) -> R2, curriedArgument: R1) -> R2
+  public func drive<Object>(with object: Object, onNext: ((Object, Self.Element) -> Swift.Void)? = nil, onCompleted: ((Object) -> Swift.Void)? = nil, onDisposed: ((Object) -> Swift.Void)? = nil) -> RxSwift.Disposable where Object : AnyObject
   public func drive(onNext: ((Self.Element) -> Swift.Void)? = nil, onCompleted: (() -> Swift.Void)? = nil, onDisposed: (() -> Swift.Void)? = nil) -> RxSwift.Disposable
   public func drive() -> RxSwift.Disposable
 }
-extension UISearchBar : RxCocoa.HasDelegate {
+extension UIKit.UISearchBar : RxCocoa.HasDelegate {
   public typealias Delegate = UIKit.UISearchBarDelegate
 }
-open class RxSearchBarDelegateProxy : RxCocoa.DelegateProxy<UIKit.UISearchBar, UIKit.UISearchBarDelegate>, RxCocoa.DelegateProxyType, UIKit.UISearchBarDelegate {
-  weak public var searchBar: UIKit.UISearchBar? {
+@_Concurrency.MainActor(unsafe) open class RxSearchBarDelegateProxy : RxCocoa.DelegateProxy<UIKit.UISearchBar, UIKit.UISearchBarDelegate>, RxCocoa.DelegateProxyType, UIKit.UISearchBarDelegate {
+  @_Concurrency.MainActor(unsafe) weak public var searchBar: UIKit.UISearchBar? {
     get
   }
-  public init(searchBar: RxCocoa.RxSearchBarDelegateProxy.ParentObject)
-  public static func registerKnownImplementations()
+  @_Concurrency.MainActor(unsafe) public init(searchBar: RxCocoa.RxSearchBarDelegateProxy.ParentObject)
+  @_Concurrency.MainActor(unsafe) public static func registerKnownImplementations()
   @objc deinit
-  override public init<Proxy>(parentObject: RxCocoa.DelegateProxy<UIKit.UISearchBar, UIKit.UISearchBarDelegate>.ParentObject, delegateProxy: Proxy.Type) where Proxy : RxCocoa.DelegateProxy<UIKit.UISearchBar, UIKit.UISearchBarDelegate>, Proxy : RxCocoa.DelegateProxyType, Proxy.Delegate == UIKit.UISearchBarDelegate, Proxy.ParentObject == UIKit.UISearchBar
 }
 public protocol RxPickerViewDataSourceType {
   associatedtype Element
   func pickerView(_ pickerView: UIKit.UIPickerView, observedEvent: RxSwift.Event<Self.Element>)
 }
-extension SharedSequenceConvertibleType where Self.SharingStrategy == RxCocoa.SignalSharingStrategy {
+extension RxCocoa.SharedSequenceConvertibleType where Self.SharingStrategy == RxCocoa.SignalSharingStrategy {
   public func emit<Observer>(to observers: Observer...) -> RxSwift.Disposable where Observer : RxSwift.ObserverType, Self.Element == Observer.Element
   public func emit<Observer>(to observers: Observer...) -> RxSwift.Disposable where Observer : RxSwift.ObserverType, Observer.Element == Self.Element?
   public func emit(to relays: RxRelay.BehaviorRelay<Self.Element>...) -> RxSwift.Disposable
@@ -496,20 +489,20 @@ extension SharedSequenceConvertibleType where Self.SharingStrategy == RxCocoa.Si
   public func emit(to relays: RxRelay.PublishRelay<Self.Element?>...) -> RxSwift.Disposable
   public func emit(to relays: RxRelay.ReplayRelay<Self.Element>...) -> RxSwift.Disposable
   public func emit(to relays: RxRelay.ReplayRelay<Self.Element?>...) -> RxSwift.Disposable
+  public func emit<Object>(with object: Object, onNext: ((Object, Self.Element) -> Swift.Void)? = nil, onCompleted: ((Object) -> Swift.Void)? = nil, onDisposed: ((Object) -> Swift.Void)? = nil) -> RxSwift.Disposable where Object : AnyObject
   public func emit(onNext: ((Self.Element) -> Swift.Void)? = nil, onCompleted: (() -> Swift.Void)? = nil, onDisposed: (() -> Swift.Void)? = nil) -> RxSwift.Disposable
   public func emit() -> RxSwift.Disposable
 }
-extension UIPickerView : RxCocoa.HasDelegate {
+extension UIKit.UIPickerView : RxCocoa.HasDelegate {
   public typealias Delegate = UIKit.UIPickerViewDelegate
 }
-open class RxPickerViewDelegateProxy : RxCocoa.DelegateProxy<UIKit.UIPickerView, UIKit.UIPickerViewDelegate>, RxCocoa.DelegateProxyType, UIKit.UIPickerViewDelegate {
-  weak public var pickerView: UIKit.UIPickerView? {
+@_Concurrency.MainActor(unsafe) open class RxPickerViewDelegateProxy : RxCocoa.DelegateProxy<UIKit.UIPickerView, UIKit.UIPickerViewDelegate>, RxCocoa.DelegateProxyType, UIKit.UIPickerViewDelegate {
+  @_Concurrency.MainActor(unsafe) weak public var pickerView: UIKit.UIPickerView? {
     get
   }
-  public init(pickerView: RxCocoa.RxPickerViewDelegateProxy.ParentObject)
-  public static func registerKnownImplementations()
+  @_Concurrency.MainActor(unsafe) public init(pickerView: RxCocoa.RxPickerViewDelegateProxy.ParentObject)
+  @_Concurrency.MainActor(unsafe) public static func registerKnownImplementations()
   @objc deinit
-  override public init<Proxy>(parentObject: RxCocoa.DelegateProxy<UIKit.UIPickerView, UIKit.UIPickerViewDelegate>.ParentObject, delegateProxy: Proxy.Type) where Proxy : RxCocoa.DelegateProxy<UIKit.UIPickerView, UIKit.UIPickerViewDelegate>, Proxy : RxCocoa.DelegateProxyType, Proxy.Delegate == UIKit.UIPickerViewDelegate, Proxy.ParentObject == UIKit.UIPickerView
 }
 public enum RxCocoaError : Swift.Error, Swift.CustomDebugStringConvertible {
   case unknown
@@ -520,7 +513,7 @@ public enum RxCocoaError : Swift.Error, Swift.CustomDebugStringConvertible {
   case errorDuringSwizzling
   case castingError(object: Any, targetType: Any.Type)
 }
-extension RxCocoaError {
+extension RxCocoa.RxCocoaError {
   public var debugDescription: Swift.String {
     get
   }
@@ -537,112 +530,112 @@ public protocol SharedSequenceConvertibleType : RxSwift.ObservableConvertibleTyp
   associatedtype SharingStrategy : RxCocoa.SharingStrategyProtocol
   func asSharedSequence() -> RxCocoa.SharedSequence<Self.SharingStrategy, Self.Element>
 }
-extension SharedSequenceConvertibleType {
+extension RxCocoa.SharedSequenceConvertibleType {
   public func asObservable() -> RxSwift.Observable<Self.Element>
 }
-extension SharedSequence {
+extension RxCocoa.SharedSequence {
   public static func empty() -> RxCocoa.SharedSequence<SharingStrategy, Element>
   public static func never() -> RxCocoa.SharedSequence<SharingStrategy, Element>
   public static func just(_ element: Element) -> RxCocoa.SharedSequence<SharingStrategy, Element>
   public static func deferred(_ observableFactory: @escaping () -> RxCocoa.SharedSequence<SharingStrategy, Element>) -> RxCocoa.SharedSequence<SharingStrategy, Element>
   public static func of(_ elements: Element...) -> RxCocoa.SharedSequence<SharingStrategy, Element>
 }
-extension SharedSequence {
+extension RxCocoa.SharedSequence {
   public static func from(_ array: [Element]) -> RxCocoa.SharedSequence<SharingStrategy, Element>
   public static func from<Sequence>(_ sequence: Sequence) -> RxCocoa.SharedSequence<SharingStrategy, Element> where Element == Sequence.Element, Sequence : Swift.Sequence
   public static func from(optional: Element?) -> RxCocoa.SharedSequence<SharingStrategy, Element>
 }
-extension SharedSequence where Element : Swift.FixedWidthInteger {
+extension RxCocoa.SharedSequence where Element : Swift.FixedWidthInteger {
   public static func interval(_ period: RxSwift.RxTimeInterval) -> RxCocoa.SharedSequence<SharingStrategy, Element>
 }
-extension SharedSequence where Element : Swift.FixedWidthInteger {
+extension RxCocoa.SharedSequence where Element : Swift.FixedWidthInteger {
   public static func timer(_ dueTime: RxSwift.RxTimeInterval, period: RxSwift.RxTimeInterval) -> RxCocoa.SharedSequence<SharingStrategy, Element>
 }
-extension SharedSequence {
+extension RxCocoa.SharedSequence {
   public static func zip<O1, O2>(_ source1: O1, _ source2: O2, resultSelector: @escaping (O1.Element, O2.Element) throws -> Element) -> RxCocoa.SharedSequence<O1.SharingStrategy, Element> where SharingStrategy == O1.SharingStrategy, O1 : RxCocoa.SharedSequenceConvertibleType, O2 : RxCocoa.SharedSequenceConvertibleType, O1.SharingStrategy == O2.SharingStrategy
 }
-extension SharedSequenceConvertibleType where Self.Element == Any {
+extension RxCocoa.SharedSequenceConvertibleType where Self.Element == Any {
   public static func zip<O1, O2>(_ source1: O1, _ source2: O2) -> RxCocoa.SharedSequence<O1.SharingStrategy, (O1.Element, O2.Element)> where O1 : RxCocoa.SharedSequenceConvertibleType, O2 : RxCocoa.SharedSequenceConvertibleType, Self.SharingStrategy == O1.SharingStrategy, O1.SharingStrategy == O2.SharingStrategy
 }
-extension SharedSequence {
+extension RxCocoa.SharedSequence {
   public static func combineLatest<O1, O2>(_ source1: O1, _ source2: O2, resultSelector: @escaping (O1.Element, O2.Element) throws -> Element) -> RxCocoa.SharedSequence<SharingStrategy, Element> where SharingStrategy == O1.SharingStrategy, O1 : RxCocoa.SharedSequenceConvertibleType, O2 : RxCocoa.SharedSequenceConvertibleType, O1.SharingStrategy == O2.SharingStrategy
 }
-extension SharedSequenceConvertibleType where Self.Element == Any {
+extension RxCocoa.SharedSequenceConvertibleType where Self.Element == Any {
   public static func combineLatest<O1, O2>(_ source1: O1, _ source2: O2) -> RxCocoa.SharedSequence<Self.SharingStrategy, (O1.Element, O2.Element)> where O1 : RxCocoa.SharedSequenceConvertibleType, O2 : RxCocoa.SharedSequenceConvertibleType, Self.SharingStrategy == O1.SharingStrategy, O1.SharingStrategy == O2.SharingStrategy
 }
-extension SharedSequence {
+extension RxCocoa.SharedSequence {
   public static func zip<O1, O2, O3>(_ source1: O1, _ source2: O2, _ source3: O3, resultSelector: @escaping (O1.Element, O2.Element, O3.Element) throws -> Element) -> RxCocoa.SharedSequence<O1.SharingStrategy, Element> where SharingStrategy == O1.SharingStrategy, O1 : RxCocoa.SharedSequenceConvertibleType, O2 : RxCocoa.SharedSequenceConvertibleType, O3 : RxCocoa.SharedSequenceConvertibleType, O1.SharingStrategy == O2.SharingStrategy, O2.SharingStrategy == O3.SharingStrategy
 }
-extension SharedSequenceConvertibleType where Self.Element == Any {
+extension RxCocoa.SharedSequenceConvertibleType where Self.Element == Any {
   public static func zip<O1, O2, O3>(_ source1: O1, _ source2: O2, _ source3: O3) -> RxCocoa.SharedSequence<O1.SharingStrategy, (O1.Element, O2.Element, O3.Element)> where O1 : RxCocoa.SharedSequenceConvertibleType, O2 : RxCocoa.SharedSequenceConvertibleType, O3 : RxCocoa.SharedSequenceConvertibleType, Self.SharingStrategy == O1.SharingStrategy, O1.SharingStrategy == O2.SharingStrategy, O2.SharingStrategy == O3.SharingStrategy
 }
-extension SharedSequence {
+extension RxCocoa.SharedSequence {
   public static func combineLatest<O1, O2, O3>(_ source1: O1, _ source2: O2, _ source3: O3, resultSelector: @escaping (O1.Element, O2.Element, O3.Element) throws -> Element) -> RxCocoa.SharedSequence<SharingStrategy, Element> where SharingStrategy == O1.SharingStrategy, O1 : RxCocoa.SharedSequenceConvertibleType, O2 : RxCocoa.SharedSequenceConvertibleType, O3 : RxCocoa.SharedSequenceConvertibleType, O1.SharingStrategy == O2.SharingStrategy, O2.SharingStrategy == O3.SharingStrategy
 }
-extension SharedSequenceConvertibleType where Self.Element == Any {
+extension RxCocoa.SharedSequenceConvertibleType where Self.Element == Any {
   public static func combineLatest<O1, O2, O3>(_ source1: O1, _ source2: O2, _ source3: O3) -> RxCocoa.SharedSequence<Self.SharingStrategy, (O1.Element, O2.Element, O3.Element)> where O1 : RxCocoa.SharedSequenceConvertibleType, O2 : RxCocoa.SharedSequenceConvertibleType, O3 : RxCocoa.SharedSequenceConvertibleType, Self.SharingStrategy == O1.SharingStrategy, O1.SharingStrategy == O2.SharingStrategy, O2.SharingStrategy == O3.SharingStrategy
 }
-extension SharedSequence {
+extension RxCocoa.SharedSequence {
   public static func zip<O1, O2, O3, O4>(_ source1: O1, _ source2: O2, _ source3: O3, _ source4: O4, resultSelector: @escaping (O1.Element, O2.Element, O3.Element, O4.Element) throws -> Element) -> RxCocoa.SharedSequence<O1.SharingStrategy, Element> where SharingStrategy == O1.SharingStrategy, O1 : RxCocoa.SharedSequenceConvertibleType, O2 : RxCocoa.SharedSequenceConvertibleType, O3 : RxCocoa.SharedSequenceConvertibleType, O4 : RxCocoa.SharedSequenceConvertibleType, O1.SharingStrategy == O2.SharingStrategy, O2.SharingStrategy == O3.SharingStrategy, O3.SharingStrategy == O4.SharingStrategy
 }
-extension SharedSequenceConvertibleType where Self.Element == Any {
+extension RxCocoa.SharedSequenceConvertibleType where Self.Element == Any {
   public static func zip<O1, O2, O3, O4>(_ source1: O1, _ source2: O2, _ source3: O3, _ source4: O4) -> RxCocoa.SharedSequence<O1.SharingStrategy, (O1.Element, O2.Element, O3.Element, O4.Element)> where O1 : RxCocoa.SharedSequenceConvertibleType, O2 : RxCocoa.SharedSequenceConvertibleType, O3 : RxCocoa.SharedSequenceConvertibleType, O4 : RxCocoa.SharedSequenceConvertibleType, Self.SharingStrategy == O1.SharingStrategy, O1.SharingStrategy == O2.SharingStrategy, O2.SharingStrategy == O3.SharingStrategy, O3.SharingStrategy == O4.SharingStrategy
 }
-extension SharedSequence {
+extension RxCocoa.SharedSequence {
   public static func combineLatest<O1, O2, O3, O4>(_ source1: O1, _ source2: O2, _ source3: O3, _ source4: O4, resultSelector: @escaping (O1.Element, O2.Element, O3.Element, O4.Element) throws -> Element) -> RxCocoa.SharedSequence<SharingStrategy, Element> where SharingStrategy == O1.SharingStrategy, O1 : RxCocoa.SharedSequenceConvertibleType, O2 : RxCocoa.SharedSequenceConvertibleType, O3 : RxCocoa.SharedSequenceConvertibleType, O4 : RxCocoa.SharedSequenceConvertibleType, O1.SharingStrategy == O2.SharingStrategy, O2.SharingStrategy == O3.SharingStrategy, O3.SharingStrategy == O4.SharingStrategy
 }
-extension SharedSequenceConvertibleType where Self.Element == Any {
+extension RxCocoa.SharedSequenceConvertibleType where Self.Element == Any {
   public static func combineLatest<O1, O2, O3, O4>(_ source1: O1, _ source2: O2, _ source3: O3, _ source4: O4) -> RxCocoa.SharedSequence<Self.SharingStrategy, (O1.Element, O2.Element, O3.Element, O4.Element)> where O1 : RxCocoa.SharedSequenceConvertibleType, O2 : RxCocoa.SharedSequenceConvertibleType, O3 : RxCocoa.SharedSequenceConvertibleType, O4 : RxCocoa.SharedSequenceConvertibleType, Self.SharingStrategy == O1.SharingStrategy, O1.SharingStrategy == O2.SharingStrategy, O2.SharingStrategy == O3.SharingStrategy, O3.SharingStrategy == O4.SharingStrategy
 }
-extension SharedSequence {
+extension RxCocoa.SharedSequence {
   public static func zip<O1, O2, O3, O4, O5>(_ source1: O1, _ source2: O2, _ source3: O3, _ source4: O4, _ source5: O5, resultSelector: @escaping (O1.Element, O2.Element, O3.Element, O4.Element, O5.Element) throws -> Element) -> RxCocoa.SharedSequence<O1.SharingStrategy, Element> where SharingStrategy == O1.SharingStrategy, O1 : RxCocoa.SharedSequenceConvertibleType, O2 : RxCocoa.SharedSequenceConvertibleType, O3 : RxCocoa.SharedSequenceConvertibleType, O4 : RxCocoa.SharedSequenceConvertibleType, O5 : RxCocoa.SharedSequenceConvertibleType, O1.SharingStrategy == O2.SharingStrategy, O2.SharingStrategy == O3.SharingStrategy, O3.SharingStrategy == O4.SharingStrategy, O4.SharingStrategy == O5.SharingStrategy
 }
-extension SharedSequenceConvertibleType where Self.Element == Any {
+extension RxCocoa.SharedSequenceConvertibleType where Self.Element == Any {
   public static func zip<O1, O2, O3, O4, O5>(_ source1: O1, _ source2: O2, _ source3: O3, _ source4: O4, _ source5: O5) -> RxCocoa.SharedSequence<O1.SharingStrategy, (O1.Element, O2.Element, O3.Element, O4.Element, O5.Element)> where O1 : RxCocoa.SharedSequenceConvertibleType, O2 : RxCocoa.SharedSequenceConvertibleType, O3 : RxCocoa.SharedSequenceConvertibleType, O4 : RxCocoa.SharedSequenceConvertibleType, O5 : RxCocoa.SharedSequenceConvertibleType, Self.SharingStrategy == O1.SharingStrategy, O1.SharingStrategy == O2.SharingStrategy, O2.SharingStrategy == O3.SharingStrategy, O3.SharingStrategy == O4.SharingStrategy, O4.SharingStrategy == O5.SharingStrategy
 }
-extension SharedSequence {
+extension RxCocoa.SharedSequence {
   public static func combineLatest<O1, O2, O3, O4, O5>(_ source1: O1, _ source2: O2, _ source3: O3, _ source4: O4, _ source5: O5, resultSelector: @escaping (O1.Element, O2.Element, O3.Element, O4.Element, O5.Element) throws -> Element) -> RxCocoa.SharedSequence<SharingStrategy, Element> where SharingStrategy == O1.SharingStrategy, O1 : RxCocoa.SharedSequenceConvertibleType, O2 : RxCocoa.SharedSequenceConvertibleType, O3 : RxCocoa.SharedSequenceConvertibleType, O4 : RxCocoa.SharedSequenceConvertibleType, O5 : RxCocoa.SharedSequenceConvertibleType, O1.SharingStrategy == O2.SharingStrategy, O2.SharingStrategy == O3.SharingStrategy, O3.SharingStrategy == O4.SharingStrategy, O4.SharingStrategy == O5.SharingStrategy
 }
-extension SharedSequenceConvertibleType where Self.Element == Any {
+extension RxCocoa.SharedSequenceConvertibleType where Self.Element == Any {
   public static func combineLatest<O1, O2, O3, O4, O5>(_ source1: O1, _ source2: O2, _ source3: O3, _ source4: O4, _ source5: O5) -> RxCocoa.SharedSequence<Self.SharingStrategy, (O1.Element, O2.Element, O3.Element, O4.Element, O5.Element)> where O1 : RxCocoa.SharedSequenceConvertibleType, O2 : RxCocoa.SharedSequenceConvertibleType, O3 : RxCocoa.SharedSequenceConvertibleType, O4 : RxCocoa.SharedSequenceConvertibleType, O5 : RxCocoa.SharedSequenceConvertibleType, Self.SharingStrategy == O1.SharingStrategy, O1.SharingStrategy == O2.SharingStrategy, O2.SharingStrategy == O3.SharingStrategy, O3.SharingStrategy == O4.SharingStrategy, O4.SharingStrategy == O5.SharingStrategy
 }
-extension SharedSequence {
+extension RxCocoa.SharedSequence {
   public static func zip<O1, O2, O3, O4, O5, O6>(_ source1: O1, _ source2: O2, _ source3: O3, _ source4: O4, _ source5: O5, _ source6: O6, resultSelector: @escaping (O1.Element, O2.Element, O3.Element, O4.Element, O5.Element, O6.Element) throws -> Element) -> RxCocoa.SharedSequence<O1.SharingStrategy, Element> where SharingStrategy == O1.SharingStrategy, O1 : RxCocoa.SharedSequenceConvertibleType, O2 : RxCocoa.SharedSequenceConvertibleType, O3 : RxCocoa.SharedSequenceConvertibleType, O4 : RxCocoa.SharedSequenceConvertibleType, O5 : RxCocoa.SharedSequenceConvertibleType, O6 : RxCocoa.SharedSequenceConvertibleType, O1.SharingStrategy == O2.SharingStrategy, O2.SharingStrategy == O3.SharingStrategy, O3.SharingStrategy == O4.SharingStrategy, O4.SharingStrategy == O5.SharingStrategy, O5.SharingStrategy == O6.SharingStrategy
 }
-extension SharedSequenceConvertibleType where Self.Element == Any {
+extension RxCocoa.SharedSequenceConvertibleType where Self.Element == Any {
   public static func zip<O1, O2, O3, O4, O5, O6>(_ source1: O1, _ source2: O2, _ source3: O3, _ source4: O4, _ source5: O5, _ source6: O6) -> RxCocoa.SharedSequence<O1.SharingStrategy, (O1.Element, O2.Element, O3.Element, O4.Element, O5.Element, O6.Element)> where O1 : RxCocoa.SharedSequenceConvertibleType, O2 : RxCocoa.SharedSequenceConvertibleType, O3 : RxCocoa.SharedSequenceConvertibleType, O4 : RxCocoa.SharedSequenceConvertibleType, O5 : RxCocoa.SharedSequenceConvertibleType, O6 : RxCocoa.SharedSequenceConvertibleType, Self.SharingStrategy == O1.SharingStrategy, O1.SharingStrategy == O2.SharingStrategy, O2.SharingStrategy == O3.SharingStrategy, O3.SharingStrategy == O4.SharingStrategy, O4.SharingStrategy == O5.SharingStrategy, O5.SharingStrategy == O6.SharingStrategy
 }
-extension SharedSequence {
+extension RxCocoa.SharedSequence {
   public static func combineLatest<O1, O2, O3, O4, O5, O6>(_ source1: O1, _ source2: O2, _ source3: O3, _ source4: O4, _ source5: O5, _ source6: O6, resultSelector: @escaping (O1.Element, O2.Element, O3.Element, O4.Element, O5.Element, O6.Element) throws -> Element) -> RxCocoa.SharedSequence<SharingStrategy, Element> where SharingStrategy == O1.SharingStrategy, O1 : RxCocoa.SharedSequenceConvertibleType, O2 : RxCocoa.SharedSequenceConvertibleType, O3 : RxCocoa.SharedSequenceConvertibleType, O4 : RxCocoa.SharedSequenceConvertibleType, O5 : RxCocoa.SharedSequenceConvertibleType, O6 : RxCocoa.SharedSequenceConvertibleType, O1.SharingStrategy == O2.SharingStrategy, O2.SharingStrategy == O3.SharingStrategy, O3.SharingStrategy == O4.SharingStrategy, O4.SharingStrategy == O5.SharingStrategy, O5.SharingStrategy == O6.SharingStrategy
 }
-extension SharedSequenceConvertibleType where Self.Element == Any {
+extension RxCocoa.SharedSequenceConvertibleType where Self.Element == Any {
   public static func combineLatest<O1, O2, O3, O4, O5, O6>(_ source1: O1, _ source2: O2, _ source3: O3, _ source4: O4, _ source5: O5, _ source6: O6) -> RxCocoa.SharedSequence<Self.SharingStrategy, (O1.Element, O2.Element, O3.Element, O4.Element, O5.Element, O6.Element)> where O1 : RxCocoa.SharedSequenceConvertibleType, O2 : RxCocoa.SharedSequenceConvertibleType, O3 : RxCocoa.SharedSequenceConvertibleType, O4 : RxCocoa.SharedSequenceConvertibleType, O5 : RxCocoa.SharedSequenceConvertibleType, O6 : RxCocoa.SharedSequenceConvertibleType, Self.SharingStrategy == O1.SharingStrategy, O1.SharingStrategy == O2.SharingStrategy, O2.SharingStrategy == O3.SharingStrategy, O3.SharingStrategy == O4.SharingStrategy, O4.SharingStrategy == O5.SharingStrategy, O5.SharingStrategy == O6.SharingStrategy
 }
-extension SharedSequence {
+extension RxCocoa.SharedSequence {
   public static func zip<O1, O2, O3, O4, O5, O6, O7>(_ source1: O1, _ source2: O2, _ source3: O3, _ source4: O4, _ source5: O5, _ source6: O6, _ source7: O7, resultSelector: @escaping (O1.Element, O2.Element, O3.Element, O4.Element, O5.Element, O6.Element, O7.Element) throws -> Element) -> RxCocoa.SharedSequence<O1.SharingStrategy, Element> where SharingStrategy == O1.SharingStrategy, O1 : RxCocoa.SharedSequenceConvertibleType, O2 : RxCocoa.SharedSequenceConvertibleType, O3 : RxCocoa.SharedSequenceConvertibleType, O4 : RxCocoa.SharedSequenceConvertibleType, O5 : RxCocoa.SharedSequenceConvertibleType, O6 : RxCocoa.SharedSequenceConvertibleType, O7 : RxCocoa.SharedSequenceConvertibleType, O1.SharingStrategy == O2.SharingStrategy, O2.SharingStrategy == O3.SharingStrategy, O3.SharingStrategy == O4.SharingStrategy, O4.SharingStrategy == O5.SharingStrategy, O5.SharingStrategy == O6.SharingStrategy, O6.SharingStrategy == O7.SharingStrategy
 }
-extension SharedSequenceConvertibleType where Self.Element == Any {
+extension RxCocoa.SharedSequenceConvertibleType where Self.Element == Any {
   public static func zip<O1, O2, O3, O4, O5, O6, O7>(_ source1: O1, _ source2: O2, _ source3: O3, _ source4: O4, _ source5: O5, _ source6: O6, _ source7: O7) -> RxCocoa.SharedSequence<O1.SharingStrategy, (O1.Element, O2.Element, O3.Element, O4.Element, O5.Element, O6.Element, O7.Element)> where O1 : RxCocoa.SharedSequenceConvertibleType, O2 : RxCocoa.SharedSequenceConvertibleType, O3 : RxCocoa.SharedSequenceConvertibleType, O4 : RxCocoa.SharedSequenceConvertibleType, O5 : RxCocoa.SharedSequenceConvertibleType, O6 : RxCocoa.SharedSequenceConvertibleType, O7 : RxCocoa.SharedSequenceConvertibleType, Self.SharingStrategy == O1.SharingStrategy, O1.SharingStrategy == O2.SharingStrategy, O2.SharingStrategy == O3.SharingStrategy, O3.SharingStrategy == O4.SharingStrategy, O4.SharingStrategy == O5.SharingStrategy, O5.SharingStrategy == O6.SharingStrategy, O6.SharingStrategy == O7.SharingStrategy
 }
-extension SharedSequence {
+extension RxCocoa.SharedSequence {
   public static func combineLatest<O1, O2, O3, O4, O5, O6, O7>(_ source1: O1, _ source2: O2, _ source3: O3, _ source4: O4, _ source5: O5, _ source6: O6, _ source7: O7, resultSelector: @escaping (O1.Element, O2.Element, O3.Element, O4.Element, O5.Element, O6.Element, O7.Element) throws -> Element) -> RxCocoa.SharedSequence<SharingStrategy, Element> where SharingStrategy == O1.SharingStrategy, O1 : RxCocoa.SharedSequenceConvertibleType, O2 : RxCocoa.SharedSequenceConvertibleType, O3 : RxCocoa.SharedSequenceConvertibleType, O4 : RxCocoa.SharedSequenceConvertibleType, O5 : RxCocoa.SharedSequenceConvertibleType, O6 : RxCocoa.SharedSequenceConvertibleType, O7 : RxCocoa.SharedSequenceConvertibleType, O1.SharingStrategy == O2.SharingStrategy, O2.SharingStrategy == O3.SharingStrategy, O3.SharingStrategy == O4.SharingStrategy, O4.SharingStrategy == O5.SharingStrategy, O5.SharingStrategy == O6.SharingStrategy, O6.SharingStrategy == O7.SharingStrategy
 }
-extension SharedSequenceConvertibleType where Self.Element == Any {
+extension RxCocoa.SharedSequenceConvertibleType where Self.Element == Any {
   public static func combineLatest<O1, O2, O3, O4, O5, O6, O7>(_ source1: O1, _ source2: O2, _ source3: O3, _ source4: O4, _ source5: O5, _ source6: O6, _ source7: O7) -> RxCocoa.SharedSequence<Self.SharingStrategy, (O1.Element, O2.Element, O3.Element, O4.Element, O5.Element, O6.Element, O7.Element)> where O1 : RxCocoa.SharedSequenceConvertibleType, O2 : RxCocoa.SharedSequenceConvertibleType, O3 : RxCocoa.SharedSequenceConvertibleType, O4 : RxCocoa.SharedSequenceConvertibleType, O5 : RxCocoa.SharedSequenceConvertibleType, O6 : RxCocoa.SharedSequenceConvertibleType, O7 : RxCocoa.SharedSequenceConvertibleType, Self.SharingStrategy == O1.SharingStrategy, O1.SharingStrategy == O2.SharingStrategy, O2.SharingStrategy == O3.SharingStrategy, O3.SharingStrategy == O4.SharingStrategy, O4.SharingStrategy == O5.SharingStrategy, O5.SharingStrategy == O6.SharingStrategy, O6.SharingStrategy == O7.SharingStrategy
 }
-extension SharedSequence {
+extension RxCocoa.SharedSequence {
   public static func zip<O1, O2, O3, O4, O5, O6, O7, O8>(_ source1: O1, _ source2: O2, _ source3: O3, _ source4: O4, _ source5: O5, _ source6: O6, _ source7: O7, _ source8: O8, resultSelector: @escaping (O1.Element, O2.Element, O3.Element, O4.Element, O5.Element, O6.Element, O7.Element, O8.Element) throws -> Element) -> RxCocoa.SharedSequence<O1.SharingStrategy, Element> where SharingStrategy == O1.SharingStrategy, O1 : RxCocoa.SharedSequenceConvertibleType, O2 : RxCocoa.SharedSequenceConvertibleType, O3 : RxCocoa.SharedSequenceConvertibleType, O4 : RxCocoa.SharedSequenceConvertibleType, O5 : RxCocoa.SharedSequenceConvertibleType, O6 : RxCocoa.SharedSequenceConvertibleType, O7 : RxCocoa.SharedSequenceConvertibleType, O8 : RxCocoa.SharedSequenceConvertibleType, O1.SharingStrategy == O2.SharingStrategy, O2.SharingStrategy == O3.SharingStrategy, O3.SharingStrategy == O4.SharingStrategy, O4.SharingStrategy == O5.SharingStrategy, O5.SharingStrategy == O6.SharingStrategy, O6.SharingStrategy == O7.SharingStrategy, O7.SharingStrategy == O8.SharingStrategy
 }
-extension SharedSequenceConvertibleType where Self.Element == Any {
+extension RxCocoa.SharedSequenceConvertibleType where Self.Element == Any {
   public static func zip<O1, O2, O3, O4, O5, O6, O7, O8>(_ source1: O1, _ source2: O2, _ source3: O3, _ source4: O4, _ source5: O5, _ source6: O6, _ source7: O7, _ source8: O8) -> RxCocoa.SharedSequence<O1.SharingStrategy, (O1.Element, O2.Element, O3.Element, O4.Element, O5.Element, O6.Element, O7.Element, O8.Element)> where O1 : RxCocoa.SharedSequenceConvertibleType, O2 : RxCocoa.SharedSequenceConvertibleType, O3 : RxCocoa.SharedSequenceConvertibleType, O4 : RxCocoa.SharedSequenceConvertibleType, O5 : RxCocoa.SharedSequenceConvertibleType, O6 : RxCocoa.SharedSequenceConvertibleType, O7 : RxCocoa.SharedSequenceConvertibleType, O8 : RxCocoa.SharedSequenceConvertibleType, Self.SharingStrategy == O1.SharingStrategy, O1.SharingStrategy == O2.SharingStrategy, O2.SharingStrategy == O3.SharingStrategy, O3.SharingStrategy == O4.SharingStrategy, O4.SharingStrategy == O5.SharingStrategy, O5.SharingStrategy == O6.SharingStrategy, O6.SharingStrategy == O7.SharingStrategy, O7.SharingStrategy == O8.SharingStrategy
 }
-extension SharedSequence {
+extension RxCocoa.SharedSequence {
   public static func combineLatest<O1, O2, O3, O4, O5, O6, O7, O8>(_ source1: O1, _ source2: O2, _ source3: O3, _ source4: O4, _ source5: O5, _ source6: O6, _ source7: O7, _ source8: O8, resultSelector: @escaping (O1.Element, O2.Element, O3.Element, O4.Element, O5.Element, O6.Element, O7.Element, O8.Element) throws -> Element) -> RxCocoa.SharedSequence<SharingStrategy, Element> where SharingStrategy == O1.SharingStrategy, O1 : RxCocoa.SharedSequenceConvertibleType, O2 : RxCocoa.SharedSequenceConvertibleType, O3 : RxCocoa.SharedSequenceConvertibleType, O4 : RxCocoa.SharedSequenceConvertibleType, O5 : RxCocoa.SharedSequenceConvertibleType, O6 : RxCocoa.SharedSequenceConvertibleType, O7 : RxCocoa.SharedSequenceConvertibleType, O8 : RxCocoa.SharedSequenceConvertibleType, O1.SharingStrategy == O2.SharingStrategy, O2.SharingStrategy == O3.SharingStrategy, O3.SharingStrategy == O4.SharingStrategy, O4.SharingStrategy == O5.SharingStrategy, O5.SharingStrategy == O6.SharingStrategy, O6.SharingStrategy == O7.SharingStrategy, O7.SharingStrategy == O8.SharingStrategy
 }
-extension SharedSequenceConvertibleType where Self.Element == Any {
+extension RxCocoa.SharedSequenceConvertibleType where Self.Element == Any {
   public static func combineLatest<O1, O2, O3, O4, O5, O6, O7, O8>(_ source1: O1, _ source2: O2, _ source3: O3, _ source4: O4, _ source5: O5, _ source6: O6, _ source7: O7, _ source8: O8) -> RxCocoa.SharedSequence<Self.SharingStrategy, (O1.Element, O2.Element, O3.Element, O4.Element, O5.Element, O6.Element, O7.Element, O8.Element)> where O1 : RxCocoa.SharedSequenceConvertibleType, O2 : RxCocoa.SharedSequenceConvertibleType, O3 : RxCocoa.SharedSequenceConvertibleType, O4 : RxCocoa.SharedSequenceConvertibleType, O5 : RxCocoa.SharedSequenceConvertibleType, O6 : RxCocoa.SharedSequenceConvertibleType, O7 : RxCocoa.SharedSequenceConvertibleType, O8 : RxCocoa.SharedSequenceConvertibleType, Self.SharingStrategy == O1.SharingStrategy, O1.SharingStrategy == O2.SharingStrategy, O2.SharingStrategy == O3.SharingStrategy, O3.SharingStrategy == O4.SharingStrategy, O4.SharingStrategy == O5.SharingStrategy, O5.SharingStrategy == O6.SharingStrategy, O6.SharingStrategy == O7.SharingStrategy, O7.SharingStrategy == O8.SharingStrategy
 }
-extension Reactive where Base : UIKit.UITabBarController {
+extension RxSwift.Reactive where Base : UIKit.UITabBarController {
   public var willBeginCustomizing: RxCocoa.ControlEvent<[UIKit.UIViewController]> {
     get
   }
@@ -653,7 +646,7 @@ extension Reactive where Base : UIKit.UITabBarController {
     get
   }
 }
-extension Reactive where Base : UIKit.UITabBarController {
+extension RxSwift.Reactive where Base : UIKit.UITabBarController {
   public var delegate: RxCocoa.DelegateProxy<UIKit.UITabBarController, UIKit.UITabBarControllerDelegate> {
     get
   }
@@ -661,32 +654,33 @@ extension Reactive where Base : UIKit.UITabBarController {
     get
   }
 }
-extension Reactive where Base : ObjectiveC.NSObject {
+extension RxSwift.Reactive where Base : ObjectiveC.NSObject {
   public func observe<Element>(_ type: Element.Type, _ keyPath: Swift.String, options: RxCocoa.KeyValueObservingOptions = [.new, .initial], retainSelf: Swift.Bool = true) -> RxSwift.Observable<Element?> where Element : Swift.RawRepresentable, Element.RawValue : RxCocoa.KVORepresentable
 }
-extension Reactive where Base : ObjectiveC.NSObject {
+extension RxSwift.Reactive where Base : ObjectiveC.NSObject {
   public func observeWeakly<Element>(_ type: Element.Type, _ keyPath: Swift.String, options: RxCocoa.KeyValueObservingOptions = [.new, .initial]) -> RxSwift.Observable<Element?> where Element : Swift.RawRepresentable, Element.RawValue : RxCocoa.KVORepresentable
 }
-extension CGRect : RxCocoa.KVORepresentable {
+extension CoreGraphics.CGRect : RxCocoa.KVORepresentable {
   public typealias KVOType = Foundation.NSValue
   public init?(KVOValue: CoreGraphics.CGRect.KVOType)
 }
-extension CGPoint : RxCocoa.KVORepresentable {
+extension CoreGraphics.CGPoint : RxCocoa.KVORepresentable {
   public typealias KVOType = Foundation.NSValue
   public init?(KVOValue: CoreGraphics.CGPoint.KVOType)
 }
-extension CGSize : RxCocoa.KVORepresentable {
+extension CoreGraphics.CGSize : RxCocoa.KVORepresentable {
   public typealias KVOType = Foundation.NSValue
   public init?(KVOValue: CoreGraphics.CGSize.KVOType)
 }
-extension ObservableType {
+extension RxSwift.ObservableType {
   public func bind<Observer>(to observers: Observer...) -> RxSwift.Disposable where Observer : RxSwift.ObserverType, Self.Element == Observer.Element
   public func bind<Observer>(to observers: Observer...) -> RxSwift.Disposable where Observer : RxSwift.ObserverType, Observer.Element == Self.Element?
   public func bind<Result>(to binder: (Self) -> Result) -> Result
   public func bind<R1, R2>(to binder: (Self) -> (R1) -> R2, curriedArgument: R1) -> R2
+  public func bind<Object>(with object: Object, onNext: @escaping (Object, Self.Element) -> Swift.Void) -> RxSwift.Disposable where Object : AnyObject
   public func bind(onNext: @escaping (Self.Element) -> Swift.Void) -> RxSwift.Disposable
 }
-extension Reactive where Base : UIKit.UISegmentedControl {
+extension RxSwift.Reactive where Base : UIKit.UISegmentedControl {
   public var selectedSegmentIndex: RxCocoa.ControlProperty<Swift.Int> {
     get
   }
@@ -697,7 +691,7 @@ extension Reactive where Base : UIKit.UISegmentedControl {
   public func titleForSegment(at index: Swift.Int) -> RxSwift.Binder<Swift.String?>
   public func imageForSegment(at index: Swift.Int) -> RxSwift.Binder<UIKit.UIImage?>
 }
-extension PublishRelay {
+extension RxRelay.PublishRelay {
   final public func asSignal() -> RxCocoa.Signal<Element>
 }
 public typealias Signal<Element> = RxCocoa.SharedSequence<RxCocoa.SignalSharingStrategy, Element>
@@ -707,26 +701,26 @@ public struct SignalSharingStrategy : RxCocoa.SharingStrategyProtocol {
   }
   public static func share<Element>(_ source: RxSwift.Observable<Element>) -> RxSwift.Observable<Element>
 }
-extension SharedSequenceConvertibleType where Self.SharingStrategy == RxCocoa.SignalSharingStrategy {
+extension RxCocoa.SharedSequenceConvertibleType where Self.SharingStrategy == RxCocoa.SignalSharingStrategy {
   public func asSignal() -> RxCocoa.Signal<Self.Element>
 }
-extension Reactive where Base : UIKit.UIButton {
+extension RxSwift.Reactive where Base : UIKit.UIButton {
   public var tap: RxCocoa.ControlEvent<Swift.Void> {
     get
   }
 }
-extension Reactive where Base : UIKit.UIButton {
+extension RxSwift.Reactive where Base : UIKit.UIButton {
   public func title(for controlState: UIKit.UIControl.State = []) -> RxSwift.Binder<Swift.String?>
   public func image(for controlState: UIKit.UIControl.State = []) -> RxSwift.Binder<UIKit.UIImage?>
   public func backgroundImage(for controlState: UIKit.UIControl.State = []) -> RxSwift.Binder<UIKit.UIImage?>
 }
-extension Reactive where Base : UIKit.UIButton {
+extension RxSwift.Reactive where Base : UIKit.UIButton {
   public func attributedTitle(for controlState: UIKit.UIControl.State = []) -> RxSwift.Binder<Foundation.NSAttributedString?>
 }
-extension ObservableConvertibleType {
+extension RxSwift.ObservableConvertibleType {
   public func asSharedSequence<S>(sharingStrategy: S.Type = S.self, onErrorJustReturn: Self.Element) -> RxCocoa.SharedSequence<S, Self.Element> where S : RxCocoa.SharingStrategyProtocol
   public func asSharedSequence<S>(sharingStrategy: S.Type = S.self, onErrorDriveWith: RxCocoa.SharedSequence<S, Self.Element>) -> RxCocoa.SharedSequence<S, Self.Element> where S : RxCocoa.SharingStrategyProtocol
-  public func asSharedSequence<S>(sharingStrategy: S.Type = S.self, onErrorRecover: @escaping (Swift.Error) -> RxCocoa.SharedSequence<S, Self.Element>) -> RxCocoa.SharedSequence<S, Self.Element> where S : RxCocoa.SharingStrategyProtocol
+  public func asSharedSequence<S>(sharingStrategy: S.Type = S.self, onErrorRecover: @escaping (_ error: Swift.Error) -> RxCocoa.SharedSequence<S, Self.Element>) -> RxCocoa.SharedSequence<S, Self.Element> where S : RxCocoa.SharingStrategyProtocol
 }
 public protocol ControlPropertyType : RxSwift.ObservableType, RxSwift.ObserverType {
   func asControlProperty() -> RxCocoa.ControlProperty<Self.Element>
@@ -742,24 +736,23 @@ public struct ControlProperty<PropertyType> : RxCocoa.ControlPropertyType {
   public func asControlProperty() -> RxCocoa.ControlProperty<RxCocoa.ControlProperty<PropertyType>.Element>
   public func on(_ event: RxSwift.Event<RxCocoa.ControlProperty<PropertyType>.Element>)
 }
-extension ControlPropertyType where Self.Element == Swift.String? {
+extension RxCocoa.ControlPropertyType where Self.Element == Swift.String? {
   public var orEmpty: RxCocoa.ControlProperty<Swift.String> {
     get
   }
 }
-extension UITabBarController : RxCocoa.HasDelegate {
+extension UIKit.UITabBarController : RxCocoa.HasDelegate {
   public typealias Delegate = UIKit.UITabBarControllerDelegate
 }
-open class RxTabBarControllerDelegateProxy : RxCocoa.DelegateProxy<UIKit.UITabBarController, UIKit.UITabBarControllerDelegate>, RxCocoa.DelegateProxyType, UIKit.UITabBarControllerDelegate {
-  weak public var tabBar: UIKit.UITabBarController? {
+@_Concurrency.MainActor(unsafe) open class RxTabBarControllerDelegateProxy : RxCocoa.DelegateProxy<UIKit.UITabBarController, UIKit.UITabBarControllerDelegate>, RxCocoa.DelegateProxyType, UIKit.UITabBarControllerDelegate {
+  @_Concurrency.MainActor(unsafe) weak public var tabBar: UIKit.UITabBarController? {
     get
   }
-  public init(tabBar: RxCocoa.RxTabBarControllerDelegateProxy.ParentObject)
-  public static func registerKnownImplementations()
+  @_Concurrency.MainActor(unsafe) public init(tabBar: RxCocoa.RxTabBarControllerDelegateProxy.ParentObject)
+  @_Concurrency.MainActor(unsafe) public static func registerKnownImplementations()
   @objc deinit
-  override public init<Proxy>(parentObject: RxCocoa.DelegateProxy<UIKit.UITabBarController, UIKit.UITabBarControllerDelegate>.ParentObject, delegateProxy: Proxy.Type) where Proxy : RxCocoa.DelegateProxy<UIKit.UITabBarController, UIKit.UITabBarControllerDelegate>, Proxy : RxCocoa.DelegateProxyType, Proxy.Delegate == UIKit.UITabBarControllerDelegate, Proxy.ParentObject == UIKit.UITabBarController
 }
-@available(iOS 8.0, OSX 10.10, OSXApplicationExtension 10.10, *)
+@available(iOS 8.0, macOS 10.10, macOSApplicationExtension 10.10, *)
 open class RxWKNavigationDelegateProxy : RxCocoa.DelegateProxy<WebKit.WKWebView, WebKit.WKNavigationDelegate>, RxCocoa.DelegateProxyType, WebKit.WKNavigationDelegate {
   weak public var webView: WebKit.WKWebView? {
     get
@@ -769,94 +762,99 @@ open class RxWKNavigationDelegateProxy : RxCocoa.DelegateProxy<WebKit.WKWebView,
   public static func currentDelegate(for object: WebKit.WKWebView) -> WebKit.WKNavigationDelegate?
   public static func setCurrentDelegate(_ delegate: WebKit.WKNavigationDelegate?, to object: WebKit.WKWebView)
   @objc deinit
-  override public init<Proxy>(parentObject: RxCocoa.DelegateProxy<WebKit.WKWebView, WebKit.WKNavigationDelegate>.ParentObject, delegateProxy: Proxy.Type) where Proxy : RxCocoa.DelegateProxy<WebKit.WKWebView, WebKit.WKNavigationDelegate>, Proxy : RxCocoa.DelegateProxyType, Proxy.Delegate == WebKit.WKNavigationDelegate, Proxy.ParentObject == WebKit.WKWebView
 }
-extension SharedSequenceConvertibleType {
+extension RxCocoa.SharedSequenceConvertibleType {
   public func map<Result>(_ selector: @escaping (Self.Element) -> Result) -> RxCocoa.SharedSequence<Self.SharingStrategy, Result>
 }
-extension SharedSequenceConvertibleType {
+extension RxCocoa.SharedSequenceConvertibleType {
   public func compactMap<Result>(_ selector: @escaping (Self.Element) -> Result?) -> RxCocoa.SharedSequence<Self.SharingStrategy, Result>
 }
-extension SharedSequenceConvertibleType {
+extension RxCocoa.SharedSequenceConvertibleType {
   public func filter(_ predicate: @escaping (Self.Element) -> Swift.Bool) -> RxCocoa.SharedSequence<Self.SharingStrategy, Self.Element>
 }
-extension SharedSequenceConvertibleType where Self.Element : RxCocoa.SharedSequenceConvertibleType {
+extension RxCocoa.SharedSequenceConvertibleType where Self.Element : RxCocoa.SharedSequenceConvertibleType {
   public func switchLatest() -> RxCocoa.SharedSequence<Self.Element.SharingStrategy, Self.Element.Element>
 }
-extension SharedSequenceConvertibleType {
+extension RxCocoa.SharedSequenceConvertibleType {
   public func flatMapLatest<Sharing, Result>(_ selector: @escaping (Self.Element) -> RxCocoa.SharedSequence<Sharing, Result>) -> RxCocoa.SharedSequence<Sharing, Result> where Sharing : RxCocoa.SharingStrategyProtocol
 }
-extension SharedSequenceConvertibleType {
+extension RxCocoa.SharedSequenceConvertibleType {
   public func flatMapFirst<Sharing, Result>(_ selector: @escaping (Self.Element) -> RxCocoa.SharedSequence<Sharing, Result>) -> RxCocoa.SharedSequence<Sharing, Result> where Sharing : RxCocoa.SharingStrategyProtocol
 }
-extension SharedSequenceConvertibleType {
+extension RxCocoa.SharedSequenceConvertibleType {
   public func `do`(onNext: ((Self.Element) -> Swift.Void)? = nil, afterNext: ((Self.Element) -> Swift.Void)? = nil, onCompleted: (() -> Swift.Void)? = nil, afterCompleted: (() -> Swift.Void)? = nil, onSubscribe: (() -> Swift.Void)? = nil, onSubscribed: (() -> Swift.Void)? = nil, onDispose: (() -> Swift.Void)? = nil) -> RxCocoa.SharedSequence<Self.SharingStrategy, Self.Element>
 }
-extension SharedSequenceConvertibleType {
+extension RxCocoa.SharedSequenceConvertibleType {
   public func debug(_ identifier: Swift.String? = nil, trimOutput: Swift.Bool = false, file: Swift.String = #file, line: Swift.UInt = #line, function: Swift.String = #function) -> RxCocoa.SharedSequence<Self.SharingStrategy, Self.Element>
 }
-extension SharedSequenceConvertibleType where Self.Element : Swift.Equatable {
+extension RxCocoa.SharedSequenceConvertibleType where Self.Element : Swift.Equatable {
   public func distinctUntilChanged() -> RxCocoa.SharedSequence<Self.SharingStrategy, Self.Element>
 }
-extension SharedSequenceConvertibleType {
+extension RxCocoa.SharedSequenceConvertibleType {
   public func distinctUntilChanged<Key>(_ keySelector: @escaping (Self.Element) -> Key) -> RxCocoa.SharedSequence<Self.SharingStrategy, Self.Element> where Key : Swift.Equatable
   public func distinctUntilChanged(_ comparer: @escaping (Self.Element, Self.Element) -> Swift.Bool) -> RxCocoa.SharedSequence<Self.SharingStrategy, Self.Element>
   public func distinctUntilChanged<K>(_ keySelector: @escaping (Self.Element) -> K, comparer: @escaping (K, K) -> Swift.Bool) -> RxCocoa.SharedSequence<Self.SharingStrategy, Self.Element>
 }
-extension SharedSequenceConvertibleType {
+extension RxCocoa.SharedSequenceConvertibleType {
   public func flatMap<Sharing, Result>(_ selector: @escaping (Self.Element) -> RxCocoa.SharedSequence<Sharing, Result>) -> RxCocoa.SharedSequence<Sharing, Result> where Sharing : RxCocoa.SharingStrategyProtocol
 }
-extension SharedSequenceConvertibleType {
+extension RxCocoa.SharedSequenceConvertibleType {
   public static func merge<Collection>(_ sources: Collection) -> RxCocoa.SharedSequence<Self.SharingStrategy, Self.Element> where Collection : Swift.Collection, Collection.Element == RxCocoa.SharedSequence<Self.SharingStrategy, Self.Element>
   public static func merge(_ sources: [RxCocoa.SharedSequence<Self.SharingStrategy, Self.Element>]) -> RxCocoa.SharedSequence<Self.SharingStrategy, Self.Element>
   public static func merge(_ sources: RxCocoa.SharedSequence<Self.SharingStrategy, Self.Element>...) -> RxCocoa.SharedSequence<Self.SharingStrategy, Self.Element>
 }
-extension SharedSequenceConvertibleType where Self.Element : RxCocoa.SharedSequenceConvertibleType {
+extension RxCocoa.SharedSequenceConvertibleType where Self.Element : RxCocoa.SharedSequenceConvertibleType {
   public func merge() -> RxCocoa.SharedSequence<Self.Element.SharingStrategy, Self.Element.Element>
   public func merge(maxConcurrent: Swift.Int) -> RxCocoa.SharedSequence<Self.Element.SharingStrategy, Self.Element.Element>
 }
-extension SharedSequenceConvertibleType {
+extension RxCocoa.SharedSequenceConvertibleType {
   public func throttle(_ dueTime: RxSwift.RxTimeInterval, latest: Swift.Bool = true) -> RxCocoa.SharedSequence<Self.SharingStrategy, Self.Element>
   public func debounce(_ dueTime: RxSwift.RxTimeInterval) -> RxCocoa.SharedSequence<Self.SharingStrategy, Self.Element>
 }
-extension SharedSequenceConvertibleType {
+extension RxCocoa.SharedSequenceConvertibleType {
   public func scan<A>(_ seed: A, accumulator: @escaping (A, Self.Element) -> A) -> RxCocoa.SharedSequence<Self.SharingStrategy, A>
 }
-extension SharedSequence {
+extension RxCocoa.SharedSequence {
   public static func concat<Sequence>(_ sequence: Sequence) -> RxCocoa.SharedSequence<SharingStrategy, Element> where Sequence : Swift.Sequence, Sequence.Element == RxCocoa.SharedSequence<SharingStrategy, Element>
   public static func concat<Collection>(_ collection: Collection) -> RxCocoa.SharedSequence<SharingStrategy, Element> where Collection : Swift.Collection, Collection.Element == RxCocoa.SharedSequence<SharingStrategy, Element>
 }
-extension SharedSequence {
+extension RxCocoa.SharedSequence {
   public static func zip<Collection, Result>(_ collection: Collection, resultSelector: @escaping ([Element]) throws -> Result) -> RxCocoa.SharedSequence<SharingStrategy, Result> where Collection : Swift.Collection, Collection.Element == RxCocoa.SharedSequence<SharingStrategy, Element>
   public static func zip<Collection>(_ collection: Collection) -> RxCocoa.SharedSequence<SharingStrategy, [Element]> where Collection : Swift.Collection, Collection.Element == RxCocoa.SharedSequence<SharingStrategy, Element>
 }
-extension SharedSequence {
+extension RxCocoa.SharedSequence {
   public static func combineLatest<Collection, Result>(_ collection: Collection, resultSelector: @escaping ([Element]) throws -> Result) -> RxCocoa.SharedSequence<SharingStrategy, Result> where Collection : Swift.Collection, Collection.Element == RxCocoa.SharedSequence<SharingStrategy, Element>
   public static func combineLatest<Collection>(_ collection: Collection) -> RxCocoa.SharedSequence<SharingStrategy, [Element]> where Collection : Swift.Collection, Collection.Element == RxCocoa.SharedSequence<SharingStrategy, Element>
 }
-extension SharedSequenceConvertibleType {
+extension RxCocoa.SharedSequenceConvertibleType where Self.SharingStrategy == RxCocoa.SignalSharingStrategy {
   public func withUnretained<Object, Out>(_ obj: Object, resultSelector: @escaping (Object, Self.Element) -> Out) -> RxCocoa.SharedSequence<Self.SharingStrategy, Out> where Object : AnyObject
   public func withUnretained<Object>(_ obj: Object) -> RxCocoa.SharedSequence<Self.SharingStrategy, (Object, Self.Element)> where Object : AnyObject
 }
-extension SharedSequenceConvertibleType {
+extension RxCocoa.SharedSequenceConvertibleType where Self.SharingStrategy == RxCocoa.DriverSharingStrategy {
+  @available(*, unavailable, message: "withUnretained has been deprecated for Driver. Consider using `drive(with:onNext:onCompleted:onDisposed:)`, instead")
+  public func withUnretained<Object, Out>(_ obj: Object, resultSelector: @escaping (Object, Self.Element) -> Out) -> RxCocoa.SharedSequence<Self.SharingStrategy, Out> where Object : AnyObject
+  @available(*, unavailable, message: "withUnretained has been deprecated for Driver. Consider using `drive(with:onNext:onCompleted:onDisposed:)`, instead")
+  public func withUnretained<Object>(_ obj: Object) -> RxCocoa.SharedSequence<Self.SharingStrategy, (Object, Self.Element)> where Object : AnyObject
+}
+extension RxCocoa.SharedSequenceConvertibleType {
   public func withLatestFrom<SecondO, ResultType>(_ second: SecondO, resultSelector: @escaping (Self.Element, SecondO.Element) -> ResultType) -> RxCocoa.SharedSequence<Self.SharingStrategy, ResultType> where SecondO : RxCocoa.SharedSequenceConvertibleType, Self.SharingStrategy == SecondO.SharingStrategy
   public func withLatestFrom<SecondO>(_ second: SecondO) -> RxCocoa.SharedSequence<Self.SharingStrategy, SecondO.Element> where SecondO : RxCocoa.SharedSequenceConvertibleType
 }
-extension SharedSequenceConvertibleType {
+extension RxCocoa.SharedSequenceConvertibleType {
   public func skip(_ count: Swift.Int) -> RxCocoa.SharedSequence<Self.SharingStrategy, Self.Element>
 }
-extension SharedSequenceConvertibleType {
+extension RxCocoa.SharedSequenceConvertibleType {
   public func startWith(_ element: Self.Element) -> RxCocoa.SharedSequence<Self.SharingStrategy, Self.Element>
 }
-extension SharedSequenceConvertibleType {
+extension RxCocoa.SharedSequenceConvertibleType {
   public func delay(_ dueTime: RxSwift.RxTimeInterval) -> RxCocoa.SharedSequence<Self.SharingStrategy, Self.Element>
 }
-extension Reactive where Base : UIKit.UIActivityIndicatorView {
+extension RxSwift.Reactive where Base : UIKit.UIActivityIndicatorView {
   public var isAnimating: RxSwift.Binder<Swift.Bool> {
     get
   }
 }
-extension Reactive where Base : UIKit.NSTextStorage {
+extension RxSwift.Reactive where Base : UIKit.NSTextStorage {
   public var delegate: RxCocoa.DelegateProxy<UIKit.NSTextStorage, UIKit.NSTextStorageDelegate> {
     get
   }
@@ -864,61 +862,59 @@ extension Reactive where Base : UIKit.NSTextStorage {
     get
   }
 }
-open class RxTextViewDelegateProxy : RxCocoa.RxScrollViewDelegateProxy, UIKit.UITextViewDelegate {
-  weak public var textView: UIKit.UITextView? {
+@_Concurrency.MainActor(unsafe) open class RxTextViewDelegateProxy : RxCocoa.RxScrollViewDelegateProxy, UIKit.UITextViewDelegate {
+  @_Concurrency.MainActor(unsafe) weak public var textView: UIKit.UITextView? {
     get
   }
-  public init(textView: UIKit.UITextView)
-  @objc open func textView(_ textView: UIKit.UITextView, shouldChangeTextIn range: Foundation.NSRange, replacementText text: Swift.String) -> Swift.Bool
-  override public init(scrollView: RxCocoa.RxScrollViewDelegateProxy.ParentObject)
+  @_Concurrency.MainActor(unsafe) public init(textView: UIKit.UITextView)
+  @objc @_Concurrency.MainActor(unsafe) open func textView(_ textView: UIKit.UITextView, shouldChangeTextIn range: Foundation.NSRange, replacementText text: Swift.String) -> Swift.Bool
   @objc deinit
 }
-extension Int : RxCocoa.KVORepresentable {
+extension Swift.Int : RxCocoa.KVORepresentable {
   public typealias KVOType = Foundation.NSNumber
   public init?(KVOValue: Swift.Int.KVOType)
 }
-extension Int32 : RxCocoa.KVORepresentable {
+extension Swift.Int32 : RxCocoa.KVORepresentable {
   public typealias KVOType = Foundation.NSNumber
   public init?(KVOValue: Swift.Int32.KVOType)
 }
-extension Int64 : RxCocoa.KVORepresentable {
+extension Swift.Int64 : RxCocoa.KVORepresentable {
   public typealias KVOType = Foundation.NSNumber
   public init?(KVOValue: Swift.Int64.KVOType)
 }
-extension UInt : RxCocoa.KVORepresentable {
+extension Swift.UInt : RxCocoa.KVORepresentable {
   public typealias KVOType = Foundation.NSNumber
   public init?(KVOValue: Swift.UInt.KVOType)
 }
-extension UInt32 : RxCocoa.KVORepresentable {
+extension Swift.UInt32 : RxCocoa.KVORepresentable {
   public typealias KVOType = Foundation.NSNumber
   public init?(KVOValue: Swift.UInt32.KVOType)
 }
-extension UInt64 : RxCocoa.KVORepresentable {
+extension Swift.UInt64 : RxCocoa.KVORepresentable {
   public typealias KVOType = Foundation.NSNumber
   public init?(KVOValue: Swift.UInt64.KVOType)
 }
-extension Bool : RxCocoa.KVORepresentable {
+extension Swift.Bool : RxCocoa.KVORepresentable {
   public typealias KVOType = Foundation.NSNumber
   public init?(KVOValue: Swift.Bool.KVOType)
 }
-extension ObservableConvertibleType {
+extension RxSwift.ObservableConvertibleType {
   public func asDriver(onErrorJustReturn: Self.Element) -> RxCocoa.Driver<Self.Element>
   public func asDriver(onErrorDriveWith: RxCocoa.Driver<Self.Element>) -> RxCocoa.Driver<Self.Element>
-  public func asDriver(onErrorRecover: @escaping (Swift.Error) -> RxCocoa.Driver<Self.Element>) -> RxCocoa.Driver<Self.Element>
+  public func asDriver(onErrorRecover: @escaping (_ error: Swift.Error) -> RxCocoa.Driver<Self.Element>) -> RxCocoa.Driver<Self.Element>
 }
-extension UINavigationController : RxCocoa.HasDelegate {
+extension UIKit.UINavigationController : RxCocoa.HasDelegate {
   public typealias Delegate = UIKit.UINavigationControllerDelegate
 }
-open class RxNavigationControllerDelegateProxy : RxCocoa.DelegateProxy<UIKit.UINavigationController, UIKit.UINavigationControllerDelegate>, RxCocoa.DelegateProxyType, UIKit.UINavigationControllerDelegate {
-  weak public var navigationController: UIKit.UINavigationController? {
+@_Concurrency.MainActor(unsafe) open class RxNavigationControllerDelegateProxy : RxCocoa.DelegateProxy<UIKit.UINavigationController, UIKit.UINavigationControllerDelegate>, RxCocoa.DelegateProxyType, UIKit.UINavigationControllerDelegate {
+  @_Concurrency.MainActor(unsafe) weak public var navigationController: UIKit.UINavigationController? {
     get
   }
-  public init(navigationController: RxCocoa.RxNavigationControllerDelegateProxy.ParentObject)
-  public static func registerKnownImplementations()
+  @_Concurrency.MainActor(unsafe) public init(navigationController: RxCocoa.RxNavigationControllerDelegateProxy.ParentObject)
+  @_Concurrency.MainActor(unsafe) public static func registerKnownImplementations()
   @objc deinit
-  override public init<Proxy>(parentObject: RxCocoa.DelegateProxy<UIKit.UINavigationController, UIKit.UINavigationControllerDelegate>.ParentObject, delegateProxy: Proxy.Type) where Proxy : RxCocoa.DelegateProxy<UIKit.UINavigationController, UIKit.UINavigationControllerDelegate>, Proxy : RxCocoa.DelegateProxyType, Proxy.Delegate == UIKit.UINavigationControllerDelegate, Proxy.ParentObject == UIKit.UINavigationController
 }
-extension Reactive where Base : UIKit.UIBarButtonItem {
+extension RxSwift.Reactive where Base : UIKit.UIBarButtonItem {
   public var tap: RxCocoa.ControlEvent<()> {
     get
   }
@@ -928,17 +924,17 @@ public struct KeyValueObservingOptions : Swift.OptionSet {
   public init(rawValue: Swift.UInt)
   public static let initial: RxCocoa.KeyValueObservingOptions
   public static let new: RxCocoa.KeyValueObservingOptions
-  public typealias Element = RxCocoa.KeyValueObservingOptions
   public typealias ArrayLiteralElement = RxCocoa.KeyValueObservingOptions
+  public typealias Element = RxCocoa.KeyValueObservingOptions
   public typealias RawValue = Swift.UInt
 }
-extension Reactive where Base : ObjectiveC.NSObject {
+extension RxSwift.Reactive where Base : ObjectiveC.NSObject {
   public func observe<Element>(_ type: Element.Type, _ keyPath: Swift.String, options: RxCocoa.KeyValueObservingOptions = [.new, .initial], retainSelf: Swift.Bool = true) -> RxSwift.Observable<Element?> where Element : RxCocoa.KVORepresentable
 }
-extension Reactive where Base : ObjectiveC.NSObject {
+extension RxSwift.Reactive where Base : ObjectiveC.NSObject {
   public func observeWeakly<Element>(_ type: Element.Type, _ keyPath: Swift.String, options: RxCocoa.KeyValueObservingOptions = [.new, .initial]) -> RxSwift.Observable<Element?> where Element : RxCocoa.KVORepresentable
 }
-extension Reactive where Base : UIKit.UIDatePicker {
+extension RxSwift.Reactive where Base : UIKit.UIDatePicker {
   public var date: RxCocoa.ControlProperty<Foundation.Date> {
     get
   }
@@ -949,27 +945,26 @@ extension Reactive where Base : UIKit.UIDatePicker {
     get
   }
 }
-extension UITableView : RxCocoa.HasDataSource {
+extension UIKit.UITableView : RxCocoa.HasDataSource {
   public typealias DataSource = UIKit.UITableViewDataSource
 }
-open class RxTableViewDataSourceProxy : RxCocoa.DelegateProxy<UIKit.UITableView, UIKit.UITableViewDataSource>, RxCocoa.DelegateProxyType, UIKit.UITableViewDataSource {
-  weak public var tableView: UIKit.UITableView? {
+@_Concurrency.MainActor(unsafe) open class RxTableViewDataSourceProxy : RxCocoa.DelegateProxy<UIKit.UITableView, UIKit.UITableViewDataSource>, RxCocoa.DelegateProxyType, UIKit.UITableViewDataSource {
+  @_Concurrency.MainActor(unsafe) weak public var tableView: UIKit.UITableView? {
     get
   }
-  public init(tableView: UIKit.UITableView)
-  public static func registerKnownImplementations()
-  @objc public func tableView(_ tableView: UIKit.UITableView, numberOfRowsInSection section: Swift.Int) -> Swift.Int
-  @objc public func tableView(_ tableView: UIKit.UITableView, cellForRowAt indexPath: Foundation.IndexPath) -> UIKit.UITableViewCell
+  @_Concurrency.MainActor(unsafe) public init(tableView: UIKit.UITableView)
+  @_Concurrency.MainActor(unsafe) public static func registerKnownImplementations()
+  @_Concurrency.MainActor(unsafe) @objc public func tableView(_ tableView: UIKit.UITableView, numberOfRowsInSection section: Swift.Int) -> Swift.Int
+  @_Concurrency.MainActor(unsafe) @objc public func tableView(_ tableView: UIKit.UITableView, cellForRowAt indexPath: Foundation.IndexPath) -> UIKit.UITableViewCell
   override open func setForwardToDelegate(_ forwardToDelegate: UIKit.UITableViewDataSource?, retainDelegate: Swift.Bool)
   @objc deinit
-  override public init<Proxy>(parentObject: RxCocoa.DelegateProxy<UIKit.UITableView, UIKit.UITableViewDataSource>.ParentObject, delegateProxy: Proxy.Type) where Proxy : RxCocoa.DelegateProxy<UIKit.UITableView, UIKit.UITableViewDataSource>, Proxy : RxCocoa.DelegateProxyType, Proxy.Delegate == UIKit.UITableViewDataSource, Proxy.ParentObject == UIKit.UITableView
 }
-extension Reactive where Base : UIKit.UIGestureRecognizer {
+extension RxSwift.Reactive where Base : UIKit.UIGestureRecognizer {
   public var event: RxCocoa.ControlEvent<Base> {
     get
   }
 }
-extension ControlProperty {
+extension RxCocoa.ControlProperty {
   public func asDriver() -> RxCocoa.Driver<RxCocoa.ControlProperty<PropertyType>.Element>
 }
 open class DelegateProxy<P, D> : RxCocoa._RXDelegateProxy where P : AnyObject {
@@ -984,16 +979,15 @@ open class DelegateProxy<P, D> : RxCocoa._RXDelegateProxy where P : AnyObject {
   open func setForwardToDelegate(_ delegate: RxCocoa.DelegateProxy<P, D>.Delegate?, retainDelegate: Swift.Bool)
   @objc override dynamic open func responds(to aSelector: ObjectiveC.Selector!) -> Swift.Bool
   @objc deinit
-  @objc override dynamic public init()
 }
-extension Reactive where Base : ObjectiveC.NSObject {
+extension RxSwift.Reactive where Base : ObjectiveC.NSObject {
   public func observe<Element>(_ type: Element.Type, _ keyPath: Swift.String, options: RxCocoa.KeyValueObservingOptions = [.new, .initial], retainSelf: Swift.Bool = true) -> RxSwift.Observable<Element?>
   public func observe<Element>(_ keyPath: Swift.KeyPath<Base, Element>, options: Foundation.NSKeyValueObservingOptions = [.new, .initial]) -> RxSwift.Observable<Element>
 }
-extension Reactive where Base : ObjectiveC.NSObject {
+extension RxSwift.Reactive where Base : ObjectiveC.NSObject {
   public func observeWeakly<Element>(_ type: Element.Type, _ keyPath: Swift.String, options: RxCocoa.KeyValueObservingOptions = [.new, .initial]) -> RxSwift.Observable<Element?>
 }
-extension Reactive {
+extension RxSwift.Reactive where Base : AnyObject {
   public var deallocated: RxSwift.Observable<Swift.Void> {
     get
   }
@@ -1003,7 +997,7 @@ extension Reactive {
     get
   }
 }
-extension Reactive where Base : UIKit.UINavigationController {
+extension RxSwift.Reactive where Base : UIKit.UINavigationController {
   public typealias ShowEvent = (viewController: UIKit.UIViewController, animated: Swift.Bool)
   public var delegate: RxCocoa.DelegateProxy<UIKit.UINavigationController, UIKit.UINavigationControllerDelegate> {
     get
@@ -1015,7 +1009,7 @@ extension Reactive where Base : UIKit.UINavigationController {
     get
   }
 }
-extension Reactive where Base : UIKit.UITabBar {
+extension RxSwift.Reactive where Base : UIKit.UITabBar {
   public var willBeginCustomizing: RxCocoa.ControlEvent<[UIKit.UITabBarItem]> {
     get
   }
@@ -1029,7 +1023,7 @@ extension Reactive where Base : UIKit.UITabBar {
     get
   }
 }
-extension Reactive where Base : UIKit.UITabBar {
+extension RxSwift.Reactive where Base : UIKit.UITabBar {
   public var delegate: RxCocoa.DelegateProxy<UIKit.UITabBar, UIKit.UITabBarDelegate> {
     get
   }
@@ -1037,21 +1031,20 @@ extension Reactive where Base : UIKit.UITabBar {
     get
   }
 }
-extension UITabBar : RxCocoa.HasDelegate {
+extension UIKit.UITabBar : RxCocoa.HasDelegate {
   public typealias Delegate = UIKit.UITabBarDelegate
 }
-open class RxTabBarDelegateProxy : RxCocoa.DelegateProxy<UIKit.UITabBar, UIKit.UITabBarDelegate>, RxCocoa.DelegateProxyType, UIKit.UITabBarDelegate {
-  weak public var tabBar: UIKit.UITabBar? {
+@_Concurrency.MainActor(unsafe) open class RxTabBarDelegateProxy : RxCocoa.DelegateProxy<UIKit.UITabBar, UIKit.UITabBarDelegate>, RxCocoa.DelegateProxyType, UIKit.UITabBarDelegate {
+  @_Concurrency.MainActor(unsafe) weak public var tabBar: UIKit.UITabBar? {
     get
   }
-  public init(tabBar: RxCocoa.RxTabBarDelegateProxy.ParentObject)
-  public static func registerKnownImplementations()
-  open class func currentDelegate(for object: RxCocoa.RxTabBarDelegateProxy.ParentObject) -> UIKit.UITabBarDelegate?
-  open class func setCurrentDelegate(_ delegate: UIKit.UITabBarDelegate?, to object: RxCocoa.RxTabBarDelegateProxy.ParentObject)
+  @_Concurrency.MainActor(unsafe) public init(tabBar: RxCocoa.RxTabBarDelegateProxy.ParentObject)
+  @_Concurrency.MainActor(unsafe) public static func registerKnownImplementations()
+  @_Concurrency.MainActor(unsafe) open class func currentDelegate(for object: RxCocoa.RxTabBarDelegateProxy.ParentObject) -> UIKit.UITabBarDelegate?
+  @_Concurrency.MainActor(unsafe) open class func setCurrentDelegate(_ delegate: UIKit.UITabBarDelegate?, to object: RxCocoa.RxTabBarDelegateProxy.ParentObject)
   @objc deinit
-  override public init<Proxy>(parentObject: RxCocoa.DelegateProxy<UIKit.UITabBar, UIKit.UITabBarDelegate>.ParentObject, delegateProxy: Proxy.Type) where Proxy : RxCocoa.DelegateProxy<UIKit.UITabBar, UIKit.UITabBarDelegate>, Proxy : RxCocoa.DelegateProxyType, Proxy.Delegate == UIKit.UITabBarDelegate, Proxy.ParentObject == UIKit.UITabBar
 }
-extension Reactive where Base : UIKit.UISwitch {
+extension RxSwift.Reactive where Base : UIKit.UISwitch {
   public var isOn: RxCocoa.ControlProperty<Swift.Bool> {
     get
   }
@@ -1059,12 +1052,12 @@ extension Reactive where Base : UIKit.UISwitch {
     get
   }
 }
-extension Reactive where Base : UIKit.UICollectionView {
-  public func items<Sequence, Source>(_ source: Source) -> (@escaping (UIKit.UICollectionView, Swift.Int, Sequence.Element) -> UIKit.UICollectionViewCell) -> RxSwift.Disposable where Sequence : Swift.Sequence, Sequence == Source.Element, Source : RxSwift.ObservableType
-  public func items<Sequence, Cell, Source>(cellIdentifier: Swift.String, cellType: Cell.Type = Cell.self) -> (Source) -> (@escaping (Swift.Int, Sequence.Element, Cell) -> Swift.Void) -> RxSwift.Disposable where Sequence : Swift.Sequence, Sequence == Source.Element, Cell : UIKit.UICollectionViewCell, Source : RxSwift.ObservableType
-  public func items<DataSource, Source>(dataSource: DataSource) -> (Source) -> RxSwift.Disposable where DataSource : RxCocoa.RxCollectionViewDataSourceType, DataSource : UIKit.UICollectionViewDataSource, Source : RxSwift.ObservableType, DataSource.Element == Source.Element
+extension RxSwift.Reactive where Base : UIKit.UICollectionView {
+  public func items<Sequence, Source>(_ source: Source) -> (_ cellFactory: @escaping (UIKit.UICollectionView, Swift.Int, Sequence.Element) -> UIKit.UICollectionViewCell) -> RxSwift.Disposable where Sequence : Swift.Sequence, Sequence == Source.Element, Source : RxSwift.ObservableType
+  public func items<Sequence, Cell, Source>(cellIdentifier: Swift.String, cellType: Cell.Type = Cell.self) -> (_ source: Source) -> (_ configureCell: @escaping (Swift.Int, Sequence.Element, Cell) -> Swift.Void) -> RxSwift.Disposable where Sequence : Swift.Sequence, Sequence == Source.Element, Cell : UIKit.UICollectionViewCell, Source : RxSwift.ObservableType
+  public func items<DataSource, Source>(dataSource: DataSource) -> (_ source: Source) -> RxSwift.Disposable where DataSource : RxCocoa.RxCollectionViewDataSourceType, DataSource : UIKit.UICollectionViewDataSource, Source : RxSwift.ObservableType, DataSource.Element == Source.Element
 }
-extension Reactive where Base : UIKit.UICollectionView {
+extension RxSwift.Reactive where Base : UIKit.UICollectionView {
   public typealias DisplayCollectionViewCellEvent = (cell: UIKit.UICollectionViewCell, at: Foundation.IndexPath)
   public typealias DisplayCollectionViewSupplementaryViewEvent = (supplementaryView: UIKit.UICollectionReusableView, elementKind: Swift.String, at: Foundation.IndexPath)
   public var dataSource: RxCocoa.DelegateProxy<UIKit.UICollectionView, UIKit.UICollectionViewDataSource> {
@@ -1100,7 +1093,7 @@ extension Reactive where Base : UIKit.UICollectionView {
   public func model<T>(at indexPath: Foundation.IndexPath) throws -> T
 }
 @available(iOS 10.0, tvOS 10.0, *)
-extension Reactive where Base : UIKit.UICollectionView {
+extension RxSwift.Reactive where Base : UIKit.UICollectionView {
   public var prefetchDataSource: RxCocoa.DelegateProxy<UIKit.UICollectionView, UIKit.UICollectionViewDataSourcePrefetching> {
     get
   }
@@ -1116,7 +1109,7 @@ public protocol RxCollectionViewDataSourceType {
   associatedtype Element
   func collectionView(_ collectionView: UIKit.UICollectionView, observedEvent: RxSwift.Event<Self.Element>)
 }
-extension Reactive where Base : UIKit.UITextField {
+extension RxSwift.Reactive where Base : UIKit.UITextField {
   public var text: RxCocoa.ControlProperty<Swift.String?> {
     get
   }
@@ -1127,7 +1120,7 @@ extension Reactive where Base : UIKit.UITextField {
     get
   }
 }
-extension Reactive where Base : UIKit.UISearchBar {
+extension RxSwift.Reactive where Base : UIKit.UISearchBar {
   public var delegate: RxCocoa.DelegateProxy<UIKit.UISearchBar, UIKit.UISearchBarDelegate> {
     get
   }
@@ -1160,14 +1153,14 @@ extension Reactive where Base : UIKit.UISearchBar {
   }
   public func setDelegate(_ delegate: UIKit.UISearchBarDelegate) -> RxSwift.Disposable
 }
-extension Reactive where Base : Foundation.NotificationCenter {
+extension RxSwift.Reactive where Base : Foundation.NotificationCenter {
   public func notification(_ name: Foundation.Notification.Name?, object: Swift.AnyObject? = nil) -> RxSwift.Observable<Foundation.Notification>
 }
 public typealias ItemMovedEvent = (sourceIndex: Foundation.IndexPath, destinationIndex: Foundation.IndexPath)
 public typealias WillDisplayCellEvent = (cell: UIKit.UITableViewCell, indexPath: Foundation.IndexPath)
 public typealias DidEndDisplayingCellEvent = (cell: UIKit.UITableViewCell, indexPath: Foundation.IndexPath)
-@available(iOS 8.0, OSX 10.10, OSXApplicationExtension 10.10, *)
-extension Reactive where Base : WebKit.WKWebView {
+@available(iOS 8.0, macOS 10.10, macOSApplicationExtension 10.10, *)
+extension RxSwift.Reactive where Base : WebKit.WKWebView {
   public var navigationDelegate: RxCocoa.DelegateProxy<WebKit.WKWebView, WebKit.WKNavigationDelegate> {
     get
   }
@@ -1189,20 +1182,19 @@ public protocol RxTableViewDataSourceType {
   func tableView(_ tableView: UIKit.UITableView, observedEvent: RxSwift.Event<Self.Element>)
 }
 @available(iOS 10.0, tvOS 10.0, *)
-extension UITableView : RxCocoa.HasPrefetchDataSource {
+extension UIKit.UITableView : RxCocoa.HasPrefetchDataSource {
   public typealias PrefetchDataSource = UIKit.UITableViewDataSourcePrefetching
 }
 @available(iOS 10.0, tvOS 10.0, *)
-open class RxTableViewDataSourcePrefetchingProxy : RxCocoa.DelegateProxy<UIKit.UITableView, UIKit.UITableViewDataSourcePrefetching>, RxCocoa.DelegateProxyType, UIKit.UITableViewDataSourcePrefetching {
-  weak public var tableView: UIKit.UITableView? {
+@_Concurrency.MainActor(unsafe) open class RxTableViewDataSourcePrefetchingProxy : RxCocoa.DelegateProxy<UIKit.UITableView, UIKit.UITableViewDataSourcePrefetching>, RxCocoa.DelegateProxyType, UIKit.UITableViewDataSourcePrefetching {
+  @_Concurrency.MainActor(unsafe) weak public var tableView: UIKit.UITableView? {
     get
   }
-  public init(tableView: RxCocoa.RxTableViewDataSourcePrefetchingProxy.ParentObject)
-  public static func registerKnownImplementations()
-  @objc public func tableView(_ tableView: UIKit.UITableView, prefetchRowsAt indexPaths: [Foundation.IndexPath])
+  @_Concurrency.MainActor(unsafe) public init(tableView: RxCocoa.RxTableViewDataSourcePrefetchingProxy.ParentObject)
+  @_Concurrency.MainActor(unsafe) public static func registerKnownImplementations()
+  @_Concurrency.MainActor(unsafe) @objc public func tableView(_ tableView: UIKit.UITableView, prefetchRowsAt indexPaths: [Foundation.IndexPath])
   override open func setForwardToDelegate(_ forwardToDelegate: UIKit.UITableViewDataSourcePrefetching?, retainDelegate: Swift.Bool)
   @objc deinit
-  override public init<Proxy>(parentObject: RxCocoa.DelegateProxy<UIKit.UITableView, UIKit.UITableViewDataSourcePrefetching>.ParentObject, delegateProxy: Proxy.Type) where Proxy : RxCocoa.DelegateProxy<UIKit.UITableView, UIKit.UITableViewDataSourcePrefetching>, Proxy : RxCocoa.DelegateProxyType, Proxy.Delegate == UIKit.UITableViewDataSourcePrefetching, Proxy.ParentObject == UIKit.UITableView
 }
 extension RxCocoa.RxCocoaInterceptionMechanism : Swift.Equatable {}
 extension RxCocoa.RxCocoaInterceptionMechanism : Swift.Hashable {}

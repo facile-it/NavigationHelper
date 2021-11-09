@@ -1,10 +1,10 @@
 {
   "Mac" : [
     {
-      "hash" : "c82f8ea6cfd4b919ee8f248785ddc92e25e0c0761cb711b7f9ea1a2fe36acfc8",
+      "hash" : "5e674371e6baacdcb7b6e7ec88276913f92d7140a559f4fdbdee6ee32f8daaeb",
       "name" : "Log",
       "linking" : "dynamic",
-      "swiftToolchainVersion" : "5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)"
+      "swiftToolchainVersion" : "5.5.1 (swiftlang-1300.0.31.4 clang-1300.0.29.6)"
     }
   ],
   "watchOS" : [
@@ -13,13 +13,13 @@
   "tvOS" : [
 
   ],
-  "commitish" : "0.4.0",
+  "commitish" : "0.5.0",
   "iOS" : [
     {
-      "hash" : "bceebbfc9163fe15b11a9524dff43b6b0415259eb51b9a03c925d72cd8902350",
+      "hash" : "ff630e3809e70db4ff47c4bfaddab7d59b3e644ce8f5302e2fabb9315e8844e4",
       "name" : "Log",
       "linking" : "dynamic",
-      "swiftToolchainVersion" : "5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)"
+      "swiftToolchainVersion" : "5.5.1 (swiftlang-1300.0.31.4 clang-1300.0.29.6)"
     }
   ]
 }

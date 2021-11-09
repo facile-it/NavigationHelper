@@ -1,21 +1,22 @@
 // swift-interface-format-version: 1.0
-// swift-compiler-version: Apple Swift version 5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)
+// swift-compiler-version: Apple Swift version 5.5.1 (swiftlang-1300.0.31.4 clang-1300.0.29.6)
 // swift-module-flags: -target i386-apple-ios9.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name RxTest
 import Foundation
 import RxSwift
 import Swift
 import XCTest
+import _Concurrency
 public struct Recorded<Value> : Swift.CustomDebugStringConvertible {
   public let time: RxTest.TestTime
   public let value: Value
   public init(time: RxTest.TestTime, value: Value)
 }
-extension Recorded {
+extension RxTest.Recorded {
   public var debugDescription: Swift.String {
     get
   }
 }
-extension Recorded : Swift.Equatable where Value : Swift.Equatable {
+extension RxTest.Recorded : Swift.Equatable where Value : Swift.Equatable {
   public static func == (lhs: RxTest.Recorded<Value>, rhs: RxTest.Recorded<Value>) -> Swift.Bool
 }
 @_hasMissingDesignatedInitializers final public class TestableObserver<Element> : RxSwift.ObserverType {
@@ -33,13 +34,13 @@ public func XCTAssertEqual<Element>(_ lhs: [RxTest.Recorded<RxSwift.Event<Elemen
 public func XCTAssertEqual<Element>(_ lhs: [RxTest.Recorded<RxSwift.Event<Element?>>], _ rhs: [RxTest.Recorded<RxSwift.Event<Element?>>], file: Swift.StaticString = #file, line: Swift.UInt = #line) where Element : Swift.Equatable
 public func XCTAssertRecordedElements<Element>(_ stream: [RxTest.Recorded<RxSwift.Event<Element>>], _ elements: [Element], file: Swift.StaticString = #file, line: Swift.UInt = #line) where Element : Swift.Equatable
 public typealias TestTime = Swift.Int
-extension CompletableEvent : Swift.Equatable {
+extension RxSwift.CompletableEvent : Swift.Equatable {
   public static func == (lhs: RxSwift.CompletableEvent, rhs: RxSwift.CompletableEvent) -> Swift.Bool
 }
-extension Event : Swift.Equatable where Element : Swift.Equatable {
+extension RxSwift.Event : Swift.Equatable where Element : Swift.Equatable {
   public static func == (lhs: RxSwift.Event<Element>, rhs: RxSwift.Event<Element>) -> Swift.Bool
 }
-extension MaybeEvent : Swift.Equatable where Element : Swift.Equatable {
+extension RxSwift.MaybeEvent : Swift.Equatable where Element : Swift.Equatable {
   public static func == (lhs: RxSwift.MaybeEvent<Element>, rhs: RxSwift.MaybeEvent<Element>) -> Swift.Bool
 }
 @_hasMissingDesignatedInitializers public class TestableObservable<Element> : RxSwift.ObservableType {
@@ -68,14 +69,13 @@ public class TestScheduler : RxSwift.VirtualTimeScheduler<RxTest.TestSchedulerVi
   public func start<Element, OutputSequence>(disposed: RxTest.TestTime, create: @escaping () -> OutputSequence) -> RxTest.TestableObserver<Element> where Element == OutputSequence.Element, OutputSequence : RxSwift.ObservableConvertibleType
   public func start<Element, OutputSequence>(_ create: @escaping () -> OutputSequence) -> RxTest.TestableObserver<Element> where Element == OutputSequence.Element, OutputSequence : RxSwift.ObservableConvertibleType
   @objc deinit
-  override public init(initialClock: RxSwift.VirtualTimeScheduler<RxTest.TestSchedulerVirtualTimeConverter>.VirtualTime, converter: RxTest.TestSchedulerVirtualTimeConverter)
 }
-extension Recorded {
+extension RxTest.Recorded {
   public static func next<T>(_ time: RxTest.TestTime, _ element: T) -> RxTest.Recorded<RxSwift.Event<T>> where Value == RxSwift.Event<T>
   public static func completed<T>(_ time: RxTest.TestTime, _ type: T.Type = T.self) -> RxTest.Recorded<RxSwift.Event<T>> where Value == RxSwift.Event<T>
   public static func error<T>(_ time: RxTest.TestTime, _ error: Swift.Error, _ type: T.Type = T.self) -> RxTest.Recorded<RxSwift.Event<T>> where Value == RxSwift.Event<T>
 }
-extension Recorded {
+extension RxTest.Recorded {
   public static func events<T>(_ recordedEvents: RxTest.Recorded<RxSwift.Event<T>>...) -> [RxTest.Recorded<RxSwift.Event<T>>] where Value == RxSwift.Event<T>
   public static func events<T>(_ recordedEvents: [RxTest.Recorded<RxSwift.Event<T>>]) -> [RxTest.Recorded<RxSwift.Event<T>>] where Value == RxSwift.Event<T>
 }
@@ -85,13 +85,13 @@ public struct Subscription {
   public init(_ subscribe: Swift.Int)
   public init(_ subscribe: Swift.Int, _ unsubscribe: Swift.Int)
 }
-extension Subscription : Swift.Hashable {
+extension RxTest.Subscription : Swift.Hashable {
   public func hash(into hasher: inout Swift.Hasher)
   public var hashValue: Swift.Int {
     get
   }
 }
-extension Subscription : Swift.CustomDebugStringConvertible {
+extension RxTest.Subscription : Swift.CustomDebugStringConvertible {
   public var debugDescription: Swift.String {
     get
   }
